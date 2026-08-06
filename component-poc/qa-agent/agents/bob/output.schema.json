@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BobAgentOutput",
+  "type": "object",
+  "required": ["runId", "agentId", "status", "summary", "componentPlans"],
+  "properties": {
+    "runId": { "type": "string" },
+    "agentId": { "type": "string", "const": "bob" },
+    "status": { "type": "string", "enum": ["pass", "fail", "blocked"] },
+    "summary": { "type": "string" },
+    "componentPlans": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "componentName",
+          "acceptanceCriteria",
+          "happyPathTests",
+          "sadPathTests",
+          "dataConsistencyChecks"
+        ],
+        "properties": {
+          "componentName": { "type": "string" },
+          "acceptanceCriteria": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "happyPathTests": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "sadPathTests": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "dataConsistencyChecks": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "accessibilityChecks": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "traceability": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["criterion", "testIds"],
+              "properties": {
+                "criterion": { "type": "string" },
+                "testIds": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["text", "confidenceScore"],
+        "properties": {
+          "text": { "type": "string" },
+          "confidenceScore": {
+            "type": "string",
+            "enum": ["low", "medium", "high"],
+            "description": "low = no AC or Jira data; medium = partial AC or inferred from description; high = AC present but incomplete"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "title"],
+        "properties": {
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
+          "title": { "type": "string" },
+          "details": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

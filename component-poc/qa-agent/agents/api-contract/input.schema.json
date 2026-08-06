@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ApiContractAgentInput",
+  "type": "object",
+  "required": ["runId", "target"],
+  "properties": {
+    "runId": { "type": "string", "minLength": 1 },
+    "target": { "type": "string", "minLength": 1 },
+    "endpoints": {
+      "type": "array",
+      "description": "Manually specified endpoints to validate. Use when API-Agent output is not available.",
+      "items": {
+        "type": "object",
+        "required": ["method", "path"],
+        "properties": {
+          "method": { "type": "string" },
+          "path": { "type": "string" },
+          "schemaPath": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "discoveredEndpoints": {
+      "type": "array",
+      "description": "Structured endpoint contracts from API-Agent output. When provided, API Contract uses these as the expected schema baseline instead of manual endpoint definitions.",
+      "items": {
+        "type": "object",
+        "required": ["endpointId", "method", "path", "fieldMappings"],
+        "properties": {
+          "endpointId": { "type": "string" },
+          "method": { "type": "string", "enum": ["GET", "POST"] },
+          "path": { "type": "string" },
+          "metricKey": { "type": ["string", "null"] },
+          "levels": { "type": "array", "items": { "type": "string" } },
+          "requestBodyShape": { "type": "object", "additionalProperties": true },
+          "responseStructure": { "type": "string" },
+          "fieldMappings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["rawField", "frontendField"],
+              "properties": {
+                "rawField": { "type": "string" },
+                "frontendField": { "type": "string" },
+                "transformation": { "type": "string" },
+                "nullHandling": { "type": "string" }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "apiBaseUrl": {
+      "type": "string",
+      "description": "Live backend base URL to call for schema validation. When provided, API Contract makes live requests and compares actual response shapes against the expected contract."
+    },
+    "apiToken": {
+      "type": "string",
+      "description": "Bearer token for live API requests."
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PabloAgentOutput",
+  "type": "object",
+  "required": [
+    "runId",
+    "agentId",
+    "startedAt",
+    "endedAt",
+    "mode",
+    "targetComponents",
+    "bob",
+    "susan",
+    "overallStatus",
+    "failureReasons"
+  ],
+  "properties": {
+    "runId": { "type": "string" },
+    "agentId": { "type": "string", "const": "pablo" },
+    "startedAt": { "type": "string" },
+    "endedAt": { "type": "string" },
+    "mode": { "type": "string" },
+    "targetComponents": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "jira": {
+      "type": "object",
+      "properties": {
+        "project": { "type": "string" },
+        "issueKeys": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "source": { "type": "string" },
+        "warnings": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "acFilePath": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "smoke": {
+      "type": "object",
+      "description": "Full Smoke pre-flight results. Populated unless skipSmoke=true. When aborted=true this is the only section populated in the report — it must contain everything needed to diagnose the failure.",
+      "properties": {
+        "status": { "type": "string", "enum": ["pass", "fail", "skipped", "blocked"] },
+        "aborted": { "type": "boolean", "description": "True if Pablo aborted the run due to smoke failure." },
+        "commandResults": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "cmd", "exitCode", "status"],
+            "properties": {
+              "label": { "type": "string" },
+              "cmd": { "type": "string" },
+              "exitCode": { "type": "number" },
+              "durationSeconds": { "type": "number" },
+              "status": { "type": "string", "enum": ["pass", "fail", "timeout"] },
+              "stdout": { "type": "string", "description": "Full stdout. Truncated to last 5000 chars if very long." },
+              "stderr": { "type": "string", "description": "Full stderr. Truncated to last 5000 chars if very long." },
+              "errorSummary": { "type": "string", "description": "One-paragraph human-readable summary of the failure. Required when status is fail or timeout." }
+            },
+            "additionalProperties": false
+          }
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["severity", "title"],
+            "properties": {
+              "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
+              "title": { "type": "string" },
+              "location": { "type": "string" },
+              "evidence": { "type": "string", "description": "Exact error lines from stdout/stderr that caused this finding." }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "bob": {
+      "type": "object",
+      "required": ["checked", "regenerated", "reused"],
+        "checked": { "type": "number" },
+        "regenerated": { "type": "number" },
+        "reused": { "type": "number" },
+        "regeneratedComponents": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    },
+    "susan": {
+      "type": "object",
+      "properties": {
+        "overallStatus": { "type": "string", "enum": ["pass", "fail"] },
+        "components": { "type": "number" },
+        "tests": { "type": "number" },
+        "passed": { "type": "number" },
+        "failed": { "type": "number" }
+      },
+      "additionalProperties": true
+    },
+    "overallStatus": { "type": "string", "enum": ["pass", "fail", "dry-run"] },
+    "failureReasons": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "delta": {
+      "type": "object",
+      "description": "Coverage change compared to the previous run recorded in latest.json.",
+      "properties": {
+        "previousRunId": { "type": "string" },
+        "testCasesAdded": { "type": "number" },
+        "testCasesRemoved": { "type": "number" },
+        "componentsAdded": { "type": "number" },
+        "componentsRemoved": { "type": "number" },
+        "passRateChange": { "type": "number", "description": "Percentage point change in pass rate vs previous run. Positive = improvement." }
+      },
+      "additionalProperties": false
+    },
+    "dryRunPlan": {
+      "type": "object",
+      "description": "Populated only when dryRun=true. Shows what would be targeted without executing Susan.",
+      "properties": {
+        "componentsToTest": { "type": "array", "items": { "type": "string" } },
+        "testsToRegenerate": { "type": "array", "items": { "type": "string" } },
+        "testsToReuse": { "type": "array", "items": { "type": "string" } },
+        "estimatedTestCount": { "type": "number" }
+      },
+      "additionalProperties": false
+    },
+    "webhookStatus": {
+      "type": "object",
+      "description": "Populated when webhookUrl was provided.",
+      "properties": {
+        "url": { "type": "string" },
+        "status": { "type": "string", "enum": ["sent", "failed", "skipped"] },
+        "httpStatus": { "type": "number" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}

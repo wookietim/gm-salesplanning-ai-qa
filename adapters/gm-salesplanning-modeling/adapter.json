@@ -1,0 +1,11 @@
+{
+  "id": "gm-salesplanning-modeling",
+  "targetRepositoryRoot": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-modeling",
+  "defaultMode": "full",
+  "defaultFrontendSourceRoot": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-frontend/src",
+  "jiraProjectKey": "SSPLAN",
+  "notes": [
+    "Use full mode when running from centralized QA repo to avoid local git diff coupling.",
+    "Use repository-specific rules only when they cannot be shared in core."
+  ]
+}

@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ApiAgentOutput",
+  "type": "object",
+  "required": ["runId", "agentId", "status", "summary", "discoveredEndpoints", "bobHandoff", "susanHandoff", "warnings"],
+  "properties": {
+    "runId": { "type": "string" },
+    "agentId": { "type": "string", "const": "api-agent" },
+    "status": { "type": "string", "enum": ["pass", "fail", "blocked"] },
+    "summary": { "type": "string" },
+    "discoveredEndpoints": {
+      "type": "array",
+      "description": "The full API contract map derived from source.",
+      "items": {
+        "type": "object",
+        "required": ["endpointId", "method", "path", "authRequired", "fieldMappings", "sourceFile", "components"],
+        "properties": {
+          "endpointId": { "type": "string", "description": "Unique stable identifier, e.g. 'POST /metrics WEEKLY_SALES_TREND'" },
+          "method": { "type": "string", "enum": ["GET", "POST"] },
+          "path": { "type": "string" },
+          "metricKey": { "type": ["string", "null"], "description": "Metric type sent in the request body, null for GET endpoints." },
+          "levels": { "type": "array", "items": { "type": "string" }, "description": "All level values this endpoint is called with, e.g. ['country', 'hfb', 'pa']." },
+          "authRequired": { "type": "boolean" },
+          "requestBodyShape": {
+            "type": "object",
+            "description": "Shape of the request body (POST) or query params (GET).",
+            "additionalProperties": true
+          },
+          "responseStructure": {
+            "type": "string",
+            "description": "JSONPath-style description of where the data rows live in the response, e.g. 'data.data[n]'."
+          },
+          "fieldMappings": {
+            "type": "array",
+            "description": "Every raw-to-frontend field mapping extracted from transformResponse.",
+            "items": {
+              "type": "object",
+              "required": ["rawField", "frontendField"],
+              "properties": {
+                "rawField": { "type": "string", "description": "Field name as returned by the backend API." },
+                "frontendField": { "type": "string", "description": "Field name on the frontend TypeScript interface." },
+                "transformation": { "type": "string", "description": "Human-readable description of any arithmetic or logic applied, e.g. 'divided by 1000', 'parseFloat with fallback 0', 'derived from netSalesLy/netSalesCy * 100'." },
+                "nullHandling": { "type": "string", "description": "What the code does when the raw value is null/undefined/missing." }
+              },
+              "additionalProperties": false
+            }
+          },
+          "sourceFile": { "type": "string", "description": "Relative path to the api.ts file this contract was extracted from." },
+          "components": { "type": "array", "items": { "type": "string" }, "description": "Component names that consume this endpoint." }
+        },
+        "additionalProperties": false
+      }
+    },
+    "contractDriftFindings": {
+      "type": "array",
+      "description": "Findings from backend cross-reference (only populated when backendRoot is provided).",
+      "items": {
+        "type": "object",
+        "required": ["severity", "title"],
+        "properties": {
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
+          "title": { "type": "string" },
+          "frontendField": { "type": "string" },
+          "rawFieldExpected": { "type": "string" },
+          "backendRowClass": { "type": "string" },
+          "evidence": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "bobHandoff": {
+      "type": "array",
+      "description": "Structured API test-writing instructions for Bob, one entry per target component.",
+      "items": {
+        "type": "object",
+        "required": ["component", "endpointIds", "testCasesToGenerate", "acceptanceCriteriaGaps"],
+        "properties": {
+          "component": { "type": "string" },
+          "endpointIds": { "type": "array", "items": { "type": "string" } },
+          "testCasesToGenerate": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "title", "scenario", "requestBody", "validationTarget", "venue"],
+              "properties": {
+                "id": { "type": "string" },
+                "title": { "type": "string" },
+                "scenario": { "type": "string", "description": "Human-readable description of what this test covers." },
+                "requestBody": { "type": "object", "description": "The exact request body to send (or template).", "additionalProperties": true },
+                "expectedResponseShape": { "type": "object", "description": "Expected shape or values in the API response.", "additionalProperties": true },
+                "transformationAssertions": {
+                  "type": "array",
+                  "description": "Specific field-level assertions after transformation.",
+                  "items": {
+                    "type": "object",
+                    "required": ["rawField", "rawValue", "frontendField", "expectedTransformedValue"],
+                    "properties": {
+                      "rawField": { "type": "string" },
+                      "rawValue": {},
+                      "frontendField": { "type": "string" },
+                      "expectedTransformedValue": {}
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "validationTarget": { "type": "string", "description": "What to check in the component output — which prop or rendered element." },
+                "venue": { "type": "string", "enum": ["SOURCE", "REAL FE", "STORYBOOK"] }
+              },
+              "additionalProperties": false
+            }
+          },
+          "acceptanceCriteriaGaps": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Data contract behaviours not covered by Jira AC that Bob should flag."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "susanHandoff": {
+      "type": "array",
+      "description": "Executable test instructions for Susan, one entry per discovered endpoint.",
+      "items": {
+        "type": "object",
+        "required": ["endpointId", "sourceValidationSteps", "liveValidationSteps", "venue"],
+        "properties": {
+          "endpointId": { "type": "string" },
+          "sourceValidationSteps": {
+            "type": "array",
+            "description": "Steps Susan can execute by reading source code only — no running server needed.",
+            "items": {
+              "type": "object",
+              "required": ["step", "file", "check"],
+              "properties": {
+                "step": { "type": "number" },
+                "file": { "type": "string" },
+                "check": { "type": "string", "description": "What to look for or verify in this file." },
+                "passCriteria": { "type": "string" }
+              },
+              "additionalProperties": false
+            }
+          },
+          "liveValidationSteps": {
+            "type": "array",
+            "description": "Steps requiring a live backend and auth token.",
+            "items": {
+              "type": "object",
+              "required": ["step", "description", "requestTemplate"],
+              "properties": {
+                "step": { "type": "number" },
+                "description": { "type": "string" },
+                "requestTemplate": { "type": "string", "description": "curl-equivalent command or HTTP request template. Use <API_BASE_URL> and <BEARER_TOKEN> as placeholders." },
+                "fieldsToValidate": { "type": "array", "items": { "type": "string" } },
+                "transformationCheck": { "type": "string", "description": "How to verify the transformation was applied correctly in the UI." }
+              },
+              "additionalProperties": false
+            }
+          },
+          "venue": { "type": "string", "enum": ["SOURCE", "REAL FE"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "description": "Components or services where the trace was incomplete and why.",
+      "items": {
+        "type": "object",
+        "required": ["component", "reason"],
+        "properties": {
+          "component": { "type": "string" },
+          "reason": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

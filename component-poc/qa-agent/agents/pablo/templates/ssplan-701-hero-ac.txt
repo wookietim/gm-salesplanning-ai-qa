@@ -1,0 +1,6 @@
+Hero metric component displays current metric value prominently with goal reference.
+Visual indicator (color, arrow, button) clearly shows whether metric is above, below, or at goal.
+The goal calculation is the same as in the metric snapshot row component.
+Component applies the Figma Design according to specs.
+
+Scope: Hero Metric Component

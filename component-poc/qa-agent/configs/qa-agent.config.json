@@ -1,0 +1,79 @@
+{
+  "version": "1.0.0",
+  "defaultTarget": "sp-monitor-dashboard",
+  "outputRoot": "QA-Runs",
+  "severityLevels": [
+    "critical",
+    "high",
+    "medium",
+    "low",
+    "info"
+  ],
+  "runOrder": [
+    "pablo",
+    "api-agent",
+    "bob",
+    "susan",
+    "smoke",
+    "regression",
+    "accessibility",
+    "api-contract",
+    "visual-diff"
+  ],
+  "agents": [
+    {
+      "id": "pablo",
+      "path": "component-poc/qa-agent/agents/pablo",
+      "enabled": true,
+      "timeoutSeconds": 1800
+    },
+    {
+      "id": "api-agent",
+      "path": "component-poc/qa-agent/agents/api-agent",
+      "enabled": true,
+      "timeoutSeconds": 600
+    },
+    {
+      "id": "bob",
+      "path": "component-poc/qa-agent/agents/bob",
+      "enabled": true,
+      "timeoutSeconds": 1500
+    },
+    {
+      "id": "susan",
+      "path": "component-poc/qa-agent/agents/susan",
+      "enabled": true,
+      "timeoutSeconds": 1800
+    },
+    {
+      "id": "smoke",
+      "path": "component-poc/qa-agent/agents/smoke",
+      "enabled": true,
+      "timeoutSeconds": 600
+    },
+    {
+      "id": "regression",
+      "path": "component-poc/qa-agent/agents/regression",
+      "enabled": true,
+      "timeoutSeconds": 1200
+    },
+    {
+      "id": "accessibility",
+      "path": "component-poc/qa-agent/agents/accessibility",
+      "enabled": true,
+      "timeoutSeconds": 900
+    },
+    {
+      "id": "api-contract",
+      "path": "component-poc/qa-agent/agents/api-contract",
+      "enabled": true,
+      "timeoutSeconds": 900
+    },
+    {
+      "id": "visual-diff",
+      "path": "component-poc/qa-agent/agents/visual-diff",
+      "enabled": true,
+      "timeoutSeconds": 900
+    }
+  ]
+}

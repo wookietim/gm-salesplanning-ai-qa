@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "JiraAgentOutput",
+  "type": "object",
+  "required": [
+    "ticketKey",
+    "ticketUrl",
+    "summary",
+    "status",
+    "issueType",
+    "priority",
+    "assignee",
+    "reporter",
+    "description",
+    "acceptanceCriteria",
+    "warnings"
+  ],
+  "properties": {
+    "ticketKey": { "type": "string" },
+    "ticketUrl": { "type": "string" },
+    "summary": { "type": "string" },
+    "status": { "type": "string" },
+    "issueType": { "type": "string" },
+    "priority": { "type": "string" },
+    "assignee": { "type": "string" },
+    "reporter": { "type": "string" },
+    "created": { "type": "string" },
+    "updated": { "type": "string" },
+    "dueDate": { "type": ["string", "null"] },
+    "parent": { "type": ["string", "null"] },
+    "description": { "type": "string" },
+    "acceptanceCriteria": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["text", "source"],
+        "properties": {
+          "text": { "type": "string" },
+          "source": { "type": "string" }
+        }
+      }
+    },
+    "labels": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "fixVersions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "components": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "linkedIssues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "key": { "type": "string" },
+          "summary": { "type": "string" }
+        }
+      }
+    },
+    "comments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "author": { "type": "string" },
+          "created": { "type": "string" },
+          "body": { "type": "string" }
+        }
+      }
+    },
+    "sanitizedEmail": { "type": ["string", "null"] },
+    "subtasks": {
+      "type": "array",
+      "description": "Full detail of each subtask, fetched individually. Populated when issueType is Story.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ticketKey": { "type": "string" },
+          "summary": { "type": "string" },
+          "status": { "type": "string" },
+          "description": { "type": "string" },
+          "acceptanceCriteria": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": { "type": "string" },
+                "source": { "type": "string" }
+              }
+            }
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "author": { "type": "string" },
+                "created": { "type": "string" },
+                "body": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "rawFields": {
+      "type": "object",
+      "description": "Any additional custom fields returned by the Jira API.",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

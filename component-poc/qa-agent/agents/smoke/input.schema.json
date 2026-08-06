@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SmokeAgentInput",
+  "type": "object",
+  "required": ["runId", "target", "changedFiles"],
+  "properties": {
+    "runId": { "type": "string", "minLength": 1 },
+    "target": { "type": "string", "minLength": 1 },
+    "changedFiles": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "commands": {
+      "type": "array",
+      "description": "Structured command definitions with per-command timeout and exit-code tolerance. Replaces the previous plain string array.",
+      "items": {
+        "type": "object",
+        "required": ["cmd"],
+        "properties": {
+          "cmd": { "type": "string", "description": "The shell command to execute." },
+          "label": { "type": "string", "description": "Human-readable name for this check, used in reports." },
+          "timeoutSeconds": { "type": "number", "description": "Maximum seconds to wait before marking this command as timed-out. Defaults to the global agent timeout if omitted." },
+          "allowedExitCodes": {
+            "type": "array",
+            "items": { "type": "number" },
+            "description": "Exit codes considered passing. Defaults to [0]. Use e.g. [0, 1] for commands that are expected to warn."
+          },
+          "continueOnFailure": {
+            "type": "boolean",
+            "description": "When true, a failure of this command does not abort the remaining smoke commands. Defaults to false."
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

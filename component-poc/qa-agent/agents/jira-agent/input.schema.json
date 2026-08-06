@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "JiraAgentInput",
+  "type": "object",
+  "required": ["ticketKey", "jiraBaseUrl", "jiraApiToken"],
+  "properties": {
+    "ticketKey": {
+      "type": "string",
+      "description": "The Jira issue key, e.g. SSPLAN-656",
+      "minLength": 1
+    },
+    "jiraBaseUrl": {
+      "type": "string",
+      "description": "Base URL of the Jira instance, e.g. https://jira.digital.ingka.com/"
+    },
+    "jiraUserEmail": {
+      "type": "string",
+      "description": "User email for display/logging. Will be sanitized automatically (e.g. '#' replaced with '@')."
+    },
+    "jiraApiToken": {
+      "type": "string",
+      "description": "Personal Access Token used in Bearer auth header.",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": false
+}

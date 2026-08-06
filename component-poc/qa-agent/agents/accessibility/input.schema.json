@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AccessibilityAgentInput",
+  "type": "object",
+  "required": ["runId", "target", "routes"],
+  "properties": {
+    "runId": { "type": "string", "minLength": 1 },
+    "target": { "type": "string", "minLength": 1 },
+    "routes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "scanConfigPath": { "type": "string" }
+  },
+  "additionalProperties": false
+}

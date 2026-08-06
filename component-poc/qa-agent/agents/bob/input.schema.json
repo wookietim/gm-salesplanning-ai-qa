@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BobAgentInput",
+  "type": "object",
+  "required": ["runId", "target", "components"],
+  "properties": {
+    "runId": { "type": "string", "minLength": 1 },
+    "target": { "type": "string", "minLength": 1 },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "path": { "type": "string" },
+          "description": { "type": "string" },
+          "dataContracts": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "jira": {
+      "type": "object",
+      "properties": {
+        "projectKey": { "type": "string" },
+        "issueKeys": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "acceptanceCriteriaText": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "apiContracts": {
+      "type": "array",
+      "description": "Structured API contract data produced by API-Agent. When provided, Bob must incorporate these into API integration test cases for each component.",
+      "items": {
+        "type": "object",
+        "required": ["component", "endpointIds", "testCasesToGenerate"],
+        "properties": {
+          "component": { "type": "string" },
+          "endpointIds": { "type": "array", "items": { "type": "string" } },
+          "testCasesToGenerate": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+          "acceptanceCriteriaGaps": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": true
+      }
+    },
+    "regressionFindings": {
+      "type": "array",
+      "description": "Known historical failure patterns from the Regression agent or regression baseline snapshot. Bob must generate a specific sad-path regression test case for each finding, clearly labelled as a REGRESSION test and traced back to the finding ID.",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "severity"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
+          "location": { "type": "string" },
+          "evidence": { "type": "string" },
+          "historicalFixCommit": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

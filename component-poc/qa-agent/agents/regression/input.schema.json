@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RegressionAgentInput",
+  "type": "object",
+  "required": ["runId", "target", "changedFiles", "riskAreas"],
+  "properties": {
+    "runId": { "type": "string", "minLength": 1 },
+    "target": { "type": "string", "minLength": 1 },
+    "changedFiles": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "riskAreas": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "snapshotDir": {
+      "type": "string",
+      "description": "Path to the directory where baseline behaviour snapshots are stored and written. When provided, the agent compares current behaviour against the stored snapshot and flags any drift as a regression finding. After a clean run the agent writes a new snapshot to this directory."
+    }
+  },
+  "additionalProperties": false
+}

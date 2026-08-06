@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ApiContractAgentOutput",
+  "type": "object",
+  "required": ["runId", "agentId", "status", "summary", "findings"],
+  "properties": {
+    "runId": { "type": "string" },
+    "agentId": { "type": "string", "const": "api-contract" },
+    "status": { "type": "string", "enum": ["pass", "fail", "blocked"] },
+    "summary": { "type": "string" },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "title"],
+        "properties": {
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
+          "title": { "type": "string" },
+          "location": { "type": "string" },
+          "evidence": { "type": "string" },
+          "breakingChange": { "type": "boolean" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

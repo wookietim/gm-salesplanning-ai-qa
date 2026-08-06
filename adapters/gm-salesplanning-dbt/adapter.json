@@ -1,0 +1,10 @@
+{
+  "id": "gm-salesplanning-dbt",
+  "targetRepositoryRoot": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-data",
+  "defaultMode": "full",
+  "defaultSourceRoot": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-data",
+  "jiraProjectKey": "SSPLAN",
+  "notes": [
+    "Update paths once the dedicated DBT repository structure is finalized."
+  ]
+}

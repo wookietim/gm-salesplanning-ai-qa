@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SusanAgentOutput",
+  "type": "object",
+  "required": [
+    "runId",
+    "agentId",
+    "startedAt",
+    "endedAt",
+    "overallStatus",
+    "totals",
+    "componentResults",
+    "failureReasons"
+  ],
+  "properties": {
+    "runId": { "type": "string" },
+    "agentId": { "type": "string", "const": "susan" },
+    "startedAt": { "type": "string" },
+    "endedAt": { "type": "string" },
+    "overallStatus": { "type": "string", "enum": ["pass", "fail"] },
+    "totals": {
+      "type": "object",
+      "required": ["components", "tests", "passed", "failed", "partial", "manualOnly"],
+      "properties": {
+        "components": { "type": "number" },
+        "tests": { "type": "number" },
+        "passed": { "type": "number" },
+        "failed": { "type": "number" },
+        "partial": { "type": "number", "description": "Tests that were partially validated from source but require additional manual/runtime verification." },
+        "manualOnly": { "type": "number", "description": "Tests that cannot be validated from source at all and require full manual or runtime execution." }
+      },
+      "additionalProperties": false
+    },
+    "componentResults": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["component", "source", "status", "tests"],
+        "properties": {
+          "component": { "type": "string" },
+          "source": { "type": "string" },
+          "status": { "type": "string", "enum": ["pass", "fail"] },
+          "tests": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["testId", "status", "checks"],
+              "properties": {
+                "testId": { "type": "string" },
+                "status": { "type": "string", "enum": ["pass", "fail", "partial", "manual-only"] },
+                "checks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["name", "status"],
+                    "properties": {
+                      "name": { "type": "string" },
+                      "status": { "type": "string", "enum": ["pass", "fail"] },
+                      "details": { "type": "string" }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "reasons": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "failureReasons": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

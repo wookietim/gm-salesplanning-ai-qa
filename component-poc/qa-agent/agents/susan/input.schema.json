@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SusanAgentInput",
+  "type": "object",
+  "required": ["runId"],
+  "properties": {
+    "runId": { "type": "string", "minLength": 1 },
+    "bobTestDir": { "type": "string" },
+    "projectRoot": { "type": "string" },
+    "strict": { "type": "boolean" },
+    "venueFilter": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["STORYBOOK", "REAL FE", "HYBRID"] },
+      "description": "When set, Susan only executes tests whose venue matches one of the values in this list. Omit to execute all venues."
+    },
+    "failedOnly": {
+      "type": "boolean",
+      "description": "When true, Susan only re-executes test IDs that had status FAIL or PARTIAL in the previous run for this runId. Requires a previous run artifact to exist."
+    },
+    "apiContracts": {
+      "type": "array",
+      "description": "Susan handoff data produced by API-Agent. When provided, Susan must execute sourceValidationSteps from source alone and include liveValidationSteps as REAL FE test cases.",
+      "items": {
+        "type": "object",
+        "required": ["endpointId", "sourceValidationSteps", "liveValidationSteps", "venue"],
+        "properties": {
+          "endpointId": { "type": "string" },
+          "sourceValidationSteps": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+          "liveValidationSteps": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+          "venue": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "regressionSnapshotDir": {
+      "type": "string",
+      "description": "Path to the regression baseline snapshot directory. Susan invokes the Regression agent for each component under test, passing the component's changed files and risk areas. Regression findings are included in Susan's results."
+    },
+    "accessibilityRoutes": {
+      "type": "array",
+      "description": "Routes to pass to the Accessibility agent for pa11y scanning. Susan invokes Accessibility for any component that has accessibility test cases.",
+      "items": { "type": "string" }
+    },
+    "apiBaseUrl": {
+      "type": "string",
+      "description": "Live backend base URL (e.g. http://localhost:8080). When provided, Susan invokes API Contract to validate actual response schemas against what API-Agent discovered."
+    }
+  "additionalProperties": false
+}

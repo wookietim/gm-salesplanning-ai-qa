@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VisualDiffAgentInput",
+  "type": "object",
+  "required": ["runId", "targets", "snapshotDir"],
+  "properties": {
+    "runId": { "type": "string", "minLength": 1 },
+    "targetType": {
+      "type": "string",
+      "enum": ["storybook", "real-fe"],
+      "description": "Whether to target Storybook stories or real-FE routes. Defaults to storybook."
+    },
+    "targets": {
+      "type": "array",
+      "minItems": 1,
+      "description": "List of story paths or route URLs to capture.",
+      "items": {
+        "type": "object",
+        "required": ["id", "url"],
+        "properties": {
+          "id": { "type": "string", "description": "Stable identifier used to match screenshots to baselines." },
+          "url": { "type": "string", "description": "URL or Storybook story path to capture." },
+          "diffThresholdPercent": {
+            "type": "number",
+            "description": "Per-target override for the pixel diff threshold. Defaults to 0.1."
+          },
+          "viewport": {
+            "type": "object",
+            "properties": {
+              "width": { "type": "number" },
+              "height": { "type": "number" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "snapshotDir": {
+      "type": "string",
+      "description": "Path to directory where baseline screenshots are stored. Agent reads baselines from here and optionally writes new ones."
+    },
+    "diffThresholdPercent": {
+      "type": "number",
+      "description": "Global pixel diff threshold percentage below which a comparison is considered passing. Default: 0.1."
+    },
+    "updateBaseline": {
+      "type": "boolean",
+      "description": "When true and the run has no critical or high findings, overwrite existing baselines with current screenshots."
+    }
+  },
+  "additionalProperties": false
+}

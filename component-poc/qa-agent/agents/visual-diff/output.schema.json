@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VisualDiffAgentOutput",
+  "type": "object",
+  "required": ["runId", "agentId", "status", "summary", "findings", "snapshots"],
+  "properties": {
+    "runId": { "type": "string" },
+    "agentId": { "type": "string", "const": "visual-diff" },
+    "status": { "type": "string", "enum": ["pass", "fail", "blocked"] },
+    "summary": { "type": "string" },
+    "baselineUpdated": {
+      "type": "boolean",
+      "description": "True if baseline screenshots were updated during this run."
+    },
+    "snapshots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "url", "status", "diffPercent"],
+        "properties": {
+          "id": { "type": "string" },
+          "url": { "type": "string" },
+          "status": { "type": "string", "enum": ["pass", "fail", "new-baseline"] },
+          "diffPercent": { "type": "number" },
+          "baselinePath": { "type": "string" },
+          "currentPath": { "type": "string" },
+          "diffImagePath": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "title"],
+        "properties": {
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
+          "title": { "type": "string" },
+          "targetId": { "type": "string" },
+          "diffPercent": { "type": "number" },
+          "baselinePath": { "type": "string" },
+          "currentPath": { "type": "string" },
+          "evidence": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

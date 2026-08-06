@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PabloAgentInput",
+  "type": "object",
+  "properties": {
+    "mode": { "type": "string", "enum": ["changed", "full", "components"] },
+    "components": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "targetRoot": { "type": "string" },
+    "runId": { "type": "string" },
+    "parallel": {
+      "type": "boolean",
+      "description": "When true, Pablo dispatches Bob and Susan tasks concurrently for each component rather than sequentially. Reduces total run time for large component sets."
+    },
+    "dryRun": {
+      "type": "boolean",
+      "description": "When true, Pablo identifies scope and reports which components would be targeted and which tests would be regenerated, without invoking Susan for execution."
+    },
+    "skipSmoke": {
+      "type": "boolean",
+      "description": "When true, Pablo skips the Smoke pre-flight step and proceeds directly to API-Agent and Bob. Use only when you know the build is clean. Default: false."
+    },
+    "abortOnSmokeFailure": {
+      "type": "boolean",
+      "description": "When true (default), Pablo aborts the run if Smoke reports any critical or high finding. Set to false to continue despite smoke failures (results will be marked as at-risk)."
+    },
+    "webhookUrl": {
+      "type": "string",
+      "description": "Optional HTTP/S URL to POST a run-summary payload to on completion. Used for Slack or other webhook integrations."
+    },
+    "jiraProject": { "type": "string" },
+    "jiraTicket": { "type": "string" },
+    "jiraIssues": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "jiraBaseUrl": { "type": "string" },
+    "jiraUserEmail": { "type": "string" },
+    "jiraApiToken": { "type": "string" },
+    "jiraAcFile": { "type": "string" }
+  },
+  "additionalProperties": false
+}

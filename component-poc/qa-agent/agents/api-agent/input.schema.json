@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ApiAgentInput",
+  "type": "object",
+  "required": ["runId", "frontendRoot", "targetComponents"],
+  "properties": {
+    "runId": { "type": "string", "minLength": 1 },
+    "frontendRoot": {
+      "type": "string",
+      "description": "Absolute path to the frontend project root. API-Agent will crawl src/services/metrics/ and component source files under this path."
+    },
+    "backendRoot": {
+      "type": "string",
+      "description": "Optional. Absolute path to the backend project root. When provided, API-Agent cross-references frontend transformResponse field names against backend row class field names and reports contract drift."
+    },
+    "targetComponents": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Component names or relative paths to trace. API-Agent locates each component under frontendRoot and follows its data dependencies.",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string", "description": "Component name, e.g. 'SalesByWeek'" },
+          "path": { "type": "string", "description": "Optional relative path hint, e.g. 'src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx'" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "apiBaseUrl": {
+      "type": "string",
+      "description": "Optional. Live backend base URL (e.g. http://localhost:8080) for Susan's live validation steps. Does not affect source-based discovery."
+    },
+    "apiToken": {
+      "type": "string",
+      "description": "Optional. Bearer token to include in Susan's live validation step templates. Never logged or stored in output — only used to generate test request templates."
+    }
+  },
+  "additionalProperties": false
+}

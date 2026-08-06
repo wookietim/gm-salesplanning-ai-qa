@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SmokeAgentOutput",
+  "type": "object",
+  "required": ["runId", "agentId", "status", "summary", "findings", "commandResults"],
+  "properties": {
+    "runId": { "type": "string" },
+    "agentId": { "type": "string", "const": "smoke" },
+    "status": { "type": "string", "enum": ["pass", "fail", "blocked"] },
+    "summary": { "type": "string" },
+    "commandResults": {
+      "type": "array",
+      "description": "Per-command execution results including full output. Always populated — even for passing commands.",
+      "items": {
+        "type": "object",
+        "required": ["label", "cmd", "exitCode", "status"],
+        "properties": {
+          "label": { "type": "string" },
+          "cmd": { "type": "string" },
+          "exitCode": { "type": "number" },
+          "durationSeconds": { "type": "number" },
+          "status": { "type": "string", "enum": ["pass", "fail", "timeout"] },
+          "stdout": { "type": "string", "description": "Full standard output from the command. Truncated to last 5000 chars if very long." },
+          "stderr": { "type": "string", "description": "Full standard error output from the command. Truncated to last 5000 chars if very long." },
+          "errorSummary": { "type": "string", "description": "Human-readable one-paragraph summary of the failure extracted from stdout/stderr. Required when status is fail or timeout." }
+        },
+        "additionalProperties": false
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "title"],
+        "properties": {
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
+          "title": { "type": "string" },
+          "location": { "type": "string" },
+          "evidence": { "type": "string", "description": "The exact error lines extracted from stdout/stderr that caused this finding." }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

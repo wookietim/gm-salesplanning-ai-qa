@@ -15,8 +15,26 @@ Suggested scripts:
 	the current source code
 - run-pablo.js: orchestrates Bob and Susan for changed, full, or component
 	subset QA runs
+- run-guide-sync.js: reconciles AGENTS_GUIDE and README links when agent
+	definitions change
 
 Keep scripts deterministic and non-interactive.
+
+## Guide-Sync usage
+
+Run from repo root:
+
+node component-poc/qa-agent/scripts/run-guide-sync.js
+
+Behavior:
+- Runs automatically from pre-commit when staged changes include:
+  - `component-poc/qa-agent/agents/*/(AGENT.md|prompt.md|input.schema.json|output.schema.json)`
+  - `component-poc/qa-agent/configs/qa-agent.config.json`
+- Updates:
+  - `component-poc/qa-agent/AGENTS_GUIDE.md` (last-updated stamp)
+  - root `README.md` guide link (if missing)
+  - `component-poc/qa-agent/README.md` guide link (if missing)
+- Fails commit if enabled agents in config are not represented in AGENTS_GUIDE.
 
 ## Bob generator usage
 

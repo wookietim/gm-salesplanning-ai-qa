@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+SCRIPT_PATH="$REPO_ROOT/component-poc/qa-agent/scripts/run-guide-sync.js"
+
+if [[ ! -f "$SCRIPT_PATH" ]]; then
+  echo "guide-sync hook: missing script at $SCRIPT_PATH"
+  exit 1
+fi
+
+node "$SCRIPT_PATH"
+
+# Stage any auto-updated docs
+git add "$REPO_ROOT/README.md" \
+        "$REPO_ROOT/component-poc/qa-agent/README.md" \
+        "$REPO_ROOT/component-poc/qa-agent/AGENTS_GUIDE.md" 2>/dev/null || true

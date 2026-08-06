@@ -18,7 +18,8 @@
     "regression",
     "accessibility",
     "api-contract",
-    "visual-diff"
+    "visual-diff",
+    "guide-sync"
   ],
   "agents": [
     {
@@ -74,6 +75,12 @@
       "path": "component-poc/qa-agent/agents/visual-diff",
       "enabled": true,
       "timeoutSeconds": 900
+    },
+    {
+      "id": "guide-sync",
+      "path": "component-poc/qa-agent/agents/guide-sync",
+      "enabled": true,
+      "timeoutSeconds": 600
     }
   ]
 }

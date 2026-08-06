@@ -43,6 +43,10 @@ Workflow:
     - Upload that spreadsheet to the Jira ticket as an attachment.
     - Post a Jira comment in tabular format summarizing the run and referencing
       the attached spreadsheet.
+13. If this run modified any files under `component-poc/qa-agent/agents/`,
+    invoke **Guide-Sync** (fullSync=true) before finishing so
+    `AGENTS_GUIDE.md` and README links stay in sync with the current agent
+    definitions.
 
 Scope modes:
 - changed (default)

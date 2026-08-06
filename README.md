@@ -2,6 +2,10 @@
 
 This project now hosts the shared QA agent system (Pablo, Bob, Susan, and supporting agents) for the GM Sales Planning program.
 
+## QA Agent Documentation
+
+- [QA Agent System Guide](component-poc/qa-agent/AGENTS_GUIDE.md)
+
 ## Layout
 
 - `component-poc/qa-agent/`: centralized QA core (agents, prompts, scripts, templates)

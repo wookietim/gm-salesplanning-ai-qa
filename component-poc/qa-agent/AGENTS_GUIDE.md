@@ -10,6 +10,7 @@
 1. [Overview](#overview)
 2. [Agent Roster](#agent-roster)
 3. [Agent Details](#agent-details)
+   - [API-Agent — API Discovery and Contract Extraction](#api-agent--api-discovery-and-contract-extraction)
    - [Pablo — Orchestration Manager](#pablo--orchestration-manager)
    - [Bob — Test Creator](#bob--test-creator)
    - [Susan — Test Executor](#susan--test-executor)
@@ -18,6 +19,8 @@
    - [Regression — Historical Defect Replay](#regression--historical-defect-replay)
    - [Accessibility — WCAG Validation](#accessibility--wcag-validation)
    - [API Contract — Schema Drift Detection](#api-contract--schema-drift-detection)
+   - [Visual Diff — Screenshot-Based Visual Regression](#visual-diff--screenshot-based-visual-regression)
+   - [Guide-Sync — Documentation Synchronization](#guide-sync--documentation-synchronization)
 4. [How the Agents Work Together](#how-the-agents-work-together)
 5. [Asking Pablo to Do Things — Examples](#asking-pablo-to-do-things--examples)
 6. [Pablo Input Reference](#pablo-input-reference)
@@ -49,6 +52,7 @@ The QA Agent System is a multi-agent framework for automated and semi-automated 
 | **Accessibility** | WCAG / a11y scanning | You or CI |
 | **API Contract** | Request/response schema validation | You or CI |
 | **Visual Diff** | Screenshot-based visual regression detection | You, Susan (delegated), or CI |
+| **Guide-Sync** | Keeps AGENTS_GUIDE and README links in sync with agent changes | Pablo (after agent-definition changes), or you directly |
 
 ---
 
@@ -138,6 +142,7 @@ Pablo is the conductor. You give him a scope and optionally a Jira ticket; he co
 5. Ask Bob to create/update tests, passing API-Agent's `bobHandoff` as `apiContracts` and Regression findings as `regressionFindings`
 6. Ask Susan to execute, passing API-Agent's `susanHandoff`, `regressionSnapshotDir`, `accessibilityRoutes`, and `apiBaseUrl`
 7. Collect results (including Susan's specialist agent results) and report
+8. If any files under `component-poc/qa-agent/agents/` were modified in the run, call **Guide-Sync** to reconcile `AGENTS_GUIDE.md` and README links before closing
 
 **Parallel mode (`parallel: true`):** Pablo dispatches Bob and Susan tasks for all components concurrently instead of sequentially. Significantly reduces run time for large component sets.
 
@@ -382,6 +387,38 @@ All diffs within threshold; no critical or high visual findings.
 
 ---
 
+### Guide-Sync — Documentation Synchronization
+
+**Folder:** `agents/guide-sync/`
+
+Guide-Sync keeps documentation aligned with the real agent system. It reconciles
+`AGENTS_GUIDE.md` and README links against the current agent configs, prompts,
+and schemas whenever agent definitions change.
+
+#### What Guide-Sync checks
+
+1. Agent roster in `AGENTS_GUIDE.md` matches `configs/qa-agent.config.json`
+2. Every enabled agent has an Agent Details section
+3. Flow diagrams reflect current orchestration and delegation
+4. Paths and artifacts use current standards (`QA-Tests/`, `QA-Runs/`)
+5. Examples are current, non-duplicated, and schema-aligned
+6. README links to `component-poc/qa-agent/AGENTS_GUIDE.md`
+
+#### Pass criteria
+
+- No stale agent entries or missing agent sections
+- No stale paths/URLs/roles in the guide
+- No duplicate example blocks
+
+#### Output
+
+Guide-Sync writes a synchronization report to `QA-Runs/` documenting:
+- mismatches found
+- sections updated
+- source files used as truth for each fix
+
+---
+
 ## How the Agents Work Together
 
 ```
@@ -399,12 +436,13 @@ You
              ├─▶ Accessibility   (per component with a11y tests — pa11y scans)
              ├─▶ API Contract    (when apiBaseUrl available — live schema validation)
              └─▶ Visual Diff     (for visual-only test cases — screenshot comparison)
+       └─▶ Guide-Sync            (when agent definitions change — updates AGENTS_GUIDE/README links)
 
 Specialist agents called directly (standalone / CI):
-  Smoke · Regression · Accessibility · API Contract · Visual Diff
+  Smoke · Regression · Accessibility · API Contract · Visual Diff · Guide-Sync
 ```
 
-The specialist agents (Smoke, Regression, Accessibility, API Contract) run independently — you or your CI pipeline calls them directly.
+Specialist agents can run independently — you or your CI pipeline can call them directly.
 
 ---
 
@@ -516,6 +554,19 @@ Pablo will compare the Jira `updated` timestamp against the existing test plan m
 
 ---
 
+### Example 8 — Storybook-only execution
+
+> You want only Storybook-venue checks (no REAL FE / SSO-dependent execution).
+
+```
+Ask Pablo to run QA for SSPLAN-698, but Susan should only execute tests categorised as STORYBOOK venue. Skip REAL FE tests.
+Jira base URL: https://jira.example.com
+Jira email: my.email@example.com
+Jira API token: <your-token>
+```
+
+---
+
 ### Example 9 — Dry-run: preview scope without executing
 
 > See exactly what Pablo would test before committing to a full run.
@@ -618,29 +669,17 @@ targetComponents:
 
 API-Agent will produce a full contract report showing every endpoint, every field mapping, every transformation, and any backend field names that don't match what the frontend expects.
 
-> Check for visual regressions in Storybook stories after a UI change.
+---
+
+### Example 16 — Run Guide-Sync after agent definition edits
+
+> You changed prompts/schemas under `component-poc/qa-agent/agents/` and want docs reconciled.
 
 ```
-Ask visual-diff to compare current Storybook screenshots against the baseline.
-snapshotDir: component-poc/qa-agent/agents/visual-diff/baselines
-targetType: storybook
-targets:
-  - id: breadcrumbs-default
-    url: http://localhost:6006/?path=/story/breadcrumbs--default
-  - id: breadcrumbs-hfb
-    url: http://localhost:6006/?path=/story/breadcrumbs--with-hfb
+Ask guide-sync to run a full documentation sync.
+runId: guide-sync-20260806
+fullSync: true
 ```
-
-> You want to validate only tests that can run against Storybook (no SSO required).
-
-```
-Ask Pablo to run QA for SSPLAN-698, but Susan should only execute tests categorised as STORYBOOK venue. Skip REAL FE tests.
-Jira base URL: https://jira.example.com
-Jira email: my.email@example.com
-Jira API token: <your-token>
-```
-
-This is useful when you are working in an environment without SSO access to the real frontend.
 
 ---
 
@@ -679,6 +718,7 @@ All run outputs live **outside** the agent folders, at the repo root alongside `
 | Susan | `QA-Runs/` | `.md` + `.json` |
 | Smoke / Regression / Accessibility / API Contract | `QA-Runs/` | `.md` + `.json` |
 | Visual Diff | `QA-Runs/` + screenshots in `snapshotDir` | `.md` + `.json` |
+| Guide-Sync | `QA-Runs/` | `.md` + `.json` sync report |
 
 **Agent folders** (`component-poc/qa-agent/agents/<name>/`) contain only definitions: `AGENT.md`, `prompt.md`, `input.schema.json`, `output.schema.json`, and agent-specific templates. Output directories inside agent folders are kept with a `.gitkeep` for historical compatibility but are no longer used for new runs.
 

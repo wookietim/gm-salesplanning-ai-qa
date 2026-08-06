@@ -82,6 +82,9 @@ Pablo's updated workflow with API-Agent:
    `apiContracts` so Susan runs source validation steps and marks live steps
    as MANUAL-ONLY or REAL FE as appropriate.
 6. Report results including API contract findings.
+7. When any files under `component-poc/qa-agent/agents/` were modified in the
+   run, invoke **Guide-Sync** to reconcile `AGENTS_GUIDE.md` and README links
+   before finalizing the report.
 
 Pablo must include a dedicated **API Contract** section in the run report:
 - Endpoints discovered per component

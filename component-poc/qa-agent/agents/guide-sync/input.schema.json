@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GuideSyncAgentInput",
+  "type": "object",
+  "required": ["runId"],
+  "properties": {
+    "runId": { "type": "string", "minLength": 1 },
+    "changedFiles": {
+      "type": "array",
+      "description": "Optional list of changed files under component-poc/qa-agent/agents to focus the sync pass.",
+      "items": { "type": "string" }
+    },
+    "fullSync": {
+      "type": "boolean",
+      "description": "When true, performs a full guide reconciliation against all agents regardless of changedFiles."
+    }
+  },
+  "additionalProperties": false
+}

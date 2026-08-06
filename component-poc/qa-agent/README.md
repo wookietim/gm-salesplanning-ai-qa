@@ -3,6 +3,8 @@
 This directory contains a reusable scaffold for running multiple QA test agents
 with consistent inputs, outputs, and reporting.
 
+- Full guide: [`AGENTS_GUIDE.md`](AGENTS_GUIDE.md)
+
 ## Structure
 
 - QA_AGENT.md: existing QA charter and governance guide
@@ -26,6 +28,7 @@ with consistent inputs, outputs, and reporting.
 - accessibility (WCAG / pa11y validation)
 - api-contract (request/response schema validation)
 - visual-diff (screenshot-based visual regression)
+- guide-sync (keeps `AGENTS_GUIDE.md` and README links synchronized with agent changes)
 
 ## How to Add Another Agent
 

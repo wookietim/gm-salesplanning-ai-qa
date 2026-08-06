@@ -25,7 +25,7 @@ Suggested execution entry points by agent type.
 
 ## smoke
 
-- TypeScript frontend: npm run lint && npm test && npm run build
+- TypeScript frontend: npx tsc -b && npm run lint && npm test && npm run build
 - Java backend: mvn --no-transfer-progress verify
 
 ## regression
@@ -52,6 +52,12 @@ Suggested execution entry points by agent type.
 - Pass/fail determined by diffThresholdPercent (default 0.1%)
 - After a clean run with updateBaseline=true, overwrite baseline screenshots
 
+## api-contract
+
+- Validate live response schemas against API-Agent discovered fieldMappings
+- For each endpoint/level, verify every rawField expected by frontend transformResponse exists and is correctly typed
+- Report schema drift with response evidence and curl-equivalent repro commands
+
 ## api-agent
 
 - Crawl `src/services/metrics/*/api.ts` files under frontendRoot
@@ -60,3 +66,9 @@ Suggested execution entry points by agent type.
 - Cross-reference with backend row classes when backendRoot is provided
 - Produces bobHandoff (API test cases for Bob) and susanHandoff (executable steps for Susan)
 - No running server required for source-based discovery
+
+## guide-sync
+
+- Reconcile AGENTS_GUIDE.md with current agents, prompts, schemas, and config
+- Ensure README links to AGENTS_GUIDE are present and correct
+- Remove stale/duplicate guide content and align examples with current workflow

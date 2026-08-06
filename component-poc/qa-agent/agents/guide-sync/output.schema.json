@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GuideSyncAgentOutput",
+  "type": "object",
+  "required": [
+    "runId",
+    "agentId",
+    "status",
+    "summary",
+    "updatedFiles",
+    "sectionsUpdated",
+    "mismatchesFound"
+  ],
+  "properties": {
+    "runId": { "type": "string" },
+    "agentId": { "type": "string", "const": "guide-sync" },
+    "status": { "type": "string", "enum": ["pass", "fail", "blocked"] },
+    "summary": { "type": "string" },
+    "updatedFiles": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "sectionsUpdated": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "mismatchesFound": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "issue", "resolution"],
+        "properties": {
+          "source": { "type": "string" },
+          "issue": { "type": "string" },
+          "resolution": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

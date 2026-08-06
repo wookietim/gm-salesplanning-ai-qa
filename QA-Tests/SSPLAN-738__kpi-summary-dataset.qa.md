@@ -1,47 +1,47 @@
-# SSPLAN-721 Test Plan — News Readiness Line
+# SSPLAN-738 Test Plan — Create KPI Summary Dataset
 
 Mode: **test-plan-only** (Bob planning only; Susan execution deferred)  
-Ticket: **SSPLAN-721**  
-Last Jira sync: 2026-08-04T18:34:34.696+0000
+Ticket: **SSPLAN-738**  
+Last Jira sync: 2026-08-06T18:42:21.005+0000
 
 ## 1) Jira snapshot
-- Summary: News Readiness Line
-- Issue type: Story
+- Summary: Create KPI Summary Dataset
+- Issue type: Task
 - Status: Backlog
-- Updated: 2026-08-04T18:34:34.696+0000
+- Updated: 2026-08-06T18:42:21.005+0000
 - Subtasks: none
 
 ## 2) Acceptance criteria (normalized)
-- **AC-1** News Readiness Line renders according to design and required states.
-- **AC-2** News Readiness Line handles empty/error data safely without UI breakage.
-- **AC-3** News Readiness Line uses correct filters/parameters for selected hierarchy level.
-- **AC-4** News Readiness Line remains accessible and localized with existing dashboard patterns.
+- **AC-1** Create KPI Summary Dataset renders according to design and required states.
+- **AC-2** Create KPI Summary Dataset handles empty/error data safely without UI breakage.
+- **AC-3** Create KPI Summary Dataset uses correct filters/parameters for selected hierarchy level.
+- **AC-4** Create KPI Summary Dataset remains accessible and localized with existing dashboard patterns.
 
 ## 3) Target component/scope
-Article/news UI composition and supporting contracts
+KPI/performance module and metric-integration behavior
 
 ## 4) API-agent-style trace (component -> hook -> service -> endpoint -> transform)
-- Component target: new article/news cards and list-row composition under dashboard modules.
-- Hook/service expected: consume existing metrics/hierarchy services plus new article-status contracts as needed.
-- Endpoint baseline: `/metrics` dispatcher for trend/readiness/status data where numeric signals are required.
-- Backend chain: `MetricsController` and metric handlers; article-specific level/filter likely additive.
-- Transform focus: badge/status/readiness derivation, row expansion state, and list truncation/view-more control.
+- Component baseline: `ProductAreaSummaryList` and summary-card render path.
+- Hook/query: `usePaSalesPerformanceForHfb(...)` for list population.
+- Service baseline: `fetchPaSalesPerformanceForHfb` currently mock-backed in FE service.
+- Endpoint target: metrics POST contract under `/metrics` via backend metric dispatcher.
+- Backend target: add/extend metric type and handler mapping for KPI summary payloads.
 
 ## 5) Top risks/findings
-- No stable article-level API contract exists in current FE/BE source for status/readiness metadata.
-- Composite row states (badges/readiness/view-more) can create inconsistent keyboard navigation.
+- Current FE performance service is mock data; API cutover can break card values/ordering.
+- Metric schema for KPI summary may evolve mid-sprint.
 
 ## 6) Assumptions with confidence
-- **A-1 (High): Article module reuses dashboard card/list interaction patterns.**
-- **A-2 (Medium): Status and readiness values are delivered as deterministic enums.**
+- **A-1 (High): KPI summary will converge on `/metrics` dispatcher contract.**
+- **A-2 (Medium): Score, plan, LY, and activation fields remain numeric and sortable.**
 
 ## 7) Bob test plan matrix
 Venue tags: **SOURCE / STORYBOOK / REAL FE / HYBRID**
 
 | ID | Category | Venue | Test | Steps | Measurable assertions | AC trace |
 |---|---|---|---|---|---|---|
-| HP-01 | happy path | REAL FE | Primary News Readiness Line render path | Open target route with valid fixture/user context. | Expected primary content appears with correct title/value labels and no console/runtime error. | AC-1, AC-2 |
-| HP-02 | happy path | REAL FE | Interaction path for News Readiness Line | Execute expected user interaction (navigate/select/toggle/expand). | State transition completes within 1 click/gesture and target view/data updates correctly. | AC-2, AC-3 |
+| HP-01 | happy path | REAL FE | Primary Create KPI Summary Dataset render path | Open target route with valid fixture/user context. | Expected primary content appears with correct title/value labels and no console/runtime error. | AC-1, AC-2 |
+| HP-02 | happy path | REAL FE | Interaction path for Create KPI Summary Dataset | Execute expected user interaction (navigate/select/toggle/expand). | State transition completes within 1 click/gesture and target view/data updates correctly. | AC-2, AC-3 |
 | SP-01 | sad path | HYBRID | Empty-data fallback | Return empty dataset or no eligible rows. | Fallback/empty message is shown and layout remains stable (no broken placeholders). | AC-2, AC-4 |
 | SP-02 | sad path | HYBRID | Error-state resilience | Force 4xx/5xx from dependent endpoint/service. | Error state is user-visible, recoverable on retry, and does not hard-crash route. | AC-4 |
 | DC-01 | data consistency | SOURCE | Numeric transform validation | Run representative fixture values through transform/mapping layer. | Scaled and raw fields retain expected precision (sales scaled where applicable, index untouched). | AC-3 |

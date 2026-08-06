@@ -2,7 +2,7 @@
 
 Mode: **test-plan-only** (Bob planning only; Susan execution deferred)  
 Ticket: **SSPLAN-718**  
-Last Jira sync: 2026-08-04T18:28:09.020+0000  
+Last Jira sync: 2026-08-04T18:28:09.020+0000
 
 ## 1) Jira snapshot
 - Summary: News Status Component
@@ -12,49 +12,46 @@ Last Jira sync: 2026-08-04T18:28:09.020+0000
 - Subtasks: none
 
 ## 2) Acceptance criteria (normalized)
-- **AC-1** If cumulative actual >= cumulative ramp forecast at 4 weeks, show On Track in green.
-- **AC-2** If cumulative actual < cumulative ramp forecast at 4 weeks, show Off Track in red.
-- **AC-3** If forecast data missing/null, show neutral placeholder (grey).
-- **AC-4** Calculation follows design definition.
+- **AC-1** News Status Component renders according to design and required states.
+- **AC-2** News Status Component handles empty/error data safely without UI breakage.
+- **AC-3** News Status Component uses correct filters/parameters for selected hierarchy level.
+- **AC-4** News Status Component remains accessible and localized with existing dashboard patterns.
 
 ## 3) Target component/scope
-New article status indicator (On Track/Off Track/Neutral) in article row/detail context
+Article/news UI composition and supporting contracts
 
 ## 4) API-agent-style trace (component -> hook -> service -> endpoint -> transform)
-- Component scope: **new** `NewsStatus` component (not yet present in frontend tree).
-- Hook/service path: **gap** — no dedicated `useNewsStatus` hook found; likely derived from article weekly actual+ramp fields.
-- Closest API path today: `SalesByWeek` -> `useSalesByWeek` -> `services/metrics/sales-by-week/api.ts` -> `POST /metrics` metric `WEEKLY_SALES_TREND`.
-- Expected request evolution for article status: include article identifier (`artNo`) and article-level filter in metrics request.
-- Field transformation under test: cumulative actual = sum(weekly actuals window), cumulative ramp = sum(weekly forecast/ramp window), status color mapping green/red/grey.
-- Backend cross-check: `MetricType.WEEKLY_SALES_TREND` supports HFB/PA/PRA levels only; no ART level documented, so article-level status requires backend extension.
+- Component target: new article/news cards and list-row composition under dashboard modules.
+- Hook/service expected: consume existing metrics/hierarchy services plus new article-status contracts as needed.
+- Endpoint baseline: `/metrics` dispatcher for trend/readiness/status data where numeric signals are required.
+- Backend chain: `MetricsController` and metric handlers; article-specific level/filter likely additive.
+- Transform focus: badge/status/readiness derivation, row expansion state, and list truncation/view-more control.
 
 ## 5) Top risks/findings
-- No implemented NewsStatus component/hook yet.
-- No backend ART-level weekly metric level; article scope currently unsupported.
-- Forecast/ramp fields expected by FE (`weeklyForecasted*`) are not visible in backend row models.
+- No stable article-level API contract exists in current FE/BE source for status/readiness metadata.
+- Composite row states (badges/readiness/view-more) can create inconsistent keyboard navigation.
 
 ## 6) Assumptions with confidence
-- **A-1 (Medium)**: Status calculation uses 4-week cumulative actual vs cumulative planned ramp from weekly metric stream.
-- **A-2 (Medium)**: Color tokens map to design semantic states: success=green, warning/error=red, missing=grey.
-- **A-3 (Low)**: Article identifier will be available to metric request as `artNo` or equivalent filter.
+- **A-1 (High): Article module reuses dashboard card/list interaction patterns.**
+- **A-2 (Medium): Status and readiness values are delivered as deterministic enums.**
 
 ## 7) Bob test plan matrix
 Venue tags: **SOURCE / STORYBOOK / REAL FE / HYBRID**
 
 | ID | Category | Venue | Test | Steps | Measurable assertions | AC trace |
 |---|---|---|---|---|---|---|
-| HP-01 | happy path | STORYBOOK | On Track rendering | Fixture: cumulativeActual=100,cumulativeRamp=100,weekCount=4. | Label `On Track`; status dot hex equals approved green token; no warning icon. | AC-1, AC-4 |
-| HP-02 | happy path | STORYBOOK | Off Track rendering | Fixture: cumulativeActual=95,cumulativeRamp=100,weekCount=4. | Label `Off Track`; status dot equals approved red token. | AC-2, AC-4 |
-| SP-01 | sad path | SOURCE | Null ramp data fallback | Inject ramp values null/undefined. | Component renders neutral label + grey dot; no crash/NaN text. | AC-3 |
-| SP-02 | sad path | SOURCE | Insufficient weeks (<4) behavior | Provide only 1-3 actual points. | Status remains neutral/pending per spec; no false On/Off classification. | AC-4 |
-| DC-01 | data consistency | SOURCE | Field-level cumulative transform | Input weeklyActual=[20,30,25,25], weeklyRamp=[25,25,25,25]. | Computed totals exactly 100 and 100; state evaluates On Track. | AC-1, AC-4 |
-| DC-02 | data consistency | SOURCE | Boundary comparator | Test actual=99.99 vs ramp=100 and actual=100.00 vs ramp=100. | Strict `<` path => Off Track for 99.99; `>=` path => On Track for 100.00. | AC-1, AC-2 |
-| API-01 | API integration | HYBRID | Weekly API field mapping for status | Capture transformed weekly payload fields used for status computation. | Status function consumes numeric values only after parse; null/strings coerced deterministically. | AC-4 |
-| API-02 | API integration | HYBRID | Article filter contract gate | Assert metrics request includes article identifier filter when status rendered in article context. | Missing article filter fails integration test with explicit contract error. | AC-4 |
-| REG-01 | regression | REAL FE | Non-article views unaffected | Open country/hfb/pa dashboards. | No status badge appears outside article context unless explicitly enabled. | AC-4 |
-| A11Y-01 | accessibility | STORYBOOK | Status announced to screen readers | Inspect rendered semantics. | Accessible name includes status text (On Track/Off Track/Neutral), not color-only signal. | AC-1, AC-2, AC-3 |
-| PERF-01 | performance | SOURCE | Bulk row status compute | Compute status for 500 article rows. | Computation completes <50ms in unit benchmark on baseline env. | AC-4 |
-| I18N-01 | i18n | SOURCE | Localizable status labels | Switch locale pack. | Status labels resolve from i18n keys; no hardcoded English-only strings. | AC-1, AC-2, AC-3 |
+| HP-01 | happy path | REAL FE | Primary News Status Component render path | Open target route with valid fixture/user context. | Expected primary content appears with correct title/value labels and no console/runtime error. | AC-1, AC-2 |
+| HP-02 | happy path | REAL FE | Interaction path for News Status Component | Execute expected user interaction (navigate/select/toggle/expand). | State transition completes within 1 click/gesture and target view/data updates correctly. | AC-2, AC-3 |
+| SP-01 | sad path | HYBRID | Empty-data fallback | Return empty dataset or no eligible rows. | Fallback/empty message is shown and layout remains stable (no broken placeholders). | AC-2, AC-4 |
+| SP-02 | sad path | HYBRID | Error-state resilience | Force 4xx/5xx from dependent endpoint/service. | Error state is user-visible, recoverable on retry, and does not hard-crash route. | AC-4 |
+| DC-01 | data consistency | SOURCE | Numeric transform validation | Run representative fixture values through transform/mapping layer. | Scaled and raw fields retain expected precision (sales scaled where applicable, index untouched). | AC-3 |
+| DC-02 | data consistency | SOURCE | Ordering and identity consistency | Feed out-of-order and duplicate-key fixture records. | Output order and uniqueness follow deterministic rule (documented sort/dedupe behavior). | AC-3, AC-4 |
+| API-01 | API integration | SOURCE | Request contract validation | Inspect generated request payload and query params for this feature path. | Metric/level/filters are populated exactly as expected for selected hierarchy context. | AC-3, AC-4 |
+| API-02 | API integration | HYBRID | Response schema drift guard | Compare required FE keys against backend response schema fixture. | Missing or renamed required keys fail with explicit diff and actionable message. | AC-1, AC-4 |
+| REG-01 | regression | REAL FE | Neighbor-module non-regression | Exercise adjacent dashboard module in same route family. | Existing module behavior remains unchanged after feature integration. | AC-4 |
+| A11Y-01 | accessibility | REAL FE | Keyboard + semantic accessibility | Tab through interactive controls and inspect role/name semantics. | All interactives reachable by keyboard and exposed names/roles are meaningful. | AC-1, AC-4 |
+| PERF-01 | performance | HYBRID | Render/interaction budget | Profile initial render and first interaction under realistic payload size. | Initial render under 300ms and interaction response under 100ms on baseline environment. | AC-1, AC-4 |
+| I18N-01 | i18n | SOURCE | Localization and formatting | Switch locale and validate translated strings/number formatting. | No hard-coded English labels in feature path; numeric/date formats follow locale. | AC-2, AC-4 |
 
 ## 8) Coverage summary
 - Planned tests: **12**

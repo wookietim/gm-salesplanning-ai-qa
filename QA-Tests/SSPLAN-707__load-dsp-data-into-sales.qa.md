@@ -1,47 +1,47 @@
-# SSPLAN-721 Test Plan — News Readiness Line
+# SSPLAN-707 Test Plan — Load DSP data into Sales Planning marts
 
 Mode: **test-plan-only** (Bob planning only; Susan execution deferred)  
-Ticket: **SSPLAN-721**  
-Last Jira sync: 2026-08-04T18:34:34.696+0000
+Ticket: **SSPLAN-707**  
+Last Jira sync: 2026-08-06T18:14:53.142+0000
 
 ## 1) Jira snapshot
-- Summary: News Readiness Line
-- Issue type: Story
+- Summary: Load DSP data into Sales Planning marts
+- Issue type: Task
 - Status: Backlog
-- Updated: 2026-08-04T18:34:34.696+0000
+- Updated: 2026-08-06T18:14:53.142+0000
 - Subtasks: none
 
 ## 2) Acceptance criteria (normalized)
-- **AC-1** News Readiness Line renders according to design and required states.
-- **AC-2** News Readiness Line handles empty/error data safely without UI breakage.
-- **AC-3** News Readiness Line uses correct filters/parameters for selected hierarchy level.
-- **AC-4** News Readiness Line remains accessible and localized with existing dashboard patterns.
+- **AC-1** Load DSP data into Sales Planning marts renders according to design and required states.
+- **AC-2** Load DSP data into Sales Planning marts handles empty/error data safely without UI breakage.
+- **AC-3** Load DSP data into Sales Planning marts uses correct filters/parameters for selected hierarchy level.
+- **AC-4** Load DSP data into Sales Planning marts remains accessible and localized with existing dashboard patterns.
 
 ## 3) Target component/scope
-Article/news UI composition and supporting contracts
+Backend dataset + metric API readiness
 
 ## 4) API-agent-style trace (component -> hook -> service -> endpoint -> transform)
-- Component target: new article/news cards and list-row composition under dashboard modules.
-- Hook/service expected: consume existing metrics/hierarchy services plus new article-status contracts as needed.
-- Endpoint baseline: `/metrics` dispatcher for trend/readiness/status data where numeric signals are required.
-- Backend chain: `MetricsController` and metric handlers; article-specific level/filter likely additive.
-- Transform focus: badge/status/readiness derivation, row expansion state, and list truncation/view-more control.
+- Data source target: sales-planning marts and DSP dataset ingestion path.
+- API entrypoint: `POST /metrics` via `MetricsController` with typed `MetricRequest`.
+- Dispatch chain: `MetricDispatcher` -> metric-specific handler -> repository query.
+- Type binding: `MetricType` enum + level-specific filter classes for request deserialization.
+- FE impact: graph/list modules consume shape-sensitive numeric fields from metric response.
 
 ## 5) Top risks/findings
-- No stable article-level API contract exists in current FE/BE source for status/readiness metadata.
-- Composite row states (badges/readiness/view-more) can create inconsistent keyboard navigation.
+- Dataset refresh cadence and API release may be unsynchronized, causing stale/partial payloads.
+- Enum/filter mismatches can fail request deserialization at runtime.
 
 ## 6) Assumptions with confidence
-- **A-1 (High): Article module reuses dashboard card/list interaction patterns.**
-- **A-2 (Medium): Status and readiness values are delivered as deterministic enums.**
+- **A-1 (Medium): New dataset/API changes keep backward compatibility for existing consumers.**
+- **A-2 (Medium): Non-functional constraints (latency/cache) stay within current dashboard expectations.**
 
 ## 7) Bob test plan matrix
 Venue tags: **SOURCE / STORYBOOK / REAL FE / HYBRID**
 
 | ID | Category | Venue | Test | Steps | Measurable assertions | AC trace |
 |---|---|---|---|---|---|---|
-| HP-01 | happy path | REAL FE | Primary News Readiness Line render path | Open target route with valid fixture/user context. | Expected primary content appears with correct title/value labels and no console/runtime error. | AC-1, AC-2 |
-| HP-02 | happy path | REAL FE | Interaction path for News Readiness Line | Execute expected user interaction (navigate/select/toggle/expand). | State transition completes within 1 click/gesture and target view/data updates correctly. | AC-2, AC-3 |
+| HP-01 | happy path | REAL FE | Primary Load DSP data into Sales Planning marts render path | Open target route with valid fixture/user context. | Expected primary content appears with correct title/value labels and no console/runtime error. | AC-1, AC-2 |
+| HP-02 | happy path | REAL FE | Interaction path for Load DSP data into Sales Planning marts | Execute expected user interaction (navigate/select/toggle/expand). | State transition completes within 1 click/gesture and target view/data updates correctly. | AC-2, AC-3 |
 | SP-01 | sad path | HYBRID | Empty-data fallback | Return empty dataset or no eligible rows. | Fallback/empty message is shown and layout remains stable (no broken placeholders). | AC-2, AC-4 |
 | SP-02 | sad path | HYBRID | Error-state resilience | Force 4xx/5xx from dependent endpoint/service. | Error state is user-visible, recoverable on retry, and does not hard-crash route. | AC-4 |
 | DC-01 | data consistency | SOURCE | Numeric transform validation | Run representative fixture values through transform/mapping layer. | Scaled and raw fields retain expected precision (sales scaled where applicable, index untouched). | AC-3 |

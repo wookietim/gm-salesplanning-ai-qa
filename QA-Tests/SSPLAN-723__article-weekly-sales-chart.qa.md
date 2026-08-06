@@ -2,7 +2,7 @@
 
 Mode: **test-plan-only** (Bob planning only; Susan execution deferred)  
 Ticket: **SSPLAN-723**  
-Last Jira sync: 2026-08-04T18:53:31.759+0000  
+Last Jira sync: 2026-08-04T18:53:31.759+0000
 
 ## 1) Jira snapshot
 - Summary: Article Level Weekly Sales Chart
@@ -12,49 +12,46 @@ Last Jira sync: 2026-08-04T18:53:31.759+0000
 - Subtasks: none
 
 ## 2) Acceptance criteria (normalized)
-- **AC-1** Render responsive weekly chart comparing actual vs goal.
-- **AC-2** Render responsive weekly chart comparing actual vs demand plan.
-- **AC-3** X-axis displays fiscal weeks.
-- **AC-4** Implementation matches design behavior.
+- **AC-1** Article Level Weekly Sales Chart renders according to design and required states.
+- **AC-2** Article Level Weekly Sales Chart handles empty/error data safely without UI breakage.
+- **AC-3** Article Level Weekly Sales Chart uses correct filters/parameters for selected hierarchy level.
+- **AC-4** Article Level Weekly Sales Chart remains accessible and localized with existing dashboard patterns.
 
 ## 3) Target component/scope
-Article-level weekly chart for actual vs goal and actual vs demand plan
+Weekly sales trend visualization/data contract
 
 ## 4) API-agent-style trace (component -> hook -> service -> endpoint -> transform)
-- Current component baseline: `SalesByWeek` in `GraphComponents/SalesByWeek/sales-by-week.tsx`.
-- Hook: `useSalesByWeek(retailUnitCode, productId, productLevel)` from `services/metrics/sales-by-week/queries.ts`.
-- Service: `fetchSalesByWeek` in `services/metrics/sales-by-week/api.ts`.
-- Endpoint mapping: `POST {VITE_BACKEND_HOST}{VITE_METRICS_PATH}` body `{metric: WEEKLY_SALES_TREND, level, filters}`.
-- Transform mapping under test: `sywNumber->weekLabel`, sales fields scaled by 1000, qty fields raw, index fields raw, latest fiscal year filter, ascending week sort.
-- Backend cross-check: `WeeklySalesTrendRow` exposes current/LY/index fields but no explicit `weeklyForecastedSalesCy`, `weeklyForecastedQuantityCy`, or forecast index fields expected by FE transform; article-level (`ART`) level not supported in backend enums.
+- Component baseline: `SalesByWeek` + container `SalesGraphsRow` (frontend graph module).
+- Hook/query: `useSalesByWeek(...)` from `services/metrics/sales-by-week/queries.ts`.
+- Service: `fetchSalesByWeek` -> `POST {VITE_BACKEND_HOST}{VITE_METRICS_PATH}` metric `WEEKLY_SALES_TREND`.
+- Backend chain: `MetricsController` -> `MetricDispatcher` -> `WeeklySalesTrendHandler` -> `WeeklySalesTrendRepository`.
+- Transform focus: fiscal week parsing/sort, CY/LY/forecast scaling, level-filter mapping (HFB/PA/COUNTRY).
 
 ## 5) Top risks/findings
-- Article-level filter/level not implemented in FE service or backend metric type.
-- Forecast field mismatch between FE transform and backend row model can zero-out forecast series.
-- Design requires actual-vs-goal and actual-vs-demand overlays that may need new backend fields.
+- Current-week handling and duplicate-week ordering can regress charts.
+- Forecast/goal fields may be absent or renamed across FE/BE contracts.
 
 ## 6) Assumptions with confidence
-- **A-1 (Medium)**: Article chart reuses SalesByWeek rendering patterns with article-level filters added.
-- **A-2 (Medium)**: Goal and demand-plan series are provided as forecast fields in final API contract.
-- **A-3 (Low)**: Week window is latest fiscal year, with last 12 relevant weeks highlighted in article view.
+- **A-1 (Medium): Fiscal week key (`sywNumber`) remains canonical in API payloads.**
+- **A-2 (Medium): Sprint delivery keeps weekly metric endpoint path and auth model unchanged.**
 
 ## 7) Bob test plan matrix
 Venue tags: **SOURCE / STORYBOOK / REAL FE / HYBRID**
 
 | ID | Category | Venue | Test | Steps | Measurable assertions | AC trace |
 |---|---|---|---|---|---|---|
-| HP-01 | happy path | REAL FE | Actual vs Goal series render | Load article detail with valid weekly payload including goal series. | Chart shows both series with distinct legend entries and non-zero points. | AC-1, AC-4 |
-| HP-02 | happy path | REAL FE | Actual vs Demand Plan series render | Toggle/inspect demand-plan overlay in same chart module. | Demand-plan series visible with correct style and tooltip naming. | AC-2, AC-4 |
-| SP-01 | sad path | REAL FE | No data fallback | Return empty weekly dataset for article. | Unavailable message shown; module does not crash. | AC-4 |
-| SP-02 | sad path | HYBRID | Missing forecast columns | Remove forecast fields in API mock. | Chart still renders actual and LY; forecast line suppressed with warning telemetry. | AC-1, AC-2 |
-| DC-01 | data consistency | SOURCE | Field-level transform scaling | Input `weeklyNetSalesCy=6708431.52`,`weeklyNetQuantityCy=42158`. | Transformed `salesCy=6708.43152` (÷1000), `qtyCy=42158` (no scaling). | AC-4 |
-| DC-02 | data consistency | SOURCE | Fiscal week extraction and sort | Input rows `202615`,`202618`,`202520`. | Only latest-year rows retained and ordered `15,18`; week labels are last two digits. | AC-3 |
-| API-01 | API integration | SOURCE | Request body contract | Invoke fetch with PA/HFB/article context. | Body contains `metric=WEEKLY_SALES_TREND`, correct `level`, and context filters only. | AC-4 |
-| API-02 | API integration | HYBRID | Backend schema drift guard | Compare FE required keys vs backend row model keys. | Any missing required key fails test with explicit diff list. | AC-1, AC-2 |
-| REG-01 | regression | REAL FE | Existing HFB/PA weekly chart unaffected | Open existing SalesByWeek on HFB and PA routes. | Current behavior unchanged while adding article-level chart path. | AC-4 |
-| A11Y-01 | accessibility | REAL FE | Chart semantic labeling | Inspect chart region, legend, tooltip accessibility. | Chart has accessible title and legend labels map to series semantics. | AC-1, AC-2 |
-| PERF-01 | performance | HYBRID | Render budget for 52 weekly points x 3 series | Profile initial chart paint. | Initial paint <300ms and interactions stay responsive. | AC-4 |
-| I18N-01 | i18n | SOURCE | Week and series labels localization | Run locale variations. | Series names/axis labels use translatable strings; numeric formatting locale-safe. | AC-3 |
+| HP-01 | happy path | REAL FE | Primary Article Level Weekly Sales Chart render path | Open target route with valid fixture/user context. | Expected primary content appears with correct title/value labels and no console/runtime error. | AC-1, AC-2 |
+| HP-02 | happy path | REAL FE | Interaction path for Article Level Weekly Sales Chart | Execute expected user interaction (navigate/select/toggle/expand). | State transition completes within 1 click/gesture and target view/data updates correctly. | AC-2, AC-3 |
+| SP-01 | sad path | HYBRID | Empty-data fallback | Return empty dataset or no eligible rows. | Fallback/empty message is shown and layout remains stable (no broken placeholders). | AC-2, AC-4 |
+| SP-02 | sad path | HYBRID | Error-state resilience | Force 4xx/5xx from dependent endpoint/service. | Error state is user-visible, recoverable on retry, and does not hard-crash route. | AC-4 |
+| DC-01 | data consistency | SOURCE | Numeric transform validation | Run representative fixture values through transform/mapping layer. | Scaled and raw fields retain expected precision (sales scaled where applicable, index untouched). | AC-3 |
+| DC-02 | data consistency | SOURCE | Ordering and identity consistency | Feed out-of-order and duplicate-key fixture records. | Output order and uniqueness follow deterministic rule (documented sort/dedupe behavior). | AC-3, AC-4 |
+| API-01 | API integration | SOURCE | Request contract validation | Inspect generated request payload and query params for this feature path. | Metric/level/filters are populated exactly as expected for selected hierarchy context. | AC-3, AC-4 |
+| API-02 | API integration | HYBRID | Response schema drift guard | Compare required FE keys against backend response schema fixture. | Missing or renamed required keys fail with explicit diff and actionable message. | AC-1, AC-4 |
+| REG-01 | regression | REAL FE | Neighbor-module non-regression | Exercise adjacent dashboard module in same route family. | Existing module behavior remains unchanged after feature integration. | AC-4 |
+| A11Y-01 | accessibility | REAL FE | Keyboard + semantic accessibility | Tab through interactive controls and inspect role/name semantics. | All interactives reachable by keyboard and exposed names/roles are meaningful. | AC-1, AC-4 |
+| PERF-01 | performance | HYBRID | Render/interaction budget | Profile initial render and first interaction under realistic payload size. | Initial render under 300ms and interaction response under 100ms on baseline environment. | AC-1, AC-4 |
+| I18N-01 | i18n | SOURCE | Localization and formatting | Switch locale and validate translated strings/number formatting. | No hard-coded English labels in feature path; numeric/date formats follow locale. | AC-2, AC-4 |
 
 ## 8) Coverage summary
 - Planned tests: **12**

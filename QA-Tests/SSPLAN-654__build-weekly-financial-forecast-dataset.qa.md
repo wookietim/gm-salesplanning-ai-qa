@@ -1,47 +1,47 @@
-# SSPLAN-721 Test Plan — News Readiness Line
+# SSPLAN-654 Test Plan — Build weekly Financial Forecast dataset
 
 Mode: **test-plan-only** (Bob planning only; Susan execution deferred)  
-Ticket: **SSPLAN-721**  
-Last Jira sync: 2026-08-04T18:34:34.696+0000
+Ticket: **SSPLAN-654**  
+Last Jira sync: 2026-08-06T18:12:09.573+0000
 
 ## 1) Jira snapshot
-- Summary: News Readiness Line
-- Issue type: Story
-- Status: Backlog
-- Updated: 2026-08-04T18:34:34.696+0000
+- Summary: Build weekly Financial Forecast dataset
+- Issue type: Task
+- Status: In Progress
+- Updated: 2026-08-06T18:12:09.573+0000
 - Subtasks: none
 
 ## 2) Acceptance criteria (normalized)
-- **AC-1** News Readiness Line renders according to design and required states.
-- **AC-2** News Readiness Line handles empty/error data safely without UI breakage.
-- **AC-3** News Readiness Line uses correct filters/parameters for selected hierarchy level.
-- **AC-4** News Readiness Line remains accessible and localized with existing dashboard patterns.
+- **AC-1** Build weekly Financial Forecast dataset renders according to design and required states.
+- **AC-2** Build weekly Financial Forecast dataset handles empty/error data safely without UI breakage.
+- **AC-3** Build weekly Financial Forecast dataset uses correct filters/parameters for selected hierarchy level.
+- **AC-4** Build weekly Financial Forecast dataset remains accessible and localized with existing dashboard patterns.
 
 ## 3) Target component/scope
-Article/news UI composition and supporting contracts
+Weekly sales trend visualization/data contract
 
 ## 4) API-agent-style trace (component -> hook -> service -> endpoint -> transform)
-- Component target: new article/news cards and list-row composition under dashboard modules.
-- Hook/service expected: consume existing metrics/hierarchy services plus new article-status contracts as needed.
-- Endpoint baseline: `/metrics` dispatcher for trend/readiness/status data where numeric signals are required.
-- Backend chain: `MetricsController` and metric handlers; article-specific level/filter likely additive.
-- Transform focus: badge/status/readiness derivation, row expansion state, and list truncation/view-more control.
+- Component baseline: `SalesByWeek` + container `SalesGraphsRow` (frontend graph module).
+- Hook/query: `useSalesByWeek(...)` from `services/metrics/sales-by-week/queries.ts`.
+- Service: `fetchSalesByWeek` -> `POST {VITE_BACKEND_HOST}{VITE_METRICS_PATH}` metric `WEEKLY_SALES_TREND`.
+- Backend chain: `MetricsController` -> `MetricDispatcher` -> `WeeklySalesTrendHandler` -> `WeeklySalesTrendRepository`.
+- Transform focus: fiscal week parsing/sort, CY/LY/forecast scaling, level-filter mapping (HFB/PA/COUNTRY).
 
 ## 5) Top risks/findings
-- No stable article-level API contract exists in current FE/BE source for status/readiness metadata.
-- Composite row states (badges/readiness/view-more) can create inconsistent keyboard navigation.
+- Current-week handling and duplicate-week ordering can regress charts.
+- Forecast/goal fields may be absent or renamed across FE/BE contracts.
 
 ## 6) Assumptions with confidence
-- **A-1 (High): Article module reuses dashboard card/list interaction patterns.**
-- **A-2 (Medium): Status and readiness values are delivered as deterministic enums.**
+- **A-1 (Medium): Fiscal week key (`sywNumber`) remains canonical in API payloads.**
+- **A-2 (Medium): Sprint delivery keeps weekly metric endpoint path and auth model unchanged.**
 
 ## 7) Bob test plan matrix
 Venue tags: **SOURCE / STORYBOOK / REAL FE / HYBRID**
 
 | ID | Category | Venue | Test | Steps | Measurable assertions | AC trace |
 |---|---|---|---|---|---|---|
-| HP-01 | happy path | REAL FE | Primary News Readiness Line render path | Open target route with valid fixture/user context. | Expected primary content appears with correct title/value labels and no console/runtime error. | AC-1, AC-2 |
-| HP-02 | happy path | REAL FE | Interaction path for News Readiness Line | Execute expected user interaction (navigate/select/toggle/expand). | State transition completes within 1 click/gesture and target view/data updates correctly. | AC-2, AC-3 |
+| HP-01 | happy path | REAL FE | Primary Build weekly Financial Forecast dataset render path | Open target route with valid fixture/user context. | Expected primary content appears with correct title/value labels and no console/runtime error. | AC-1, AC-2 |
+| HP-02 | happy path | REAL FE | Interaction path for Build weekly Financial Forecast dataset | Execute expected user interaction (navigate/select/toggle/expand). | State transition completes within 1 click/gesture and target view/data updates correctly. | AC-2, AC-3 |
 | SP-01 | sad path | HYBRID | Empty-data fallback | Return empty dataset or no eligible rows. | Fallback/empty message is shown and layout remains stable (no broken placeholders). | AC-2, AC-4 |
 | SP-02 | sad path | HYBRID | Error-state resilience | Force 4xx/5xx from dependent endpoint/service. | Error state is user-visible, recoverable on retry, and does not hard-crash route. | AC-4 |
 | DC-01 | data consistency | SOURCE | Numeric transform validation | Run representative fixture values through transform/mapping layer. | Scaled and raw fields retain expected precision (sales scaled where applicable, index untouched). | AC-3 |

@@ -1,21 +1,21 @@
-# SSPLAN-721 Test Plan — News Readiness Line
+# SSPLAN-722 Test Plan — View More - Component
 
 Mode: **test-plan-only** (Bob planning only; Susan execution deferred)  
-Ticket: **SSPLAN-721**  
-Last Jira sync: 2026-08-04T18:34:34.696+0000
+Ticket: **SSPLAN-722**  
+Last Jira sync: 2026-08-04T18:43:22.345+0000
 
 ## 1) Jira snapshot
-- Summary: News Readiness Line
+- Summary: View More - Component
 - Issue type: Story
 - Status: Backlog
-- Updated: 2026-08-04T18:34:34.696+0000
+- Updated: 2026-08-04T18:43:22.345+0000
 - Subtasks: none
 
 ## 2) Acceptance criteria (normalized)
-- **AC-1** News Readiness Line renders according to design and required states.
-- **AC-2** News Readiness Line handles empty/error data safely without UI breakage.
-- **AC-3** News Readiness Line uses correct filters/parameters for selected hierarchy level.
-- **AC-4** News Readiness Line remains accessible and localized with existing dashboard patterns.
+- **AC-1** View More - Component renders according to design and required states.
+- **AC-2** View More - Component handles empty/error data safely without UI breakage.
+- **AC-3** View More - Component uses correct filters/parameters for selected hierarchy level.
+- **AC-4** View More - Component remains accessible and localized with existing dashboard patterns.
 
 ## 3) Target component/scope
 Article/news UI composition and supporting contracts
@@ -40,8 +40,8 @@ Venue tags: **SOURCE / STORYBOOK / REAL FE / HYBRID**
 
 | ID | Category | Venue | Test | Steps | Measurable assertions | AC trace |
 |---|---|---|---|---|---|---|
-| HP-01 | happy path | REAL FE | Primary News Readiness Line render path | Open target route with valid fixture/user context. | Expected primary content appears with correct title/value labels and no console/runtime error. | AC-1, AC-2 |
-| HP-02 | happy path | REAL FE | Interaction path for News Readiness Line | Execute expected user interaction (navigate/select/toggle/expand). | State transition completes within 1 click/gesture and target view/data updates correctly. | AC-2, AC-3 |
+| HP-01 | happy path | REAL FE | Primary View More - Component render path | Open target route with valid fixture/user context. | Expected primary content appears with correct title/value labels and no console/runtime error. | AC-1, AC-2 |
+| HP-02 | happy path | REAL FE | Interaction path for View More - Component | Execute expected user interaction (navigate/select/toggle/expand). | State transition completes within 1 click/gesture and target view/data updates correctly. | AC-2, AC-3 |
 | SP-01 | sad path | HYBRID | Empty-data fallback | Return empty dataset or no eligible rows. | Fallback/empty message is shown and layout remains stable (no broken placeholders). | AC-2, AC-4 |
 | SP-02 | sad path | HYBRID | Error-state resilience | Force 4xx/5xx from dependent endpoint/service. | Error state is user-visible, recoverable on retry, and does not hard-crash route. | AC-4 |
 | DC-01 | data consistency | SOURCE | Numeric transform validation | Run representative fixture values through transform/mapping layer. | Scaled and raw fields retain expected precision (sales scaled where applicable, index untouched). | AC-3 |

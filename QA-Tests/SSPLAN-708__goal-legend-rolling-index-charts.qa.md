@@ -1,47 +1,47 @@
-# SSPLAN-721 Test Plan — News Readiness Line
+# SSPLAN-708 Test Plan — Add Goal & legend to rolling index charts 
 
 Mode: **test-plan-only** (Bob planning only; Susan execution deferred)  
-Ticket: **SSPLAN-721**  
-Last Jira sync: 2026-08-04T18:34:34.696+0000
+Ticket: **SSPLAN-708**  
+Last Jira sync: 2026-08-06T17:58:06.713+0000
 
 ## 1) Jira snapshot
-- Summary: News Readiness Line
-- Issue type: Story
+- Summary: Add Goal & legend to rolling index charts 
+- Issue type: Task
 - Status: Backlog
-- Updated: 2026-08-04T18:34:34.696+0000
-- Subtasks: none
+- Updated: 2026-08-06T17:58:06.713+0000
+- Subtasks: SSPLAN-739, SSPLAN-740
 
 ## 2) Acceptance criteria (normalized)
-- **AC-1** News Readiness Line renders according to design and required states.
-- **AC-2** News Readiness Line handles empty/error data safely without UI breakage.
-- **AC-3** News Readiness Line uses correct filters/parameters for selected hierarchy level.
-- **AC-4** News Readiness Line remains accessible and localized with existing dashboard patterns.
+- **AC-1** Add Goal & legend to rolling index charts renders according to design and required states.
+- **AC-2** Add Goal & legend to rolling index charts handles empty/error data safely without UI breakage.
+- **AC-3** Add Goal & legend to rolling index charts uses correct filters/parameters for selected hierarchy level.
+- **AC-4** Add Goal & legend to rolling index charts remains accessible and localized with existing dashboard patterns.
 
 ## 3) Target component/scope
-Article/news UI composition and supporting contracts
+Rolling sales index trend graph and legend behavior
 
 ## 4) API-agent-style trace (component -> hook -> service -> endpoint -> transform)
-- Component target: new article/news cards and list-row composition under dashboard modules.
-- Hook/service expected: consume existing metrics/hierarchy services plus new article-status contracts as needed.
-- Endpoint baseline: `/metrics` dispatcher for trend/readiness/status data where numeric signals are required.
-- Backend chain: `MetricsController` and metric handlers; article-specific level/filter likely additive.
-- Transform focus: badge/status/readiness derivation, row expansion state, and list truncation/view-more control.
+- Component baseline: `SalesIndexTrend` in graph components and row container `SalesGraphsRow`.
+- Hook/query: `useSalesIndexTrend(...)` from `services/metrics/sales-index-trend/queries.ts`.
+- Service: `fetchSalesIndexTrend` -> metrics POST with metric `ROLLING_SALES_TREND`.
+- Backend chain: `MetricsController` -> `MetricDispatcher` -> `RollingSalesTrendHandler` -> `RollingSalesTrendRepository`.
+- Transform focus: YTD/13w/8w/4w/1w mapping, LY derivation, label/legend parity.
 
 ## 5) Top risks/findings
-- No stable article-level API contract exists in current FE/BE source for status/readiness metadata.
-- Composite row states (badges/readiness/view-more) can create inconsistent keyboard navigation.
+- Trend-index fallback logic can mask true data defects when LY is missing.
+- Legend/goal overlays may drift from design token usage.
 
 ## 6) Assumptions with confidence
-- **A-1 (High): Article module reuses dashboard card/list interaction patterns.**
-- **A-2 (Medium): Status and readiness values are delivered as deterministic enums.**
+- **A-1 (Medium): Rolling metric still returns single-row aggregate payload.**
+- **A-2 (Medium): Goal/legend additions reuse existing Recharts structures.**
 
 ## 7) Bob test plan matrix
 Venue tags: **SOURCE / STORYBOOK / REAL FE / HYBRID**
 
 | ID | Category | Venue | Test | Steps | Measurable assertions | AC trace |
 |---|---|---|---|---|---|---|
-| HP-01 | happy path | REAL FE | Primary News Readiness Line render path | Open target route with valid fixture/user context. | Expected primary content appears with correct title/value labels and no console/runtime error. | AC-1, AC-2 |
-| HP-02 | happy path | REAL FE | Interaction path for News Readiness Line | Execute expected user interaction (navigate/select/toggle/expand). | State transition completes within 1 click/gesture and target view/data updates correctly. | AC-2, AC-3 |
+| HP-01 | happy path | REAL FE | Primary Add Goal & legend to rolling index charts  render path | Open target route with valid fixture/user context. | Expected primary content appears with correct title/value labels and no console/runtime error. | AC-1, AC-2 |
+| HP-02 | happy path | REAL FE | Interaction path for Add Goal & legend to rolling index charts  | Execute expected user interaction (navigate/select/toggle/expand). | State transition completes within 1 click/gesture and target view/data updates correctly. | AC-2, AC-3 |
 | SP-01 | sad path | HYBRID | Empty-data fallback | Return empty dataset or no eligible rows. | Fallback/empty message is shown and layout remains stable (no broken placeholders). | AC-2, AC-4 |
 | SP-02 | sad path | HYBRID | Error-state resilience | Force 4xx/5xx from dependent endpoint/service. | Error state is user-visible, recoverable on retry, and does not hard-crash route. | AC-4 |
 | DC-01 | data consistency | SOURCE | Numeric transform validation | Run representative fixture values through transform/mapping layer. | Scaled and raw fields retain expected precision (sales scaled where applicable, index untouched). | AC-3 |

@@ -1,0 +1,163 @@
+{
+  "ticket": "SSPLAN-623",
+  "runId": "pablo-run-SSPLAN-623-local-us-20260807-080630-0400",
+  "timestamp": "2026-08-07T08:06:30.041664-04:00",
+  "scope": {
+    "qaPlan": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/QA-Tests/SSPLAN-623__sales-by-week.qa.md",
+    "route": "/region-dashboard/us",
+    "projectRoot": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-modeling"
+  },
+  "preflight": {
+    "status": "PASS",
+    "checks": [
+      "npm run test -- src/features/overview/OverviewPage.test.tsx => PASS (1/1)",
+      "npm run build => PASS",
+      "vite preview route probes: / => 200, /region-dashboard/us => 200, /hfb/01 => 200"
+    ]
+  },
+  "totals": {
+    "executed": 12,
+    "pass": 2,
+    "fail": 5,
+    "partial": 4,
+    "manualOnly": 1
+  },
+  "overallStatus": "FAIL",
+  "results": [
+    {
+      "id": "HP-01",
+      "category": "happy path",
+      "venue": "REAL FE",
+      "status": "FAIL",
+      "evidence": [
+        "Local route check: GET http://127.0.0.1:4173/region-dashboard/us returned HTTP 200 (SPA fallback), but source router has no /region-dashboard/:region mapping.",
+        "sp-monitor-dashboard/frontend/src/App.tsx:33-36 defines only '/', '/hfb/:id', '/hfb/:hfbId/pa/:paId', '/insights'."
+      ]
+    },
+    {
+      "id": "HP-02",
+      "category": "happy path",
+      "venue": "REAL FE",
+      "status": "FAIL",
+      "evidence": [
+        "sp-monitor-dashboard/frontend/src/features/entity-detail/SalesIndexChart.tsx:121 gates chart rendering to metricMode === 'salesIndex'.",
+        "Same file:17-24 defines QTY/QTY_INDEX/SALES modes, but non-salesIndex shows 'isn't available yet' state, so QTY forecast behavior is not implemented."
+      ]
+    },
+    {
+      "id": "SP-01",
+      "category": "sad path",
+      "venue": "HYBRID",
+      "status": "PASS",
+      "evidence": [
+        "sp-monitor-dashboard/frontend/src/features/entity-detail/SalesIndexChart.tsx:121-126 renders explicit empty placeholder ('-') when weekly data is empty."
+      ]
+    },
+    {
+      "id": "SP-02",
+      "category": "sad path",
+      "venue": "HYBRID",
+      "status": "PARTIAL",
+      "evidence": [
+        "Detail pages handle request failures without crashing: HFBDetailPage.tsx:87,99,107 and PADetailPage.tsx:74,82 catch metric failures with fallback warnings.",
+        "Route-level error banner/retry exists for base page fetches: HFBDetailPage.tsx:139, PADetailPage.tsx:118.",
+        "No live forced 4xx/5xx simulation executed in this run; runtime error UX not fully validated."
+      ]
+    },
+    {
+      "id": "DC-01",
+      "category": "data consistency",
+      "venue": "SOURCE",
+      "status": "FAIL",
+      "evidence": [
+        "Forecast legend/series remains in salesIndex mode (SalesIndexChart.tsx:63,158,164), violating the QTY-only forecast visibility rule.",
+        "QTY mode does not render chart; it renders unavailable message (SalesIndexChart.tsx:121-124)."
+      ]
+    },
+    {
+      "id": "DC-02",
+      "category": "data consistency",
+      "venue": "SOURCE",
+      "status": "PASS",
+      "evidence": [
+        "sp-monitor-dashboard/frontend/src/services/metricsApi.ts:247 sorts by sywNumber ascending.",
+        "metricsApi.ts:254 maps deterministic financial week labels as wNN."
+      ]
+    },
+    {
+      "id": "API-01",
+      "category": "API integration",
+      "venue": "SOURCE",
+      "status": "PARTIAL",
+      "evidence": [
+        "WEEKLY_SALES_TREND payloads validated for HFB and PA levels (metricsApi.ts:177-179, 213-215).",
+        "No country-level WEEKLY_SALES_TREND request function present in metricsApi.ts; country route behavior for this metric is aggregated elsewhere, so COUNTRY/HFB/PA parity is incomplete."
+      ]
+    },
+    {
+      "id": "API-02",
+      "category": "API integration",
+      "venue": "HYBRID",
+      "status": "FAIL",
+      "evidence": [
+        "Weekly row types include weeklyForecastedQuantityCy only (metricsApi.ts:50,100).",
+        "Fields weeklyForecastedSalesCy / weeklyForecastedSalesIndex / weeklyForecastedQuantityIndex are absent from the active contract in this code path, indicating drift risk against SSPLAN-623 plan expectations."
+      ]
+    },
+    {
+      "id": "REG-01",
+      "category": "regression",
+      "venue": "REAL FE",
+      "status": "PARTIAL",
+      "evidence": [
+        "Smoke pre-flight passed: vitest OverviewPage.test.tsx (1/1) and production build succeeded.",
+        "No full adjacent-module visual regression suite executed for /region-dashboard/us route scope."
+      ]
+    },
+    {
+      "id": "A11Y-01",
+      "category": "accessibility",
+      "venue": "REAL FE",
+      "status": "PARTIAL",
+      "evidence": [
+        "Segmented control uses keyboard-focusable button elements with aria-pressed (SalesIndexChart.tsx:38-44).",
+        "No pa11y or end-to-end keyboard traversal run executed in this local session."
+      ]
+    },
+    {
+      "id": "PERF-01",
+      "category": "performance",
+      "venue": "HYBRID",
+      "status": "MANUAL-ONLY",
+      "evidence": [
+        "Build/test smoke completed, but no profiler instrumentation captured to assert <=300ms initial render and <=100ms metric switch budgets."
+      ]
+    },
+    {
+      "id": "I18N-01",
+      "category": "i18n",
+      "venue": "SOURCE",
+      "status": "FAIL",
+      "evidence": [
+        "User-visible strings are hard-coded in English (e.g., 'Sales by week', 'Qty isn't available yet') in SalesIndexChart.tsx.",
+        "No locale abstraction or translation hook was identified in this feature path during execution."
+      ]
+    }
+  ],
+  "knownRiskFindings": {
+    "forecastLineVisibilityByMetricType": {
+      "status": "PRESENT",
+      "finding": "Risk still present. Forecast behavior is tied to salesIndex rendering; QTY-only forecast rule is not implemented."
+    },
+    "backendForecastIndexFieldDriftImpact": {
+      "status": "PRESENT",
+      "finding": "Risk still present. Active weekly row contract omits forecast sales/index fields expected by SSPLAN-623 plan, creating drift potential and misleading chart output."
+    }
+  },
+  "failureReasons": [
+    "Route scope mismatch: /region-dashboard/:region is not defined in current app router source.",
+    "QTY-only forecast acceptance criterion not implemented; non-salesIndex modes are unavailable and salesIndex still exposes forecast legend/series.",
+    "Forecast/index API field contract drift versus expected SSPLAN-623 fields.",
+    "Feature path contains hard-coded English labels (i18n criterion unmet)."
+  ]
+}

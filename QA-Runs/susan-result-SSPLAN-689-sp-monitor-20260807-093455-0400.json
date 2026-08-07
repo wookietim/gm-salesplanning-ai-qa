@@ -1,0 +1,150 @@
+{
+  "ticket": "SSPLAN-689",
+  "plan_file": "SSPLAN-689__change-hfb-list-cmp-card.qa.md",
+  "plan_title": "SSPLAN-689 Test Plan \u2014 Change HFB List Cmp to Card",
+  "executed_at": "2026-08-07T09:34:55.231000-04:00",
+  "mode": "Susan-style source validation",
+  "totals": {
+    "total_tests": 12,
+    "PASS": 4,
+    "FAIL": 1,
+    "PARTIAL": 3,
+    "MANUAL-ONLY": 4
+  },
+  "overall_status": "FAIL",
+  "results": [
+    {
+      "id": "HP-01",
+      "category": "happy path",
+      "venue": "REAL FE",
+      "test": "Primary Change HFB List Cmp to Card render path",
+      "steps": "Open target route with valid fixture/user context.",
+      "assertion": "Expected primary content appears with correct title/value labels and no console/runtime error.",
+      "ac_trace": "AC-1, AC-2",
+      "status": "MANUAL-ONLY",
+      "evidence": "No live server was available in this run. To verify manually, open `/` from frontend/src/App.tsx:33-36 and confirm the HFB cards render with titles, index badges, and CTA buttons without runtime errors. Relevant source path: frontend/src/App.tsx:33-36; frontend/src/features/overview/OverviewPage.tsx:311-328,343-383,435-450,518-529,600-605."
+    },
+    {
+      "id": "HP-02",
+      "category": "happy path",
+      "venue": "REAL FE",
+      "test": "Interaction path for Change HFB List Cmp to Card",
+      "steps": "Execute expected user interaction (navigate/select/toggle/expand).",
+      "assertion": "State transition completes within 1 click/gesture and target view/data updates correctly.",
+      "ac_trace": "AC-2, AC-3",
+      "status": "MANUAL-ONLY",
+      "evidence": "No live server was available in this run. To verify manually, open `/` from frontend/src/App.tsx:33-36 and confirm clicking an HFB card navigates to the HFB detail page correctly. Relevant source path: frontend/src/features/overview/OverviewPage.tsx:311-328,343-383,435-450,518-529,600-605."
+    },
+    {
+      "id": "SP-01",
+      "category": "sad path",
+      "venue": "HYBRID",
+      "test": "Empty-data fallback",
+      "steps": "Return empty dataset or no eligible rows.",
+      "assertion": "Fallback/empty message is shown and layout remains stable (no broken placeholders).",
+      "ac_trace": "AC-2, AC-4",
+      "status": "PASS",
+      "evidence": "The overview has an explicit empty-state message (`No HFBs match the current filter.`) and preserves layout when no cards remain after filtering (frontend/src/features/overview/OverviewPage.tsx:311-328,343-383,435-450,518-529,600-605)."
+    },
+    {
+      "id": "SP-02",
+      "category": "sad path",
+      "venue": "HYBRID",
+      "test": "Error-state resilience",
+      "steps": "Force 4xx/5xx from dependent endpoint/service.",
+      "assertion": "Error state is user-visible, recoverable on retry, and does not hard-crash route.",
+      "ac_trace": "AC-4",
+      "status": "PARTIAL",
+      "evidence": "Dashboard fetch failures surface as `Failed to load data` and hierarchy failures fall back to local HFB data (frontend/src/features/overview/OverviewPage.tsx:311-328,343-383,435-450,518-529,600-605), but there is no hierarchy-specific retry state at the card component level."
+    },
+    {
+      "id": "DC-01",
+      "category": "data consistency",
+      "venue": "SOURCE",
+      "test": "Numeric transform validation",
+      "steps": "Run representative fixture values through transform/mapping layer.",
+      "assertion": "Scaled and raw fields retain expected precision (sales scaled where applicable, index untouched).",
+      "ac_trace": "AC-3",
+      "status": "PASS",
+      "evidence": "HFB identity is normalized before rendering: `normalizeHfbCode` is applied to local and hierarchy data and carried into `hfbNo`/`code` fields (frontend/src/features/overview/OverviewPage.tsx:311-328,343-383,435-450,518-529,600-605)."
+    },
+    {
+      "id": "DC-02",
+      "category": "data consistency",
+      "venue": "SOURCE",
+      "test": "Ordering and identity consistency",
+      "steps": "Feed out-of-order and duplicate-key fixture records.",
+      "assertion": "Output order and uniqueness follow deterministic rule (documented sort/dedupe behavior).",
+      "ac_trace": "AC-3, AC-4",
+      "status": "PASS",
+      "evidence": "Deterministic ordering exists for card identity/order; the overview sorts HFB cards by numeric HFB code via `hfbNum(a.code) - hfbNum(b.code)` when `HFB No.` is selected (frontend/src/features/overview/OverviewPage.tsx:311-328,343-383,435-450,518-529,600-605)."
+    },
+    {
+      "id": "API-01",
+      "category": "API integration",
+      "venue": "SOURCE",
+      "test": "Request contract validation",
+      "steps": "Inspect generated request payload and query params for this feature path.",
+      "assertion": "Metric/level/filters are populated exactly as expected for selected hierarchy context.",
+      "ac_trace": "AC-3, AC-4",
+      "status": "PASS",
+      "evidence": "The hierarchy request contract is present in source: `fetchHierarchy` accepts `hfbNo`/`praNo` params and OverviewPage calls it for country scope (frontend/src/services/metricsApi.ts:12-14,172-215,244-257,289-297; frontend/src/features/overview/OverviewPage.tsx:311-328,343-383,435-450,518-529,600-605)."
+    },
+    {
+      "id": "API-02",
+      "category": "API integration",
+      "venue": "HYBRID",
+      "test": "Response schema drift guard",
+      "steps": "Compare required FE keys against backend response schema fixture.",
+      "assertion": "Missing or renamed required keys fail with explicit diff and actionable message.",
+      "ac_trace": "AC-1, AC-4",
+      "status": "PARTIAL",
+      "evidence": "The UI can fall back from hierarchy data to local dashboard HFBs (frontend/src/features/overview/OverviewPage.tsx:311-328,343-383,435-450,518-529,600-605), but there is no explicit response-schema diff guard for hierarchy payload changes."
+    },
+    {
+      "id": "REG-01",
+      "category": "regression",
+      "venue": "REAL FE",
+      "test": "Neighbor-module non-regression",
+      "steps": "Exercise adjacent dashboard module in same route family.",
+      "assertion": "Existing module behavior remains unchanged after feature integration.",
+      "ac_trace": "AC-4",
+      "status": "MANUAL-ONLY",
+      "evidence": "No live server was available in this run. To verify manually, open `/` from frontend/src/App.tsx:33-36 and confirm nearby dashboard modules remain unchanged while exercising HFB cards and filters. Relevant source path: frontend/src/features/overview/OverviewPage.tsx:311-328,343-383,435-450,518-529,600-605."
+    },
+    {
+      "id": "A11Y-01",
+      "category": "accessibility",
+      "venue": "REAL FE",
+      "test": "Keyboard + semantic accessibility",
+      "steps": "Tab through interactive controls and inspect role/name semantics.",
+      "assertion": "All interactives reachable by keyboard and exposed names/roles are meaningful.",
+      "ac_trace": "AC-1, AC-4",
+      "status": "MANUAL-ONLY",
+      "evidence": "No live server was available in this run. To verify manually, open `/` from frontend/src/App.tsx:33-36 and confirm card buttons, filter controls, and focus order remain accessible by keyboard. Relevant source path: frontend/src/features/overview/OverviewPage.tsx:311-328,343-383,435-450,518-529,600-605."
+    },
+    {
+      "id": "PERF-01",
+      "category": "performance",
+      "venue": "HYBRID",
+      "test": "Render/interaction budget",
+      "steps": "Profile initial render and first interaction under realistic payload size.",
+      "assertion": "Initial render under 300ms and interaction response under 100ms on baseline environment.",
+      "ac_trace": "AC-1, AC-4",
+      "status": "PARTIAL",
+      "evidence": "No source-level performance instrumentation or budget assertion was found for this feature, so the 300ms/100ms targets cannot be proven from code alone. Relevant render path: frontend/src/features/overview/OverviewPage.tsx:311-328,343-383,435-450,518-529,600-605."
+    },
+    {
+      "id": "I18N-01",
+      "category": "i18n",
+      "venue": "SOURCE",
+      "test": "Localization and formatting",
+      "steps": "Switch locale and validate translated strings/number formatting.",
+      "assertion": "No hard-coded English labels in feature path; numeric/date formats follow locale.",
+      "ac_trace": "AC-2, AC-4",
+      "status": "FAIL",
+      "evidence": "Hard-coded English strings remain in the feature path and there is no i18n/locale layer in this code path; examples include labels/messages in frontend/src/features/overview/OverviewPage.tsx:479-486,504,529,600.",
+      "failure_reason": "No localization implementation in feature path"
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "ticket": "SSPLAN-623",
+  "plan_file": "SSPLAN-623__sales-by-week.qa.md",
+  "plan_title": "SSPLAN-623 Test Plan \u2014 Show Weekly Sales vs Latest Financial Forecast",
+  "executed_at": "2026-08-07T09:34:55.231000-04:00",
+  "mode": "Susan-style source validation",
+  "totals": {
+    "total_tests": 12,
+    "PASS": 1,
+    "FAIL": 4,
+    "PARTIAL": 3,
+    "MANUAL-ONLY": 4
+  },
+  "overall_status": "FAIL",
+  "results": [
+    {
+      "id": "HP-01",
+      "category": "happy path",
+      "venue": "REAL FE",
+      "test": "Baseline weekly chart render",
+      "steps": "Open SalesByWeek route with valid country context and data.",
+      "assertion": "Chart region, title, toggles, and CY/LY series render with no runtime errors.",
+      "ac_trace": "AC-2, AC-4",
+      "status": "MANUAL-ONLY",
+      "evidence": "No live server was available in this run. To verify manually, open `/`, `/hfb/:id`, and `/hfb/:hfbId/pa/:paId` from frontend/src/App.tsx:33-36 and confirm the weekly chart, title, toggles, and CY/LY/forecast data render without runtime errors. Relevant source path: frontend/src/App.tsx:33-36; frontend/src/features/entity-detail/SalesIndexChart.tsx:19-23,82-83,116-123,153-158."
+    },
+    {
+      "id": "HP-02",
+      "category": "happy path",
+      "venue": "REAL FE",
+      "test": "QTY metric shows forecast",
+      "steps": "Switch metric to QTY and inspect chart + legend.",
+      "assertion": "Forecast line and legend item are visible only in QTY view with non-null data points.",
+      "ac_trace": "AC-1, AC-3",
+      "status": "MANUAL-ONLY",
+      "evidence": "No live server was available in this run. To verify manually, open the weekly chart routes from frontend/src/App.tsx:33-36 and confirm switching the metric to QTY shows forecast while non-QTY views hide it. Relevant source path: frontend/src/features/entity-detail/SalesIndexChart.tsx:19-23,82-83,116-123,153-158."
+    },
+    {
+      "id": "SP-01",
+      "category": "sad path",
+      "venue": "HYBRID",
+      "test": "Empty dataset fallback",
+      "steps": "Return empty array from weekly metric response.",
+      "assertion": "Empty-state UX shown; no broken layout or crash.",
+      "ac_trace": "AC-4",
+      "status": "PASS",
+      "evidence": "The empty-state path is stable: when no weekly data exists, `SalesIndexChart` renders a placeholder instead of chart markup (frontend/src/features/entity-detail/SalesIndexChart.tsx:19-23,82-83,116-123,153-158)."
+    },
+    {
+      "id": "SP-02",
+      "category": "sad path",
+      "venue": "HYBRID",
+      "test": "API error resilience",
+      "steps": "Force weekly metric 5xx/4xx response.",
+      "assertion": "Error message/retry path is visible and route remains stable.",
+      "ac_trace": "AC-4",
+      "status": "PARTIAL",
+      "evidence": "Callers catch weekly metric failures and fall back without crashing the page (frontend/src/features/entity-detail/HFBDetailPage.tsx:81-107,139,171-184,207; frontend/src/features/entity-detail/PADetailPage.tsx:67-82,118,152-161,171-173), but the chart does not present a user-visible retry/error state matching the plan."
+    },
+    {
+      "id": "DC-01",
+      "category": "data consistency",
+      "venue": "SOURCE",
+      "test": "Forecast visibility negative checks",
+      "steps": "Toggle SALES, SALES_INDEX, QTY_INDEX with same fixture.",
+      "assertion": "Forecast line is absent for non-QTY metrics (critical SSPLAN-623 behavior).",
+      "ac_trace": "AC-1",
+      "status": "FAIL",
+      "evidence": "The requested QTY-only forecast behavior is not implemented. `SalesIndexChart` explicitly says only `Sales index` has real data and renders `Qty index`, `Qty`, and `Sales` as unavailable (frontend/src/features/entity-detail/SalesIndexChart.tsx:19-23,82-83,116-123,153-158).",
+      "failure_reason": "Weekly chart does not implement QTY-only forecast behavior"
+    },
+    {
+      "id": "DC-02",
+      "category": "data consistency",
+      "venue": "SOURCE",
+      "test": "Financial week ordering integrity",
+      "steps": "Feed unsorted/duplicate `sywNumber` fixtures.",
+      "assertion": "Week labels are deterministically ordered and duplicate handling follows transform rule.",
+      "ac_trace": "AC-2",
+      "status": "PARTIAL",
+      "evidence": "`transformWeeklyTrendRows` keeps the latest fiscal year and sorts ascending by `sywNumber` (frontend/src/services/metricsApi.ts:12-14,172-215,244-257,289-297), but it does not dedupe duplicate week keys, so ordering is deterministic while identity handling is incomplete."
+    },
+    {
+      "id": "API-01",
+      "category": "API integration",
+      "venue": "SOURCE",
+      "test": "Request payload by hierarchy level",
+      "steps": "Validate COUNTRY/HFB/PA request bodies and filters.",
+      "assertion": "Metric key, level, and filters exactly match expected contract per level.",
+      "ac_trace": "AC-3",
+      "status": "FAIL",
+      "evidence": "The source only exposes HFB- and PA-level `WEEKLY_SALES_TREND` requests (frontend/src/services/metricsApi.ts:12-14,172-215,244-257,289-297); the country-level `useSalesByWeek` / `fetchSalesByWeek` contract named in the plan is not present in this project.",
+      "failure_reason": "Weekly request contract missing country/useSalesByWeek implementation"
+    },
+    {
+      "id": "API-02",
+      "category": "API integration",
+      "venue": "HYBRID",
+      "test": "Forecast/index field drift detection",
+      "steps": "Compare FE required keys vs backend response schema fixtures.",
+      "assertion": "Missing/renamed forecast/index fields produce explicit drift failure with key-level diff.",
+      "ac_trace": "AC-3",
+      "status": "FAIL",
+      "evidence": "There is no schema drift guard, and the FE types do not model the forecast/index field set described by the plan; only quantity forecast is typed and `forecast` is dropped to `null` during transform (frontend/src/services/metricsApi.ts:12-14,172-215,244-257,289-297).",
+      "failure_reason": "Weekly forecast/index schema contract incomplete"
+    },
+    {
+      "id": "REG-01",
+      "category": "regression",
+      "venue": "REAL FE",
+      "test": "Neighbor graph regression guard",
+      "steps": "Exercise adjacent weekly graph behavior after SSPLAN-623 change.",
+      "assertion": "Existing weekly modules keep prior behavior and visual stability.",
+      "ac_trace": "AC-4",
+      "status": "MANUAL-ONLY",
+      "evidence": "No live server was available in this run. To verify manually, open the weekly chart routes from frontend/src/App.tsx:33-36 and confirm adjacent chart modules remain visually stable after exercising metric toggles. Relevant source path: frontend/src/App.tsx:33-36; frontend/src/features/entity-detail/SalesIndexChart.tsx:19-23,82-83,116-123,153-158."
+    },
+    {
+      "id": "A11Y-01",
+      "category": "accessibility",
+      "venue": "REAL FE",
+      "test": "Keyboard and semantics",
+      "steps": "Tab through metric toggles and chart container.",
+      "assertion": "All controls are keyboard reachable with meaningful role/name labels.",
+      "ac_trace": "AC-4",
+      "status": "MANUAL-ONLY",
+      "evidence": "No live server was available in this run. To verify manually, open the weekly chart routes from frontend/src/App.tsx:33-36 and confirm the segmented control and chart container are keyboard reachable with meaningful semantics. Relevant source path: frontend/src/features/entity-detail/SalesIndexChart.tsx:19-23,82-83,116-123,153-158."
+    },
+    {
+      "id": "PERF-01",
+      "category": "performance",
+      "venue": "HYBRID",
+      "test": "Render/interaction budget",
+      "steps": "Profile initial render and first metric switch under realistic payload.",
+      "assertion": "Initial render <= 300ms; metric switch response <= 100ms baseline target.",
+      "ac_trace": "AC-4",
+      "status": "PARTIAL",
+      "evidence": "No source-level performance instrumentation or budget assertion was found for this feature, so the 300ms/100ms targets cannot be proven from code alone. Relevant render path: frontend/src/features/entity-detail/SalesIndexChart.tsx:19-23,82-83,116-123,153-158."
+    },
+    {
+      "id": "I18N-01",
+      "category": "i18n",
+      "venue": "SOURCE",
+      "test": "Locale-safe labels and formatting",
+      "steps": "Switch locale and validate labels/numeric display.",
+      "assertion": "No hard-coded English in feature path; locale number formatting is applied.",
+      "ac_trace": "AC-4",
+      "status": "FAIL",
+      "evidence": "Hard-coded English strings remain in the feature path and there is no i18n/locale layer in this code path; examples include labels/messages in frontend/src/features/entity-detail/SalesIndexChart.tsx:19-23,82-83,116-123,153-158.",
+      "failure_reason": "No localization implementation in feature path"
+    }
+  ]
+}

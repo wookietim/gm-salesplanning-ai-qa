@@ -1,0 +1,153 @@
+{
+  "ticket": "SSPLAN-741",
+  "plan_file": "SSPLAN-741__api-metric-kpi-summary.qa.md",
+  "plan_title": "SSPLAN-741 Test Plan \u2014 Create API metric - KPI Summary",
+  "executed_at": "2026-08-07T09:34:55.231000-04:00",
+  "mode": "Susan-style source validation",
+  "totals": {
+    "total_tests": 12,
+    "PASS": 1,
+    "FAIL": 4,
+    "PARTIAL": 3,
+    "MANUAL-ONLY": 4
+  },
+  "overall_status": "FAIL",
+  "results": [
+    {
+      "id": "HP-01",
+      "category": "happy path",
+      "venue": "REAL FE",
+      "test": "Primary Create API metric - KPI Summary render path",
+      "steps": "Open target route with valid fixture/user context.",
+      "assertion": "Expected primary content appears with correct title/value labels and no console/runtime error.",
+      "ac_trace": "AC-1, AC-2",
+      "status": "MANUAL-ONLY",
+      "evidence": "No live server was available in this run. To verify manually, open `/hfb/:id` and `/hfb/:hfbId/pa/:paId` from frontend/src/App.tsx:33-36 and confirm the KPI summary card/list render correctly with live data. Relevant source path: frontend/src/App.tsx:33-36; frontend/src/features/entity-detail/HFBDetailPage.tsx:81-107,139,171-184,207; frontend/src/features/entity-detail/PADetailPage.tsx:67-82,118,152-161,171-173."
+    },
+    {
+      "id": "HP-02",
+      "category": "happy path",
+      "venue": "REAL FE",
+      "test": "Interaction path for Create API metric - KPI Summary",
+      "steps": "Execute expected user interaction (navigate/select/toggle/expand).",
+      "assertion": "State transition completes within 1 click/gesture and target view/data updates correctly.",
+      "ac_trace": "AC-2, AC-3",
+      "status": "MANUAL-ONLY",
+      "evidence": "No live server was available in this run. To verify manually, open the HFB/PA detail routes from frontend/src/App.tsx:33-36 and confirm navigating and filtering updates KPI summary content correctly. Relevant source path: frontend/src/features/entity-detail/HFBDetailPage.tsx:81-107,139,171-184,207; frontend/src/features/entity-detail/PADetailPage.tsx:67-82,118,152-161,171-173."
+    },
+    {
+      "id": "SP-01",
+      "category": "sad path",
+      "venue": "HYBRID",
+      "test": "Empty-data fallback",
+      "steps": "Return empty dataset or no eligible rows.",
+      "assertion": "Fallback/empty message is shown and layout remains stable (no broken placeholders).",
+      "ac_trace": "AC-2, AC-4",
+      "status": "PASS",
+      "evidence": "The HFB/PA snapshot cards stay stable with missing values: HFB uses fallback placeholders for absent fields and PA renders `-` placeholders directly (frontend/src/features/entity-detail/HFBDetailPage.tsx:81-107,139,171-184,207; frontend/src/features/entity-detail/PADetailPage.tsx:67-82,118,152-161,171-173; frontend/src/features/overview/SnapshotCard.tsx:43,103,166-173)."
+    },
+    {
+      "id": "SP-02",
+      "category": "sad path",
+      "venue": "HYBRID",
+      "test": "Error-state resilience",
+      "steps": "Force 4xx/5xx from dependent endpoint/service.",
+      "assertion": "Error state is user-visible, recoverable on retry, and does not hard-crash route.",
+      "ac_trace": "AC-4",
+      "status": "PARTIAL",
+      "evidence": "Both detail pages surface fetch failures via `ErrorBanner` with retry (frontend/src/features/entity-detail/HFBDetailPage.tsx:81-107,139,171-184,207; frontend/src/features/entity-detail/PADetailPage.tsx:67-82,118,152-161,171-173), but the KPI summary metric path itself is incomplete."
+    },
+    {
+      "id": "DC-01",
+      "category": "data consistency",
+      "venue": "SOURCE",
+      "test": "Numeric transform validation",
+      "steps": "Run representative fixture values through transform/mapping layer.",
+      "assertion": "Scaled and raw fields retain expected precision (sales scaled where applicable, index untouched).",
+      "ac_trace": "AC-3",
+      "status": "FAIL",
+      "evidence": "The KPI summary data model is incomplete for the planned module. HFB only hydrates `ytdIndex`/`vsLY` from separate metrics and PA leaves `heroValue` as `-` (frontend/src/features/entity-detail/HFBDetailPage.tsx:81-107,139,171-184,207; frontend/src/features/entity-detail/PADetailPage.tsx:67-82,118,152-161,171-173), so the planned multi-metric summary contract is not implemented.",
+      "failure_reason": "KPI summary dataset incomplete"
+    },
+    {
+      "id": "DC-02",
+      "category": "data consistency",
+      "venue": "SOURCE",
+      "test": "Ordering and identity consistency",
+      "steps": "Feed out-of-order and duplicate-key fixture records.",
+      "assertion": "Output order and uniqueness follow deterministic rule (documented sort/dedupe behavior).",
+      "ac_trace": "AC-3, AC-4",
+      "status": "PARTIAL",
+      "evidence": "List ordering/filtering is deterministic in the existing overview/detail components (frontend/src/features/overview/OverviewPage.tsx:311-328,343-383,435-450,518-529,600-605), but the planned `ProductAreaSummaryList` summary dataset/hook named in the plan is not present in this project."
+    },
+    {
+      "id": "API-01",
+      "category": "API integration",
+      "venue": "SOURCE",
+      "test": "Request contract validation",
+      "steps": "Inspect generated request payload and query params for this feature path.",
+      "assertion": "Metric/level/filters are populated exactly as expected for selected hierarchy context.",
+      "ac_trace": "AC-3, AC-4",
+      "status": "FAIL",
+      "evidence": "The plan references `ProductAreaSummaryList`, `usePaSalesPerformanceForHfb`, and a `/metrics` KPI endpoint, but those source files/contracts are not present; backend routes are only `/api` GET endpoints (backend/src/main/java/com/ikea/sp/controller/DashboardController.java:14,29-145).",
+      "failure_reason": "Planned KPI summary hook/service/API not found in project"
+    },
+    {
+      "id": "API-02",
+      "category": "API integration",
+      "venue": "HYBRID",
+      "test": "Response schema drift guard",
+      "steps": "Compare required FE keys against backend response schema fixture.",
+      "assertion": "Missing or renamed required keys fail with explicit diff and actionable message.",
+      "ac_trace": "AC-1, AC-4",
+      "status": "FAIL",
+      "evidence": "No explicit schema drift guard exists for KPI summary payloads; the existing code relies on ad hoc fetches and placeholder rendering (frontend/src/features/entity-detail/HFBDetailPage.tsx:81-107,139,171-184,207; frontend/src/features/entity-detail/PADetailPage.tsx:67-82,118,152-161,171-173; frontend/src/api.ts:41-49,135-159).",
+      "failure_reason": "No KPI summary schema drift guard"
+    },
+    {
+      "id": "REG-01",
+      "category": "regression",
+      "venue": "REAL FE",
+      "test": "Neighbor-module non-regression",
+      "steps": "Exercise adjacent dashboard module in same route family.",
+      "assertion": "Existing module behavior remains unchanged after feature integration.",
+      "ac_trace": "AC-4",
+      "status": "MANUAL-ONLY",
+      "evidence": "No live server was available in this run. To verify manually, open the HFB/PA detail routes from frontend/src/App.tsx:33-36 and confirm neighbor modules remain stable while exercising KPI summary cards/lists. Relevant source path: frontend/src/features/entity-detail/HFBDetailPage.tsx:81-107,139,171-184,207; frontend/src/features/entity-detail/PADetailPage.tsx:67-82,118,152-161,171-173."
+    },
+    {
+      "id": "A11Y-01",
+      "category": "accessibility",
+      "venue": "REAL FE",
+      "test": "Keyboard + semantic accessibility",
+      "steps": "Tab through interactive controls and inspect role/name semantics.",
+      "assertion": "All interactives reachable by keyboard and exposed names/roles are meaningful.",
+      "ac_trace": "AC-1, AC-4",
+      "status": "MANUAL-ONLY",
+      "evidence": "No live server was available in this run. To verify manually, open the HFB/PA detail routes from frontend/src/App.tsx:33-36 and confirm the KPI summary controls and semantics remain keyboard/screen-reader accessible. Relevant source path: frontend/src/features/entity-detail/HFBDetailPage.tsx:81-107,139,171-184,207; frontend/src/features/entity-detail/PADetailPage.tsx:67-82,118,152-161,171-173; frontend/src/features/overview/SnapshotCard.tsx:43,103,166-173."
+    },
+    {
+      "id": "PERF-01",
+      "category": "performance",
+      "venue": "HYBRID",
+      "test": "Render/interaction budget",
+      "steps": "Profile initial render and first interaction under realistic payload size.",
+      "assertion": "Initial render under 300ms and interaction response under 100ms on baseline environment.",
+      "ac_trace": "AC-1, AC-4",
+      "status": "PARTIAL",
+      "evidence": "No source-level performance instrumentation or budget assertion was found for this feature, so the 300ms/100ms targets cannot be proven from code alone. Relevant render path: frontend/src/features/entity-detail/HFBDetailPage.tsx:81-107,139,171-184,207; frontend/src/features/entity-detail/PADetailPage.tsx:67-82,118,152-161,171-173."
+    },
+    {
+      "id": "I18N-01",
+      "category": "i18n",
+      "venue": "SOURCE",
+      "test": "Localization and formatting",
+      "steps": "Switch locale and validate translated strings/number formatting.",
+      "assertion": "No hard-coded English labels in feature path; numeric/date formats follow locale.",
+      "ac_trace": "AC-2, AC-4",
+      "status": "FAIL",
+      "evidence": "Hard-coded English strings remain in the feature path and there is no i18n/locale layer in this code path; examples include labels/messages in frontend/src/features/entity-detail/HFBDetailPage.tsx:81-107,139,171-184,207; frontend/src/features/entity-detail/PADetailPage.tsx:67-82,118,152-161,171-173; frontend/src/features/overview/SnapshotCard.tsx:43,103,166-173.",
+      "failure_reason": "No localization implementation in feature path"
+    }
+  ]
+}

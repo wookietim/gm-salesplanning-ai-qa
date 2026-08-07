@@ -1,0 +1,161 @@
+{
+  "ticket": "SSPLAN-707",
+  "plan_file": "SSPLAN-707__load-dsp-data-into-sales.qa.md",
+  "plan_title": "SSPLAN-707 Test Plan \u2014 Load DSP data into Sales Planning marts",
+  "executed_at": "2026-08-07T09:34:55.231000-04:00",
+  "mode": "Susan-style source validation",
+  "totals": {
+    "total_tests": 12,
+    "PASS": 0,
+    "FAIL": 12,
+    "PARTIAL": 0,
+    "MANUAL-ONLY": 0
+  },
+  "overall_status": "FAIL",
+  "results": [
+    {
+      "id": "HP-01",
+      "category": "happy path",
+      "venue": "REAL FE",
+      "test": "Primary Load DSP data into Sales Planning marts render path",
+      "steps": "Open target route with valid fixture/user context.",
+      "assertion": "Expected primary content appears with correct title/value labels and no console/runtime error.",
+      "ac_trace": "AC-1, AC-2",
+      "status": "FAIL",
+      "evidence": "The DSP/metrics architecture described by the plan is not present in this project. Backend code exposes only `/api` GET routes (backend/src/main/java/com/ikea/sp/controller/DashboardController.java:14,29-145), uses mock H2 seed data instead of DSP marts (backend/src/main/resources/data.sql:31-38; backend/src/main/java/com/ikea/sp/service/impl/H2PerformanceService.java:55-62,71-101), and contains no `/metrics` POST controller, dispatcher, or typed metric request classes.",
+      "failure_reason": "DSP metrics backend architecture absent from project"
+    },
+    {
+      "id": "HP-02",
+      "category": "happy path",
+      "venue": "REAL FE",
+      "test": "Interaction path for Load DSP data into Sales Planning marts",
+      "steps": "Execute expected user interaction (navigate/select/toggle/expand).",
+      "assertion": "State transition completes within 1 click/gesture and target view/data updates correctly.",
+      "ac_trace": "AC-2, AC-3",
+      "status": "FAIL",
+      "evidence": "The DSP/metrics architecture described by the plan is not present in this project. Backend code exposes only `/api` GET routes (backend/src/main/java/com/ikea/sp/controller/DashboardController.java:14,29-145), uses mock H2 seed data instead of DSP marts (backend/src/main/resources/data.sql:31-38; backend/src/main/java/com/ikea/sp/service/impl/H2PerformanceService.java:55-62,71-101), and contains no `/metrics` POST controller, dispatcher, or typed metric request classes.",
+      "failure_reason": "DSP metrics backend architecture absent from project"
+    },
+    {
+      "id": "SP-01",
+      "category": "sad path",
+      "venue": "HYBRID",
+      "test": "Empty-data fallback",
+      "steps": "Return empty dataset or no eligible rows.",
+      "assertion": "Fallback/empty message is shown and layout remains stable (no broken placeholders).",
+      "ac_trace": "AC-2, AC-4",
+      "status": "FAIL",
+      "evidence": "The DSP/metrics architecture described by the plan is not present in this project. Backend code exposes only `/api` GET routes (backend/src/main/java/com/ikea/sp/controller/DashboardController.java:14,29-145), uses mock H2 seed data instead of DSP marts (backend/src/main/resources/data.sql:31-38; backend/src/main/java/com/ikea/sp/service/impl/H2PerformanceService.java:55-62,71-101), and contains no `/metrics` POST controller, dispatcher, or typed metric request classes.",
+      "failure_reason": "DSP metrics backend architecture absent from project"
+    },
+    {
+      "id": "SP-02",
+      "category": "sad path",
+      "venue": "HYBRID",
+      "test": "Error-state resilience",
+      "steps": "Force 4xx/5xx from dependent endpoint/service.",
+      "assertion": "Error state is user-visible, recoverable on retry, and does not hard-crash route.",
+      "ac_trace": "AC-4",
+      "status": "FAIL",
+      "evidence": "The DSP/metrics architecture described by the plan is not present in this project. Backend code exposes only `/api` GET routes (backend/src/main/java/com/ikea/sp/controller/DashboardController.java:14,29-145), uses mock H2 seed data instead of DSP marts (backend/src/main/resources/data.sql:31-38; backend/src/main/java/com/ikea/sp/service/impl/H2PerformanceService.java:55-62,71-101), and contains no `/metrics` POST controller, dispatcher, or typed metric request classes.",
+      "failure_reason": "DSP metrics backend architecture absent from project"
+    },
+    {
+      "id": "DC-01",
+      "category": "data consistency",
+      "venue": "SOURCE",
+      "test": "Numeric transform validation",
+      "steps": "Run representative fixture values through transform/mapping layer.",
+      "assertion": "Scaled and raw fields retain expected precision (sales scaled where applicable, index untouched).",
+      "ac_trace": "AC-3",
+      "status": "FAIL",
+      "evidence": "The DSP/metrics architecture described by the plan is not present in this project. Backend code exposes only `/api` GET routes (backend/src/main/java/com/ikea/sp/controller/DashboardController.java:14,29-145), uses mock H2 seed data instead of DSP marts (backend/src/main/resources/data.sql:31-38; backend/src/main/java/com/ikea/sp/service/impl/H2PerformanceService.java:55-62,71-101), and contains no `/metrics` POST controller, dispatcher, or typed metric request classes.",
+      "failure_reason": "DSP metrics backend architecture absent from project"
+    },
+    {
+      "id": "DC-02",
+      "category": "data consistency",
+      "venue": "SOURCE",
+      "test": "Ordering and identity consistency",
+      "steps": "Feed out-of-order and duplicate-key fixture records.",
+      "assertion": "Output order and uniqueness follow deterministic rule (documented sort/dedupe behavior).",
+      "ac_trace": "AC-3, AC-4",
+      "status": "FAIL",
+      "evidence": "The DSP/metrics architecture described by the plan is not present in this project. Backend code exposes only `/api` GET routes (backend/src/main/java/com/ikea/sp/controller/DashboardController.java:14,29-145), uses mock H2 seed data instead of DSP marts (backend/src/main/resources/data.sql:31-38; backend/src/main/java/com/ikea/sp/service/impl/H2PerformanceService.java:55-62,71-101), and contains no `/metrics` POST controller, dispatcher, or typed metric request classes.",
+      "failure_reason": "DSP metrics backend architecture absent from project"
+    },
+    {
+      "id": "API-01",
+      "category": "API integration",
+      "venue": "SOURCE",
+      "test": "Request contract validation",
+      "steps": "Inspect generated request payload and query params for this feature path.",
+      "assertion": "Metric/level/filters are populated exactly as expected for selected hierarchy context.",
+      "ac_trace": "AC-3, AC-4",
+      "status": "FAIL",
+      "evidence": "The DSP/metrics architecture described by the plan is not present in this project. Backend code exposes only `/api` GET routes (backend/src/main/java/com/ikea/sp/controller/DashboardController.java:14,29-145), uses mock H2 seed data instead of DSP marts (backend/src/main/resources/data.sql:31-38; backend/src/main/java/com/ikea/sp/service/impl/H2PerformanceService.java:55-62,71-101), and contains no `/metrics` POST controller, dispatcher, or typed metric request classes.",
+      "failure_reason": "DSP metrics backend architecture absent from project"
+    },
+    {
+      "id": "API-02",
+      "category": "API integration",
+      "venue": "HYBRID",
+      "test": "Response schema drift guard",
+      "steps": "Compare required FE keys against backend response schema fixture.",
+      "assertion": "Missing or renamed required keys fail with explicit diff and actionable message.",
+      "ac_trace": "AC-1, AC-4",
+      "status": "FAIL",
+      "evidence": "The DSP/metrics architecture described by the plan is not present in this project. Backend code exposes only `/api` GET routes (backend/src/main/java/com/ikea/sp/controller/DashboardController.java:14,29-145), uses mock H2 seed data instead of DSP marts (backend/src/main/resources/data.sql:31-38; backend/src/main/java/com/ikea/sp/service/impl/H2PerformanceService.java:55-62,71-101), and contains no `/metrics` POST controller, dispatcher, or typed metric request classes.",
+      "failure_reason": "DSP metrics backend architecture absent from project"
+    },
+    {
+      "id": "REG-01",
+      "category": "regression",
+      "venue": "REAL FE",
+      "test": "Neighbor-module non-regression",
+      "steps": "Exercise adjacent dashboard module in same route family.",
+      "assertion": "Existing module behavior remains unchanged after feature integration.",
+      "ac_trace": "AC-4",
+      "status": "FAIL",
+      "evidence": "The DSP/metrics architecture described by the plan is not present in this project. Backend code exposes only `/api` GET routes (backend/src/main/java/com/ikea/sp/controller/DashboardController.java:14,29-145), uses mock H2 seed data instead of DSP marts (backend/src/main/resources/data.sql:31-38; backend/src/main/java/com/ikea/sp/service/impl/H2PerformanceService.java:55-62,71-101), and contains no `/metrics` POST controller, dispatcher, or typed metric request classes.",
+      "failure_reason": "DSP metrics backend architecture absent from project"
+    },
+    {
+      "id": "A11Y-01",
+      "category": "accessibility",
+      "venue": "REAL FE",
+      "test": "Keyboard + semantic accessibility",
+      "steps": "Tab through interactive controls and inspect role/name semantics.",
+      "assertion": "All interactives reachable by keyboard and exposed names/roles are meaningful.",
+      "ac_trace": "AC-1, AC-4",
+      "status": "FAIL",
+      "evidence": "The DSP/metrics architecture described by the plan is not present in this project. Backend code exposes only `/api` GET routes (backend/src/main/java/com/ikea/sp/controller/DashboardController.java:14,29-145), uses mock H2 seed data instead of DSP marts (backend/src/main/resources/data.sql:31-38; backend/src/main/java/com/ikea/sp/service/impl/H2PerformanceService.java:55-62,71-101), and contains no `/metrics` POST controller, dispatcher, or typed metric request classes.",
+      "failure_reason": "DSP metrics backend architecture absent from project"
+    },
+    {
+      "id": "PERF-01",
+      "category": "performance",
+      "venue": "HYBRID",
+      "test": "Render/interaction budget",
+      "steps": "Profile initial render and first interaction under realistic payload size.",
+      "assertion": "Initial render under 300ms and interaction response under 100ms on baseline environment.",
+      "ac_trace": "AC-1, AC-4",
+      "status": "FAIL",
+      "evidence": "The DSP/metrics architecture described by the plan is not present in this project. Backend code exposes only `/api` GET routes (backend/src/main/java/com/ikea/sp/controller/DashboardController.java:14,29-145), uses mock H2 seed data instead of DSP marts (backend/src/main/resources/data.sql:31-38; backend/src/main/java/com/ikea/sp/service/impl/H2PerformanceService.java:55-62,71-101), and contains no `/metrics` POST controller, dispatcher, or typed metric request classes.",
+      "failure_reason": "DSP metrics backend architecture absent from project"
+    },
+    {
+      "id": "I18N-01",
+      "category": "i18n",
+      "venue": "SOURCE",
+      "test": "Localization and formatting",
+      "steps": "Switch locale and validate translated strings/number formatting.",
+      "assertion": "No hard-coded English labels in feature path; numeric/date formats follow locale.",
+      "ac_trace": "AC-2, AC-4",
+      "status": "FAIL",
+      "evidence": "The DSP/metrics architecture described by the plan is not present in this project. Backend code exposes only `/api` GET routes (backend/src/main/java/com/ikea/sp/controller/DashboardController.java:14,29-145), uses mock H2 seed data instead of DSP marts (backend/src/main/resources/data.sql:31-38; backend/src/main/java/com/ikea/sp/service/impl/H2PerformanceService.java:55-62,71-101), and contains no `/metrics` POST controller, dispatcher, or typed metric request classes.",
+      "failure_reason": "DSP metrics backend architecture absent from project"
+    }
+  ]
+}

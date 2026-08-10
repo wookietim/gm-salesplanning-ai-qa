@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UnitTestQAAgentInput",
+  "type": "object",
+  "required": ["runId", "projectRoot", "targets"],
+  "properties": {
+    "runId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique identifier for this run, used in temp file naming and output file naming."
+    },
+    "projectRoot": {
+      "type": "string",
+      "description": "Absolute path to the project root where the vitest config and node_modules live."
+    },
+    "targets": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Source units to generate unit tests for.",
+      "items": {
+        "type": "object",
+        "required": ["name", "sourceFile"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Short name for this unit (used in test describe blocks and output filenames)."
+          },
+          "sourceFile": {
+            "type": "string",
+            "description": "Path to the source file relative to projectRoot (e.g. 'src/services/metrics/sales-by-week/api.ts')."
+          },
+          "exportedSymbols": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Optional list of specific exported functions/constants to test. If omitted, Unit-Test-QA determines what to test from reading the file."
+          },
+          "context": {
+            "type": "string",
+            "description": "Optional context from API-Agent or Bob about what this unit does and what edge cases matter. Helps Unit-Test-QA focus on the highest-risk logic."
+          },
+          "apiContractHints": {
+            "type": "object",
+            "description": "Optional fieldMappings from API-Agent for transformation correctness tests.",
+            "properties": {
+              "fieldMappings": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["rawField", "frontendField"],
+                  "properties": {
+                    "rawField": { "type": "string" },
+                    "frontendField": { "type": "string" },
+                    "transformation": { "type": "string" },
+                    "nullHandling": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "testFramework": {
+      "type": "string",
+      "enum": ["vitest", "jest"],
+      "description": "Test framework to use. Defaults to vitest. Determines import style and runner command."
+    },
+    "frontendSubdir": {
+      "type": "string",
+      "description": "If the vitest config is in a subdirectory (e.g. 'frontend'), specify it here. Temp dir is created relative to this path within projectRoot."
+    }
+  },
+  "additionalProperties": false
+}

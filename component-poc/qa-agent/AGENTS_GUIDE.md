@@ -1,6 +1,6 @@
 # QA Agent System — Complete User Guide
 
-> **Last updated:** 2026-08-07
+> **Last updated:** 2026-08-10
 > **Location:** `component-poc/qa-agent/agents/`
 
 ---
@@ -44,6 +44,7 @@ The QA Agent System is a multi-agent framework for automated and semi-automated 
 |---|---|---|
 | **Pablo** | Orchestration manager | You |
 | **API-Agent** | API discovery, contract extraction, Bob/Susan handoff | Pablo (automatic), or you directly |
+| **Unit-Test-QA** | Ephemeral unit test writer and executor | Pablo (automatic after API-Agent), or you directly |
 | **Bob** | Component test creator | Pablo (or you directly) |
 | **Susan** | Component test executor | Pablo (or you directly) |
 | **Jira-Agent** | Jira ticket fetcher | Bob, Pablo |
@@ -114,6 +115,46 @@ A separate `GET /metrics/hierarchy` endpoint returns HFB hierarchy data.
 - All target components have a fully traced endpoint chain
 - No unmapped component-to-service links
 - No contract drift findings (when `backendRoot` is provided)
+
+---
+
+### Unit-Test-QA — Ephemeral Unit Test Writer and Executor
+
+**Folder:** `agents/unit-test-qa/`
+
+Unit-Test-QA is a world-class unit test engineer that combines authoring and execution into a single ephemeral pass. It writes production-quality Vitest tests for pure-logic code units, executes them against the real project, and reports findings — then deletes every test file it created.
+
+**Key principle: it leaves the project exactly as it found it.** No `.test.ts` files are added. No configuration is modified. The tests live for the duration of one run.
+
+#### What it tests
+
+- Data transformation functions (`transformResponse`, `parseNumber`, field scaling)
+- Utility functions (`getFiscalWeekInfo`, threshold classifiers, sort/filter logic)
+- Boundary values (e.g. index 93 → red, 94 → orange — off-by-one threshold bugs)
+- Null/undefined handling (e.g. `parseFloat("N/A")` → `null`, not `NaN`)
+- Transformation correctness (e.g. `weeklyNetSalesCy = 123456` → `salesCy = 123.456`)
+
+#### How it works
+
+1. Creates `<projectRoot>/__unit-test-qa-tmp__/` (temporary)
+2. Writes one `.test.ts` file per target unit using the project's existing test style
+3. Runs `npx vitest run __unit-test-qa-tmp__/ --reporter json` from the project root (path aliases and jsdom environment work normally)
+4. Captures per-test pass/fail results
+5. **Deletes `__unit-test-qa-tmp__/` entirely**
+6. Reports results — the generated test code is preserved in the report as the only record
+
+#### When Pablo calls it
+
+Pablo calls Unit-Test-QA **after API-Agent** and before Bob, passing the `fieldMappings` from API-Agent's output as `apiContractHints`. This lets Unit-Test-QA generate transformation-correctness tests with exact numeric examples before Bob writes the broader test plan.
+
+#### A FAIL result is a confirmed production bug
+
+Every test failure indicates a real defect in the production code. Unit-Test-QA reports the actual vs expected value, which production file is wrong, and exactly what to change to fix it.
+
+#### Pass criteria
+
+- All generated tests pass
+- Temp directory deleted after run
 
 ---
 
@@ -429,7 +470,10 @@ You
        ├─▶ API-Agent             (discovers API contracts from source)
        │     └─▶ bobHandoff ──▶ Bob
        │     └─▶ susanHandoff ──▶ Susan
-       ├─▶ Bob                   (creates/updates tests + regression sad-path tests)
+       │     └─▶ fieldMappings ──▶ Unit-Test-QA
+       ├─▶ Unit-Test-QA          (ephemeral unit tests for transformations + utilities)
+       │     └─▶ findings (confirmed bugs) ──▶ Pablo run report
+       ├─▶ Bob                   (creates/updates test plans + regression sad-path tests)
        │     └─▶ receives regressionFindings from Pablo (sourced from Regression baseline)
        └─▶ Susan                 (executes tests + delegates to specialist agents)
              ├─▶ Regression      (per component — checks changed files vs baseline)
@@ -439,7 +483,7 @@ You
        └─▶ Guide-Sync            (when agent definitions change — updates AGENTS_GUIDE/README links)
 
 Specialist agents called directly (standalone / CI):
-  Smoke · Regression · Accessibility · API Contract · Visual Diff · Guide-Sync
+  Smoke · Unit-Test-QA · Regression · Accessibility · API Contract · Visual Diff · Guide-Sync
 ```
 
 Specialist agents can run independently — you or your CI pipeline can call them directly.

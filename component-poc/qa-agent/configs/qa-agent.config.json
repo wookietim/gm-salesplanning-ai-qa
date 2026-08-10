@@ -12,6 +12,7 @@
   "runOrder": [
     "pablo",
     "api-agent",
+    "unit-test-qa",
     "bob",
     "susan",
     "smoke",
@@ -31,6 +32,12 @@
     {
       "id": "api-agent",
       "path": "component-poc/qa-agent/agents/api-agent",
+      "enabled": true,
+      "timeoutSeconds": 600
+    },
+    {
+      "id": "unit-test-qa",
+      "path": "component-poc/qa-agent/agents/unit-test-qa",
       "enabled": true,
       "timeoutSeconds": 600
     },

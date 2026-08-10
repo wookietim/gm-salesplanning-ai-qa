@@ -72,3 +72,12 @@ Suggested execution entry points by agent type.
 - Reconcile AGENTS_GUIDE.md with current agents, prompts, schemas, and config
 - Ensure README links to AGENTS_GUIDE are present and correct
 - Remove stale/duplicate guide content and align examples with current workflow
+
+## unit-test-qa
+
+- Write ephemeral Vitest unit tests for target source file(s)
+- Run from project root: `npx vitest run __unit-test-qa-tmp__/ --reporter json`
+- Temp dir created at `<projectRoot>/__unit-test-qa-tmp__/` and deleted after run
+- No test files added to the project source
+- Pass apiContractHints from API-Agent for transformation-correctness tests
+- Report findings (test failures = confirmed production bugs) to QA-Runs/

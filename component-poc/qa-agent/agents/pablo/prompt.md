@@ -50,6 +50,19 @@ It must be complete, accurate, and actionable.
    - Collect `bobHandoff` (test cases for Bob) and `susanHandoff` (execution steps for Susan).
    - Include any contract drift findings in the run report.
 
+4b. **Unit-Test-QA**: Run ephemeral unit tests against pure-logic code units.
+   - Invoke for every `transformResponse` function discovered by API-Agent.
+   - Invoke for any utility functions in scope for the current ticket.
+   - Pass: `projectRoot`, the relevant source files as `targets`, and
+     `apiContractHints` from API-Agent's `fieldMappings` so Unit-Test-QA can
+     generate transformation-correctness tests with concrete numeric examples.
+   - Unit-Test-QA writes and runs Vitest tests ephemerally — no files added to
+     the project. Temp dir is created and deleted automatically.
+   - Collect `findings` from Unit-Test-QA. Any FAIL finding is a confirmed bug
+     in production code — escalate as a FAIL in the Pablo run report with the
+     Unit-Test-QA finding as evidence.
+   - Include Unit-Test-QA results in the run report (section: Unit Test Results).
+
 5. **Bob — test plan**: Check whether a current plan exists for each component.
    - If plan is current (Jira unchanged since last generation): reuse.
    - If Jira has changed, plan is missing, or tests are no longer applicable: regenerate.
@@ -110,6 +123,11 @@ Every Pablo run report must contain ALL of the following:
 
 4. **API-Agent results**
    - Endpoints discovered, field mappings extracted, contract drift findings
+
+4b. **Unit-Test-QA results**
+    - Units tested, tests generated/passed/failed
+    - Full findings (confirmed bugs) with actual vs expected values and production fix
+    - Cleanup confirmation (temp dir deleted)
 
 5. **Bob actions**
    - Components checked, plans reused vs regenerated, what changed

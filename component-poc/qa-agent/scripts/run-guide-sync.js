@@ -61,6 +61,7 @@ const displayName = {
     'api-contract': 'API Contract',
     'visual-diff': 'Visual Diff',
     'guide-sync': 'Guide-Sync',
+    'unit-test-qa': 'Unit-Test-QA',
     'jira-agent': 'Jira-Agent',
 };
 

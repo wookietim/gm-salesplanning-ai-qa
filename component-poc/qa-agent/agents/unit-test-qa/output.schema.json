@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UnitTestQAAgentOutput",
+  "type": "object",
+  "required": ["runId", "agentId", "status", "summary", "unitResults", "findings", "cleanupComplete"],
+  "properties": {
+    "runId": { "type": "string" },
+    "agentId": { "type": "string", "const": "unit-test-qa" },
+    "status": { "type": "string", "enum": ["pass", "fail", "blocked"] },
+    "summary": { "type": "string" },
+    "totals": {
+      "type": "object",
+      "properties": {
+        "unitsTargeted": { "type": "number" },
+        "testsGenerated": { "type": "number" },
+        "testsPassed": { "type": "number" },
+        "testsFailed": { "type": "number" },
+        "testsErrored": { "type": "number" }
+      }
+    },
+    "unitResults": {
+      "type": "array",
+      "description": "One entry per target unit.",
+      "items": {
+        "type": "object",
+        "required": ["name", "sourceFile", "status", "generatedTestCode", "tests"],
+        "properties": {
+          "name": { "type": "string" },
+          "sourceFile": { "type": "string" },
+          "status": { "type": "string", "enum": ["pass", "fail", "error", "blocked"] },
+          "generatedTestCode": {
+            "type": "string",
+            "description": "The full TypeScript test code that was generated and executed. Retained in the report as the only record of what was tested."
+          },
+          "tests": {
+            "type": "array",
+            "description": "Per-test results from the vitest runner output.",
+            "items": {
+              "type": "object",
+              "required": ["name", "status"],
+              "properties": {
+                "name": { "type": "string" },
+                "status": { "type": "string", "enum": ["pass", "fail", "error"] },
+                "duration": { "type": "number" },
+                "actualValue": {},
+                "expectedValue": {},
+                "errorMessage": { "type": "string" },
+                "bugIndicator": { "type": "string", "description": "When status is fail: plain-language explanation of what production bug this indicates." }
+              },
+              "additionalProperties": false
+            }
+          },
+          "coverageAssessment": {
+            "type": "object",
+            "properties": {
+              "codePathsCovered": { "type": "array", "items": { "type": "string" } },
+              "codePathsNotCovered": { "type": "array", "items": { "type": "string" } },
+              "coverageNote": { "type": "string" }
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "findings": {
+      "type": "array",
+      "description": "Bugs found. Every test failure produces a finding.",
+      "items": {
+        "type": "object",
+        "required": ["severity", "title", "testName", "actualValue", "expectedValue", "productionFix"],
+        "properties": {
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
+          "title": { "type": "string" },
+          "testName": { "type": "string" },
+          "sourceFile": { "type": "string" },
+          "actualValue": {},
+          "expectedValue": {},
+          "bugExplanation": { "type": "string", "description": "What the test failure means in production terms." },
+          "productionFix": { "type": "string", "description": "Exactly what to change in the production code to make this test pass." }
+        },
+        "additionalProperties": true
+      }
+    },
+    "cleanupComplete": {
+      "type": "boolean",
+      "description": "True if the temp directory __unit-test-qa-tmp__ was successfully deleted."
+    },
+    "tempDirPath": {
+      "type": "string",
+      "description": "Path to the temp directory used. Populated even on cleanup failure so it can be manually deleted."
+    }
+  },
+  "additionalProperties": false
+}

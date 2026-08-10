@@ -16,6 +16,7 @@
     "bob",
     "susan",
     "smoke",
+    "security-qa",
     "regression",
     "accessibility",
     "api-contract",
@@ -58,6 +59,12 @@
       "path": "component-poc/qa-agent/agents/smoke",
       "enabled": true,
       "timeoutSeconds": 600
+    },
+    {
+      "id": "security-qa",
+      "path": "component-poc/qa-agent/agents/security-qa",
+      "enabled": true,
+      "timeoutSeconds": 900
     },
     {
       "id": "regression",

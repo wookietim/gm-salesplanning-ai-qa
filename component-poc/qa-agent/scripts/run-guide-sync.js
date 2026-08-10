@@ -62,6 +62,7 @@ const displayName = {
     'visual-diff': 'Visual Diff',
     'guide-sync': 'Guide-Sync',
     'unit-test-qa': 'Unit-Test-QA',
+    'security-qa': 'Security-QA',
     'jira-agent': 'Jira-Agent',
 };
 

@@ -134,10 +134,20 @@ Every run report must contain:
    - Checks validated from source (test ID + file:line evidence)
    - Partial checks (test ID + what was validated + what remains + why)
    - Manual-only checks (test ID + exact steps/commands to complete)
-5. **Specialist agent results**: Regression, Accessibility, API Contract, Visual Diff findings
-6. **Totals**: components, tests, passed, failed, partial, manual-only
-7. **Overall verdict**: PASS or FAIL (PASS only if zero FAILs; PARTIALs and MANUAL-ONLY do not prevent PASS)
-8. **Consolidated failure reasons** (de-duplicated): exact file, line, and description for every FAIL
+5. **Specialist agent results**: Regression, Accessibility, API Contract, Visual Diff, **Security-QA** findings
+6. **Security validation checks** (when `securityValidationSteps` provided):
+   - For each step: file checked, check performed, result (PASS/FAIL), evidence
+7. **Totals**: components, tests, passed, failed, partial, manual-only
+8. **Overall verdict**: PASS or FAIL (PASS only if zero FAILs; PARTIALs and MANUAL-ONLY do not prevent PASS)
+9. **Consolidated failure reasons** (de-duplicated): exact file, line, and description for every FAIL
+
+## Security validation rule (rule 14)
+
+When `securityValidationSteps` are provided from Security-QA:
+- For each step, open the specified `file` and verify `check` against `passCriteria`
+- PASS: code satisfies passCriteria — record file:line as evidence
+- FAIL: code violates passCriteria — record the exact code and what it should be
+- Include all results in the Security validation checks output section
 
 ---
 

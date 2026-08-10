@@ -39,6 +39,22 @@ It must be complete, accurate, and actionable.
        not exist on type 'SalesByWeekPoint'" not just "tsc -b failed"
    - If Smoke passes or `abortOnSmokeFailure: false`: continue, record smoke summary.
 
+1b. **Security-QA** (always runs after Smoke, unless `skipSecurity: true`):
+   - Invoke Security-QA with `frontendRoot`, `backendRoot`, scope, and
+     `changedFiles` from the current run's component chain.
+   - If Security-QA returns any CRITICAL finding: abort the run immediately
+     with `overallStatus: fail`. Security-critical issues must not be hidden
+     behind a passing test suite.
+   - If Security-QA returns HIGH findings: continue the run but mark the
+     overall report as `securityStatus: VULNERABLE`. Include the findings
+     prominently in the run report.
+   - Pass Security-QA's `bobHandoff` to Bob as `securityTests` so Bob
+     generates `[SECURITY: SEC-xxx]` test cases in the plan.
+   - Pass Security-QA's `susanHandoff` to Susan as `securityValidationSteps`
+     so Susan validates security checks from source.
+   - Include a dedicated **Security Audit** section in the Pablo run report
+     with all Security-QA findings, passing checks, and npm audit results.
+
 2. **Identify scope**: changed (default), full project, or explicit component list.
 
 3. **Jira data**: If a ticket key is provided, fetch via Jira-Agent. Use the
@@ -51,9 +67,18 @@ It must be complete, accurate, and actionable.
    - Include any contract drift findings in the run report.
 
 4b. **Unit-Test-QA**: Run ephemeral unit tests against pure-logic code units.
-   - Invoke for every `transformResponse` function discovered by API-Agent.
-   - Invoke for any utility functions in scope for the current ticket.
-   - Pass: `projectRoot`, the relevant source files as `targets`, and
+   - **Scope is strictly limited to the current ticket's components.** Only pass
+     source files that API-Agent explicitly identified as part of the target
+     component's dependency chain — the `sourceFile` from each `discoveredEndpoint`
+     and any utility files imported by those service files. Do NOT pass unrelated
+     utilities.
+   - Invoke for every `transformResponse` function discovered by API-Agent
+     (pass the `sourceFile` from each `discoveredEndpoint` as a target).
+   - Invoke for utility files imported by the service layer of the target component
+     (e.g. if `sales-by-week/api.ts` imports `@/utils/fiscal-week`, include
+     `src/utils/fiscal-week.ts` as a target).
+   - Do NOT invoke for utilities that are not part of the ticket's component chain.
+   - Pass: `projectRoot`, the scoped source files as `targets`, and
      `apiContractHints` from API-Agent's `fieldMappings` so Unit-Test-QA can
      generate transformation-correctness tests with concrete numeric examples.
    - Unit-Test-QA writes and runs Vitest tests ephemerally — no files added to

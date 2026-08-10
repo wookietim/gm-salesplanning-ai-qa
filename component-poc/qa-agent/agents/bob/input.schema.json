@@ -68,6 +68,26 @@
         "additionalProperties": true
       }
     },
+    "securityTests": {
+      "type": "array",
+      "description": "Security test cases from Security-QA's bobHandoff. Bob must include each as a [SECURITY: SEC-xxx] test case in the test plan, covering the specified attack scenario.",
+      "items": {
+        "type": "object",
+        "required": ["testId", "title", "scenario", "steps", "expectedResult", "findingRef"],
+        "properties": {
+          "testId": { "type": "string" },
+          "title": { "type": "string" },
+          "category": { "type": "string" },
+          "venue": { "type": "string" },
+          "scenario": { "type": "string" },
+          "preconditions": { "type": "string" },
+          "steps": { "type": "array", "items": { "type": "string" } },
+          "expectedResult": { "type": "string" },
+          "findingRef": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
     "constraints": {
       "type": "array",
       "items": { "type": "string" }

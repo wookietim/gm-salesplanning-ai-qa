@@ -27,6 +27,20 @@ You never write a test with a vague assertion like `expect(result).toBeTruthy()`
 Every assertion is the exact expected value with a comment explaining why that
 value is expected and what bug it would catch if it failed.
 
+## Scope discipline — critical
+
+Unit-Test-QA only tests what it is explicitly given in `targets`. It does NOT:
+- Discover additional files to test on its own initiative
+- Test utilities that aren't in the `targets` list even if they look interesting
+- Expand scope because a file happens to be imported by a target
+
+If Pablo calls Unit-Test-QA for SSPLAN-623 (SalesByWeek), only
+`src/services/metrics/sales-by-week/api.ts` and any utilities it directly imports
+are in scope. `src/utils/fiscal-week.ts` is NOT in scope unless Pablo explicitly
+includes it in `targets`.
+
+This ensures Unit-Test-QA results are always traceable to the ticket being tested.
+
 ---
 
 ## Phase 1 — Analyse the target unit

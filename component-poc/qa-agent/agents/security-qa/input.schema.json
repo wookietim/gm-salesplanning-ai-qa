@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SecurityQAAgentInput",
+  "type": "object",
+  "required": ["runId", "frontendRoot"],
+  "properties": {
+    "runId": { "type": "string", "minLength": 1 },
+    "frontendRoot": {
+      "type": "string",
+      "description": "Absolute path to the frontend project root."
+    },
+    "backendRoot": {
+      "type": "string",
+      "description": "Optional. Absolute path to the backend project root. When provided, backend security checks run."
+    },
+    "apiBaseUrl": {
+      "type": "string",
+      "description": "Optional. Live backend URL for security header checks. When absent, header checks are MANUAL-ONLY."
+    },
+    "scope": {
+      "type": "string",
+      "enum": ["full", "changed", "components"],
+      "description": "Audit scope. 'full' audits the entire project. 'changed' focuses on files in changedFiles. 'components' limits to componentPaths."
+    },
+    "changedFiles": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "When scope is 'changed', the files to focus on (from Pablo's component chain). Security-QA also always checks auth/config files regardless of scope."
+    },
+    "componentPaths": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "When scope is 'components', the explicit source files to audit."
+    },
+    "runNpmAudit": {
+      "type": "boolean",
+      "description": "When true, run npm audit in frontendRoot. Default: true."
+    },
+    "bobHandoffEnabled": {
+      "type": "boolean",
+      "description": "When true, produce bobSecurityTests for HIGH/CRITICAL findings. Default: true."
+    },
+    "susanHandoffEnabled": {
+      "type": "boolean",
+      "description": "When true, produce susanValidationSteps for SOURCE-verifiable findings. Default: true."
+    },
+    "blockOnSeverity": {
+      "type": "string",
+      "enum": ["critical", "high", "medium", "none"],
+      "description": "Pablo aborts the run if any finding meets or exceeds this severity. Default: 'high'."
+    }
+  },
+  "additionalProperties": false
+}

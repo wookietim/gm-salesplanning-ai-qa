@@ -44,6 +44,22 @@
     "apiBaseUrl": {
       "type": "string",
       "description": "Live backend base URL (e.g. http://localhost:8080). When provided, Susan invokes API Contract to validate actual response schemas against what API-Agent discovered."
+    },
+    "securityValidationSteps": {
+      "type": "array",
+      "description": "Source validation steps from Security-QA's susanHandoff. Susan executes each as a SOURCE-venue security check and records PASS/FAIL with evidence.",
+      "items": {
+        "type": "object",
+        "required": ["file", "check", "passCriteria", "findingRef"],
+        "properties": {
+          "file": { "type": "string" },
+          "check": { "type": "string" },
+          "passCriteria": { "type": "string" },
+          "findingRef": { "type": "string" },
+          "venue": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
     }
   "additionalProperties": false
 }

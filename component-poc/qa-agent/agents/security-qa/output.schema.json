@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SecurityQAAgentOutput",
+  "type": "object",
+  "required": ["runId", "agentId", "verdict", "summary", "findings", "bobHandoff", "susanHandoff"],
+  "properties": {
+    "runId": { "type": "string" },
+    "agentId": { "type": "string", "const": "security-qa" },
+    "verdict": {
+      "type": "string",
+      "enum": ["SECURE", "VULNERABLE", "PARTIAL"],
+      "description": "SECURE = zero critical/high. VULNERABLE = one or more critical/high. PARTIAL = could not complete all checks."
+    },
+    "summary": { "type": "string" },
+    "totals": {
+      "type": "object",
+      "properties": {
+        "critical": { "type": "number" },
+        "high": { "type": "number" },
+        "medium": { "type": "number" },
+        "low": { "type": "number" },
+        "info": { "type": "number" },
+        "passing": { "type": "number" }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "severity", "category", "title", "file", "attackScenario", "blastRadius", "evidence", "remediation"],
+        "properties": {
+          "id": { "type": "string", "description": "e.g. SEC-001" },
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
+          "category": {
+            "type": "string",
+            "enum": ["XSS", "TokenStorage", "TokenLifecycle", "RouteParamInjection", "InfoDisclosure", "CORS", "CSRF", "AuthBypass", "OpenRedirect", "SessionStorage", "DependencyVulnerability", "SecurityHeaders", "Swagger", "JWTValidation", "BigQueryInjection", "SensitiveEnvVar", "Other"]
+          },
+          "title": { "type": "string" },
+          "file": { "type": "string" },
+          "line": { "type": ["number", "null"] },
+          "attackScenario": { "type": "string", "description": "Concrete step-by-step attack chain." },
+          "blastRadius": { "type": "string", "description": "What data/functionality is exposed if exploited." },
+          "evidence": { "type": "string", "description": "Exact code or output that confirms the finding." },
+          "remediation": { "type": "string", "description": "Specific code change required to fix this finding." },
+          "status": { "type": "string", "enum": ["CONFIRMED", "RESOLVED", "MANUAL"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "passingChecks": {
+      "type": "array",
+      "description": "Categories checked and confirmed clean.",
+      "items": {
+        "type": "object",
+        "required": ["category", "description", "evidence"],
+        "properties": {
+          "category": { "type": "string" },
+          "description": { "type": "string" },
+          "evidence": { "type": "string" }
+        }
+      }
+    },
+    "npmAuditSummary": {
+      "type": "object",
+      "description": "Summarised npm audit results.",
+      "properties": {
+        "ran": { "type": "boolean" },
+        "critical": { "type": "number" },
+        "high": { "type": "number" },
+        "moderate": { "type": "number" },
+        "low": { "type": "number" },
+        "info": { "type": "number" },
+        "highlights": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "securityHeadersStatus": {
+      "type": "object",
+      "description": "Results of security header checks. Null if apiBaseUrl not provided.",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "present": { "type": "boolean" },
+          "value": { "type": ["string", "null"] },
+          "severity": { "type": "string" }
+        }
+      }
+    },
+    "bobHandoff": {
+      "type": "array",
+      "description": "Security test cases for Bob to add to test plans.",
+      "items": {
+        "type": "object",
+        "required": ["testId", "title", "category", "venue", "scenario", "steps", "expectedResult", "findingRef"],
+        "properties": {
+          "testId": { "type": "string" },
+          "title": { "type": "string" },
+          "category": { "type": "string", "const": "SECURITY" },
+          "venue": { "type": "string", "enum": ["SOURCE", "REAL FE", "HYBRID"] },
+          "scenario": { "type": "string" },
+          "preconditions": { "type": "string" },
+          "steps": { "type": "array", "items": { "type": "string" } },
+          "expectedResult": { "type": "string" },
+          "findingRef": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "susanHandoff": {
+      "type": "array",
+      "description": "Source validation steps for Susan.",
+      "items": {
+        "type": "object",
+        "required": ["file", "check", "passCriteria", "findingRef"],
+        "properties": {
+          "file": { "type": "string" },
+          "check": { "type": "string" },
+          "passCriteria": { "type": "string" },
+          "findingRef": { "type": "string" },
+          "venue": { "type": "string", "enum": ["SOURCE", "REAL FE"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

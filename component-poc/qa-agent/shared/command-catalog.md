@@ -81,3 +81,13 @@ Suggested execution entry points by agent type.
 - No test files added to the project source
 - Pass apiContractHints from API-Agent for transformation-correctness tests
 - Report findings (test failures = confirmed production bugs) to QA-Runs/
+
+## security-qa
+
+- Audit frontend source for XSS, token storage, open redirect, console leaks, route param injection
+- Audit backend source for CORS misconfiguration, CSRF scope, public swagger, error disclosure, JWT validation
+- Run `npm audit --json` in frontendRoot for dependency CVEs
+- Check security headers via HEAD request to apiBaseUrl (when provided)
+- Always runs after Smoke in Pablo's pipeline; CRITICAL findings abort the run
+- Produces bobHandoff (security test cases) and susanHandoff (source validation steps)
+- Standalone: "Pablo, run a security scan for SSPLAN-698" or "Pablo, run a full security scan"

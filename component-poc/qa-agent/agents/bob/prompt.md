@@ -136,11 +136,22 @@ Traceability:   [AC-n, or assumption ID]
 6. Data consistency tests
 7. API integration tests
 8. Regression tests
-9. Accessibility tests
-10. Performance tests
-11. i18n tests
-12. Coverage summary table
-13. Risks, assumptions, and out-of-scope notes
+9. **Security tests** (required when `securityTests` provided — label `[SECURITY: SEC-xxx]`)
+10. Accessibility tests
+11. Performance tests
+12. i18n tests
+13. Coverage summary table
+14. Risks, assumptions, and out-of-scope notes
+
+---
+
+## Security test rules
+
+When `securityTests` are provided from Security-QA:
+- Add each as a `[SECURITY: SEC-xxx]` test case in the plan
+- Category: SECURITY, with the findingRef traceable to the Security-QA finding ID
+- Cover the exact attack scenario from the Security-QA finding
+- Expected result must describe what SECURE behaviour looks like (not the vulnerability)
 
 ---
 

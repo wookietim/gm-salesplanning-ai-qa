@@ -45,6 +45,7 @@ The QA Agent System is a multi-agent framework for automated and semi-automated 
 | **Pablo** | Orchestration manager | You |
 | **API-Agent** | API discovery, contract extraction, Bob/Susan handoff | Pablo (automatic), or you directly |
 | **Unit-Test-QA** | Ephemeral unit test writer and executor | Pablo (automatic after API-Agent), or you directly |
+| **Security-QA** | Full-stack security audit — XSS, token storage, CORS, auth, CVEs | Pablo (automatic after Smoke), or you directly |
 | **Bob** | Component test creator | Pablo (or you directly) |
 | **Susan** | Component test executor | Pablo (or you directly) |
 | **Jira-Agent** | Jira ticket fetcher | Bob, Pablo |
@@ -155,6 +156,57 @@ Every test failure indicates a real defect in the production code. Unit-Test-QA 
 
 - All generated tests pass
 - Temp directory deleted after run
+
+---
+
+### Security-QA — Full-Stack Security Audit
+
+**Folder:** `agents/security-qa/`
+
+Security-QA is a world-class application security specialist that audits the full stack for exploitable vulnerabilities — not suggestions, but real attack vectors with evidence, attack chains, and specific code fixes. It runs automatically in every Pablo pipeline and can be invoked standalone for a security-only scan.
+
+#### When it runs
+- **Always** in Pablo's pipeline: after Smoke, before Bob and Susan
+- **Standalone**: `"Pablo, run a security scan for SSPLAN-698"` or `"Pablo, run a full security scan"`
+- **Feeds Bob**: produces `securityTests` — Bob adds `[SECURITY: SEC-xxx]` test cases to every plan
+- **Feeds Susan**: produces `securityValidationSteps` — Susan validates security checks from source
+- **CRITICAL finding → Pablo aborts the run** (same gate as Smoke)
+
+#### What Security-QA audits
+
+| Category | What it checks |
+|---|---|
+| **XSS** | `dangerouslySetInnerHTML`, `innerHTML`, `eval`, unsanitised API data in DOM |
+| **Token storage** | MSAL `cacheLocation: 'localStorage'` (tokens readable after XSS) |
+| **Token lifecycle** | `clearToken()` on signout, expiry validation, tokens in logs |
+| **Route param injection** | Path params used in API calls without allowlist validation |
+| **Open redirect** | `redirectUri` and `postLogoutRedirectUri` validation |
+| **sessionStorage** | Sensitive data stored in sessionStorage |
+| **CORS** | `allowedHeaders: ["*"]`, `allowedMethods: ["*"]`, wildcard origins |
+| **CSRF** | Scope of CSRF exemption — is it tight enough? |
+| **Public endpoints** | Swagger UI/API docs accessible without auth in production |
+| **Error disclosure** | Raw exception messages returned in API responses |
+| **JWT validation** | Issuer/audience claims validated? |
+| **BigQuery injection** | Query parameters parameterised? |
+| **Dependencies** | `npm audit` for CVEs in frontend packages |
+| **Security headers** | CSP, HSTS, X-Frame-Options, X-Content-Type-Options |
+
+#### Known findings (pre-confirmed from source)
+
+| ID | Severity | Finding |
+|---|---|---|
+| SEC-001 | HIGH | MSAL `cacheLocation: 'localStorage'` — tokens readable by XSS scripts |
+| SEC-002 | MEDIUM | CORS `allowedHeaders: ["*"]` too permissive |
+| SEC-003 | MEDIUM | CORS `allowedMethods: ["*"]` allows TRACE/CONNECT |
+| SEC-004 | MEDIUM | `/swagger-ui/**` publicly accessible without auth |
+| SEC-005 | MEDIUM | `GlobalExceptionHandler` leaks raw exception messages |
+| SEC-006 | LOW | `sessionStorage` used for navigation paths |
+
+#### Pass criteria
+
+- Zero CRITICAL findings
+- Zero HIGH findings
+- All MEDIUM findings documented with remediation
 
 ---
 
@@ -466,6 +518,7 @@ Guide-Sync writes a synchronization report to `QA-Runs/` documenting:
 You
  └─▶ Pablo
        ├─▶ [Step 0] Smoke        (pre-flight — abort if build/tests broken)
+       ├─▶ [Step 0b] Security-QA (security audit — abort if CRITICAL; feeds Bob + Susan)
        ├─▶ Jira-Agent            (fetches ticket data)
        ├─▶ API-Agent             (discovers API contracts from source)
        │     └─▶ bobHandoff ──▶ Bob
@@ -473,9 +526,11 @@ You
        │     └─▶ fieldMappings ──▶ Unit-Test-QA
        ├─▶ Unit-Test-QA          (ephemeral unit tests for transformations + utilities)
        │     └─▶ findings (confirmed bugs) ──▶ Pablo run report
-       ├─▶ Bob                   (creates/updates test plans + regression sad-path tests)
-       │     └─▶ receives regressionFindings from Pablo (sourced from Regression baseline)
-       └─▶ Susan                 (executes tests + delegates to specialist agents)
+       ├─▶ Bob                   (creates/updates test plans + security + regression tests)
+       │     └─▶ receives securityTests from Security-QA
+       │     └─▶ receives regressionFindings from Regression baseline
+       └─▶ Susan                 (executes tests + validates security steps)
+             ├─▶ securityValidationSteps from Security-QA
              ├─▶ Regression      (per component — checks changed files vs baseline)
              ├─▶ Accessibility   (per component with a11y tests — pa11y scans)
              ├─▶ API Contract    (when apiBaseUrl available — live schema validation)
@@ -483,7 +538,7 @@ You
        └─▶ Guide-Sync            (when agent definitions change — updates AGENTS_GUIDE/README links)
 
 Specialist agents called directly (standalone / CI):
-  Smoke · Unit-Test-QA · Regression · Accessibility · API Contract · Visual Diff · Guide-Sync
+  Smoke · Security-QA · Unit-Test-QA · Regression · Accessibility · API Contract · Visual Diff · Guide-Sync
 ```
 
 Specialist agents can run independently — you or your CI pipeline can call them directly.
@@ -724,6 +779,35 @@ Ask guide-sync to run a full documentation sync.
 runId: guide-sync-20260806
 fullSync: true
 ```
+
+---
+
+### Example 17 — Run a security scan for a specific ticket
+
+> You want to know the security posture of the SSPLAN-698 component changes only.
+
+```
+Ask Pablo to run a security scan for SSPLAN-698.
+frontendRoot: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-frontend
+backendRoot: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-backend
+```
+
+Security-QA will audit the full auth layer plus the files touched by SSPLAN-698, run npm audit, and report all findings with severity, attack chain, and remediation.
+
+---
+
+### Example 18 — Run a full project security scan
+
+> You want a complete security audit of the entire codebase before a release.
+
+```
+Ask Pablo to run a full security scan across the entire project.
+frontendRoot: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-frontend
+backendRoot: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-backend
+apiBaseUrl: http://localhost:8080
+```
+
+With `apiBaseUrl` provided, Security-QA will also check security headers on the live backend.
 
 ---
 

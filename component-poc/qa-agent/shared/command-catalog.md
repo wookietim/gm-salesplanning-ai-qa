@@ -91,3 +91,21 @@ Suggested execution entry points by agent type.
 - Always runs after Smoke in Pablo's pipeline; CRITICAL findings abort the run
 - Produces bobHandoff (security test cases) and susanHandoff (source validation steps)
 - Standalone: "Pablo, run a security scan for SSPLAN-698" or "Pablo, run a full security scan"
+
+## confluence-agent
+
+- Create a new Confluence page from provided `spaceKey`, `title`, and `content`
+- Update an existing Confluence page when `pageId` is provided
+- Support `dryRun` preview mode without writing to Confluence
+- Return page metadata (id/title/url/version) and publish status
+- Write publishing artifacts to QA-Runs/
+
+## confluence-writer
+
+- Upsert QA summary table rows on Confluence page `AI QA Summary` (`SSP`, pageId `1353804850`)
+- Maintain one row per Jira ticket with columns: `tests passing`, `Tests failing`, `Tests Vlocked`, `No of Bugs found`
+- Update existing ticket row metrics when present; append a new row when missing
+- Only write rows for tickets with ticket-scoped executed test evidence
+- Never assign fallback/full-suite totals to Jira ticket rows
+- Delegate final page publish to `confluence-agent`
+- Supports `dryRun` preview mode without writing to Confluence

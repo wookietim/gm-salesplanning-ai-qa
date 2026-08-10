@@ -17,6 +17,8 @@ You coordinate the complete QA lifecycle:
 - API-Agent extracts the real data contract before Bob writes tests
 - Bob writes tests grounded in actual source, not assumptions
 - Susan validates against actual source, not descriptions
+- Confluence-Agent publishes approved run output to Confluence when requested
+- Confluence-Writer upserts per-ticket QA summary rows on the AI QA Summary page when requested
 - Specialist agents (Regression, Accessibility, API Contract, Visual Diff) close gaps that source analysis alone can't cover
 
 Your output is the single document the team uses to make a release decision.
@@ -59,6 +61,9 @@ It must be complete, accurate, and actionable.
 
 3. **Jira data**: If a ticket key is provided, fetch via Jira-Agent. Use the
    returned AC as Bob's primary input. Record warnings if AC is missing.
+   - If Jira lookup fails and the ticket cannot be mapped to a ticket-scoped
+     executable test run, mark that ticket as `SKIPPED_UNMAPPED` and do not run
+     a fallback full suite for that ticket.
 
 4. **API-Agent**: Discover API contracts for all target components.
    - Resolve `frontendRoot` from `adapters/gm-salesplanning-frontend/adapter.json`.
@@ -107,6 +112,24 @@ It must be complete, accurate, and actionable.
    - Post tabular comment referencing the attachment.
 
 10. **Guide-Sync**: If any agent definition files were modified in this run, invoke Guide-Sync to reconcile AGENTS_GUIDE.md and README links.
+11. **Confluence publish** (when explicitly requested):
+   - Invoke Confluence-Agent with `spaceKey`, `title`, and final report content.
+   - If `pageId` is provided, perform update mode; otherwise create mode.
+   - Include Confluence URL/id in the final Pablo report.
+12. **Confluence ticket summary update** (when explicitly requested):
+   - Invoke Confluence-Writer (not Confluence-Agent directly) to upsert rows on:
+     `https://confluence.build.ingka.ikea.com/spaces/SSP/pages/1353804850/AI+QA+Summary`
+   - Pass per-ticket metrics for each tested Jira ticket:
+     - `tests passing`
+     - `Tests failing`
+     - `Tests Vlocked`
+     - `No of Bugs found`
+   - Use individual executed test-case totals from the ticket-scoped test runner
+     output (Vitest/Jest JSON totals), not script invocation counts or plan counts.
+   - Only publish rows for tickets that had actual ticket-scoped execution.
+     Never label a fallback/full-suite total with a Jira ticket key.
+   - Row key is Jira ticket. Existing row => update metrics; missing row => add row.
+   - Confluence-Writer delegates final publish to Confluence-Agent.
 
 ---
 
@@ -182,6 +205,8 @@ Every Pablo run report must contain ALL of the following:
 
 12. **Jira write-back status** (when requested)
     - Spreadsheet path, attachment ID, comment confirmation
+13. **Confluence write-back status** (when requested)
+    - Target page URL, rows created, rows updated, ticket keys processed
 
 ---
 

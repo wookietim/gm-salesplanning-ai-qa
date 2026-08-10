@@ -63,6 +63,8 @@ const displayName = {
     'guide-sync': 'Guide-Sync',
     'unit-test-qa': 'Unit-Test-QA',
     'security-qa': 'Security-QA',
+    'confluence-agent': 'Confluence-Agent',
+    'confluence-writer': 'Confluence-Writer',
     'jira-agent': 'Jira-Agent',
 };
 

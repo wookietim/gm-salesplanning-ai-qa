@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ConfluenceAgentInput",
+  "type": "object",
+  "required": ["runId", "spaceKey", "title", "content"],
+  "properties": {
+    "runId": { "type": "string", "minLength": 1 },
+    "confluenceBaseUrl": {
+      "type": "string",
+      "description": "Base URL for Confluence, e.g. https://your-domain.atlassian.net/wiki."
+    },
+    "spaceKey": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Confluence space key where the page will be created/updated."
+    },
+    "pageId": {
+      "type": "string",
+      "description": "Existing page ID. If provided, Confluence-Agent performs an update."
+    },
+    "parentPageId": {
+      "type": "string",
+      "description": "Optional parent page ID for new pages."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Confluence page title."
+    },
+    "content": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Page body content to publish."
+    },
+    "contentFormat": {
+      "type": "string",
+      "enum": ["storage", "wiki", "markdown"],
+      "description": "Body format to publish."
+    },
+    "labels": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Optional labels to apply to the page."
+    },
+    "dryRun": {
+      "type": "boolean",
+      "description": "When true, build preview/output only and do not call Confluence."
+    }
+  },
+  "additionalProperties": false
+}

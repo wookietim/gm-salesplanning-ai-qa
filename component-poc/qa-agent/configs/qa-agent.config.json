@@ -95,6 +95,18 @@
       "path": "component-poc/qa-agent/agents/guide-sync",
       "enabled": true,
       "timeoutSeconds": 600
+    },
+    {
+      "id": "confluence-agent",
+      "path": "component-poc/qa-agent/agents/confluence-agent",
+      "enabled": true,
+      "timeoutSeconds": 900
+    },
+    {
+      "id": "confluence-writer",
+      "path": "component-poc/qa-agent/agents/confluence-writer",
+      "enabled": true,
+      "timeoutSeconds": 900
     }
   ]
 }

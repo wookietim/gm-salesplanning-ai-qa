@@ -603,6 +603,9 @@ async function main() {
     if (jiraAcFilePath) {
       bobArgs.push('--ac-file', jiraAcFilePath, '--overwrite', 'true');
     }
+    if (args.root) {
+      bobArgs.push('--root', args.root);
+    }
 
     bobStdout = runCommandNode(
       bobScript,

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ConfluenceAgentOutput",
+  "type": "object",
+  "required": ["runId", "agentId", "status", "summary", "operation", "page"],
+  "properties": {
+    "runId": { "type": "string" },
+    "agentId": { "type": "string", "const": "confluence-agent" },
+    "status": { "type": "string", "enum": ["pass", "fail", "blocked"] },
+    "summary": { "type": "string" },
+    "operation": {
+      "type": "string",
+      "enum": ["create", "update", "preview"],
+      "description": "The publish operation attempted."
+    },
+    "page": {
+      "type": "object",
+      "required": ["id", "title", "url", "spaceKey"],
+      "properties": {
+        "id": { "type": ["string", "null"] },
+        "title": { "type": "string" },
+        "url": { "type": ["string", "null"] },
+        "spaceKey": { "type": "string" },
+        "version": { "type": ["number", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "artifactPath": {
+      "type": ["string", "null"],
+      "description": "Path to the run artifact written to QA-Runs."
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "errors": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

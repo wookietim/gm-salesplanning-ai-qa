@@ -1,0 +1,41 @@
+{
+  "runId": "pablo-20260810-190502",
+  "agentId": "pablo",
+  "startedAt": "2026-08-10T19:05:02.963Z",
+  "endedAt": "2026-08-10T19:05:03.091Z",
+  "mode": "components",
+  "targetComponents": [
+    "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/HeroComponent/hero-component.tsx"
+  ],
+  "bob": {
+    "checked": 1,
+    "regenerated": 1,
+    "reused": 0,
+    "regeneratedComponents": [
+      "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/HeroComponent/hero-component.tsx"
+    ],
+    "stdout": "[Bob] Starting test generation run.\n[Bob] Scanning components under: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-frontend/src\n[Bob] Discovered 33 component candidates; targeting 1 component(s).\n[Bob] Created runtime-aware QA plan for HeroComponent.\n[Bob] Generation complete.\n[Bob] Target root: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-frontend/src\n[Bob] Output dir: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests\n[Bob] Components discovered: 33\n[Bob] Components targeted: 1\n[Bob] Created: 1, Updated: 0, Skipped: 0\n[Bob] State file: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests/.bob-memory.json\n[Bob] Index: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests/INDEX.md\n"
+  },
+  "susan": {
+    "overallStatus": "pass",
+    "components": 1,
+    "tests": 2,
+    "passed": 2,
+    "failed": 0,
+    "stdout": "[Susan] Starting QA execution run.\n[Susan] Reading Bob plans from: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests\n[Susan] Found 2 plan file(s) to evaluate before scope filtering.\n[Susan] Running tests for hero-component (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/HeroComponent/hero-component.tsx).\n[Susan] Execution complete.\n[Susan] Bob plans directory: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests\n[Susan] Components checked: 1\n[Susan] Tests executed: 2\n[Susan] Passed: 2, Failed: 0\n[Susan] Overall: pass\n[Susan] JSON result: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/susan/results/susan-result-20260810-190503.json\n[Susan] Markdown result: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/susan/results/susan-result-20260810-190503.md\n"
+  },
+  "jira": {
+    "project": "SSPLAN",
+    "issueKeys": [
+      "SSPLAN-701"
+    ],
+    "source": "none",
+    "warnings": [
+      "Jira credentials and issue keys are required for live Jira fetch."
+    ],
+    "issues": [],
+    "acFilePath": ""
+  },
+  "overallStatus": "pass",
+  "failureReasons": []
+}

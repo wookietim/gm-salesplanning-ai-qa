@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ConfluenceWriterOutput",
+  "type": "object",
+  "required": [
+    "runId",
+    "agentId",
+    "status",
+    "summary",
+    "operation",
+    "createdRows",
+    "updatedRows",
+    "ticketKeysProcessed",
+    "page",
+    "delegatedAgent"
+  ],
+  "properties": {
+    "runId": { "type": "string" },
+    "agentId": { "type": "string", "const": "confluence-writer" },
+    "status": { "type": "string", "enum": ["pass", "fail", "blocked"] },
+    "summary": { "type": "string" },
+    "operation": {
+      "type": "string",
+      "enum": ["update", "preview"]
+    },
+    "createdRows": { "type": "number", "minimum": 0 },
+    "updatedRows": { "type": "number", "minimum": 0 },
+    "ticketKeysProcessed": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "page": {
+      "type": "object",
+      "required": ["id", "title", "url", "spaceKey"],
+      "properties": {
+        "id": { "type": ["string", "null"] },
+        "title": { "type": "string" },
+        "url": { "type": ["string", "null"] },
+        "spaceKey": { "type": "string" },
+        "version": { "type": ["number", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "delegatedAgent": {
+      "type": "string",
+      "const": "confluence-agent"
+    },
+    "artifactPath": { "type": ["string", "null"] },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "errors": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

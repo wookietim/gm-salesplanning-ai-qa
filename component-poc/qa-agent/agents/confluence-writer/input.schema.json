@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ConfluenceWriterInput",
+  "type": "object",
+  "required": ["runId", "ticketSummaries"],
+  "properties": {
+    "runId": { "type": "string", "minLength": 1 },
+    "confluenceBaseUrl": {
+      "type": "string",
+      "default": "https://confluence.build.ingka.ikea.com/"
+    },
+    "spaceKey": {
+      "type": "string",
+      "default": "SSP"
+    },
+    "pageId": {
+      "type": "string",
+      "default": "1353804850"
+    },
+    "pageTitle": {
+      "type": "string",
+      "default": "AI QA Summary"
+    },
+    "ticketSummaries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "jiraTicket",
+          "testsPassing",
+          "testsFailing",
+          "testsVlocked",
+          "bugsFound"
+        ],
+        "properties": {
+          "jiraTicket": { "type": "string", "minLength": 1 },
+          "testsPassing": { "type": "number", "minimum": 0 },
+          "testsFailing": { "type": "number", "minimum": 0 },
+          "testsVlocked": { "type": "number", "minimum": 0 },
+          "bugsFound": { "type": "number", "minimum": 0 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "dryRun": { "type": "boolean" }
+  },
+  "additionalProperties": false
+}

@@ -113,21 +113,37 @@ It must be complete, accurate, and actionable.
 
 10. **Guide-Sync**: If any agent definition files were modified in this run, invoke Guide-Sync to reconcile AGENTS_GUIDE.md and README links.
 11. **Confluence publish** (when explicitly requested):
-   - Invoke Confluence-Agent with `spaceKey`, `title`, and final report content.
+   - If request is generic page publishing, invoke Confluence-Agent with
+     `spaceKey`, `title`, and final report content.
    - If `pageId` is provided, perform update mode; otherwise create mode.
    - Include Confluence URL/id in the final Pablo report.
 12. **Confluence ticket summary update** (when explicitly requested):
+   - When user asks to "write results to Confluence", this step is mandatory:
+     call Confluence-Writer (not Confluence-Agent directly).
    - Invoke Confluence-Writer (not Confluence-Agent directly) to upsert rows on:
      `https://confluence.build.ingka.ikea.com/spaces/SSP/pages/1353804850/AI+QA+Summary`
+   - Source metrics from the most current completed run output.
+   - Break down results by Jira story actually tested in that run.
    - Pass per-ticket metrics for each tested Jira ticket:
+     - `lastTestRunAt` (date-only `YYYY-MM-DD`)
+     - `jiraTitle`
      - `tests passing`
      - `Tests failing`
-     - `Tests Vlocked`
+     - `tests blocked`
      - `No of Bugs found`
+   - Confluence-Writer must color rows by outcome:
+     - red for any failed tests
+     - yellow for blocked tests with no failures
+     - green for fully passing rows
+   - Confluence-Writer must place a color legend above the table explaining
+     red/yellow/green meanings.
+   - Pass `jiraBaseUrl` so Confluence-Writer can render Jira ticket cells as links.
    - Use individual executed test-case totals from the ticket-scoped test runner
      output (Vitest/Jest JSON totals), not script invocation counts or plan counts.
    - Only publish rows for tickets that had actual ticket-scoped execution.
      Never label a fallback/full-suite total with a Jira ticket key.
+   - Ensure the page has a single managed summary table; update existing rows by
+     ticket key and append missing rows.
    - Row key is Jira ticket. Existing row => update metrics; missing row => add row.
    - Confluence-Writer delegates final publish to Confluence-Agent.
 

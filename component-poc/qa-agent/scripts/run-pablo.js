@@ -171,11 +171,12 @@ async function fetchJiraAcceptanceCriteria(params) {
       const issue = await httpGetJson(
         `${baseUrl.replace(/\/$/, '')}/rest/api/3/issue/${encodeURIComponent(
           issueKey
-        )}?fields=summary,description`,
+        )}?fields=summary,description,updated`,
         headers
       );
       const summary = issue?.fields?.summary || '';
       const description = toAdfText(issue?.fields?.description || '').trim();
+      const updatedAt = issue?.fields?.updated || null;
 
       const acCandidates = acceptanceFieldIds
         .map((fieldId) => issue?.fields?.[fieldId])
@@ -200,6 +201,7 @@ async function fetchJiraAcceptanceCriteria(params) {
       issues.push({
         key: issueKey,
         summary,
+        updatedAt,
         hasAcceptanceCriteria: Boolean(acceptanceCriteriaText || description),
       });
     } catch (error) {
@@ -207,6 +209,7 @@ async function fetchJiraAcceptanceCriteria(params) {
       issues.push({
         key: issueKey,
         summary: '',
+        updatedAt: null,
         hasAcceptanceCriteria: false,
         error: error.message,
       });
@@ -560,7 +563,12 @@ async function main() {
 
   const toRegenerate = [];
   const reused = [];
-  const shouldForceRegenerateForJira = jiraIssueKeys.length > 0;
+  const jiraIssueUpdatedAtByKey = Object.fromEntries(
+    ((jiraContext && jiraContext.issues) || [])
+      .filter((issue) => issue && issue.key)
+      .map((issue) => [issue.key, issue.updatedAt || null])
+  );
+  const hasJiraScope = jiraIssueKeys.length > 0;
 
   for (const component of selected) {
     const memoryEntry = bobMemoryComponents[component.relativePath];
@@ -573,9 +581,35 @@ async function main() {
       memoryEntry.outputFile &&
       fs.existsSync(outputAbsolutePath);
     const hasRuntimePlanContract = hasRuntimeContract(outputAbsolutePath);
+    const scopedTicketKey =
+      jiraIssueKeys.length === 1
+        ? jiraIssueKeys[0]
+        : memoryEntry && memoryEntry.jiraTicketKey
+          ? memoryEntry.jiraTicketKey
+          : null;
+    const previousJiraUpdatedAt = memoryEntry ? memoryEntry.jiraStoryUpdatedAt : null;
+    const currentJiraUpdatedAt = scopedTicketKey ? jiraIssueUpdatedAtByKey[scopedTicketKey] : null;
+    const jiraStoryUpdated =
+      Boolean(currentJiraUpdatedAt) &&
+      (!previousJiraUpdatedAt ||
+        new Date(currentJiraUpdatedAt).getTime() > new Date(previousJiraUpdatedAt).getTime());
+    const jiraTicketMismatch =
+      Boolean(
+        hasJiraScope &&
+          jiraIssueKeys.length === 1 &&
+          memoryEntry &&
+          memoryEntry.jiraTicketKey &&
+          memoryEntry.jiraTicketKey !== jiraIssueKeys[0]
+      );
+    const jiraNeedsRegeneration =
+      hasJiraScope &&
+      (!memoryEntry ||
+        jiraTicketMismatch ||
+        jiraStoryUpdated ||
+        (jiraIssueKeys.length === 1 && !currentJiraUpdatedAt));
 
     if (
-      shouldForceRegenerateForJira ||
+      jiraNeedsRegeneration ||
       !memoryEntry ||
       !hasOutput ||
       !hasRuntimePlanContract ||
@@ -591,17 +625,20 @@ async function main() {
   if (toRegenerate.length > 0) {
     console.log(`[Pablo] Invoking Bob for ${toRegenerate.length} component(s) to regenerate plans.`);
     const bobArgs = ['--components', toRegenerate.join(',')];
-    if (shouldForceRegenerateForJira) {
-      bobArgs.push('--overwrite', 'true');
-    }
     if (jiraProject) {
       bobArgs.push('--jira-project', jiraProject);
     }
     if (jiraIssueKeys.length > 0) {
       bobArgs.push('--jira-issues', jiraIssueKeys.join(','));
     }
+    if (jiraBaseUrl) {
+      bobArgs.push('--jira-base-url', jiraBaseUrl);
+    }
+    if (jiraApiToken) {
+      bobArgs.push('--jira-api-token', jiraApiToken);
+    }
     if (jiraAcFilePath) {
-      bobArgs.push('--ac-file', jiraAcFilePath, '--overwrite', 'true');
+      bobArgs.push('--ac-file', jiraAcFilePath);
     }
     if (args.root) {
       bobArgs.push('--root', args.root);

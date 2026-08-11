@@ -24,6 +24,11 @@ Pablo manages Bob and Susan end to end.
   requested page title, space, and content payload.
 - When asked to update the AI QA Summary table by Jira ticket, call
   Confluence-Writer so ticket rows are upserted before publishing.
+- When asked to "write results to Confluence", always call Confluence-Writer
+  using the most current run output and pass per-story metrics for each Jira
+  ticket actually tested in that run.
+- Ensure Confluence-Writer receives Jira base URL and writes Jira ticket cells
+  as links while maintaining a single managed summary table on the page.
 - Never assign full-suite or fallback run totals to a Jira ticket. If a
   ticket-specific run cannot be mapped and executed, mark the ticket as
   skipped/unmapped and do not publish ticket metrics for it.

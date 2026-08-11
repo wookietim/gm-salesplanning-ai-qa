@@ -103,8 +103,13 @@ Suggested execution entry points by agent type.
 ## confluence-writer
 
 - Upsert QA summary table rows on Confluence page `AI QA Summary` (`SSP`, pageId `1353804850`)
-- Maintain one row per Jira ticket with columns: `tests passing`, `Tests failing`, `Tests Vlocked`, `No of Bugs found`
+- Maintain one row per Jira ticket with columns: `Jira Ticket` (link), `Last Test Run`, `Jira Title`, `tests passing`, `Tests failing`, `tests blocked`, `No of Bugs found`
+- `Last Test Run` is date-only (`YYYY-MM-DD`)
+- Row background colors: red for failed tests, yellow for blocked-only rows, green for fully passing rows
+- Add a legend above the table describing red/yellow/green meanings
+- Keep exactly one managed QA summary table on the page (merge/remove duplicates)
 - Update existing ticket row metrics when present; append a new row when missing
+- Write Jira ticket cells as links to the corresponding Jira issue
 - Only write rows for tickets with ticket-scoped executed test evidence
 - Never assign fallback/full-suite totals to Jira ticket rows
 - Delegate final page publish to `confluence-agent`

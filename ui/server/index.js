@@ -1,10 +1,11 @@
+const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const express = require('express');
 const { listTicketsByStatus } = require('./commands/jira');
 const { runPabloStream } = require('./commands/pablo');
-const { getConfluenceTicketList, writeRunResultsToConfluence } = require('./commands/confluence');
+const { getConfluenceTicketList, writeRunResultsToConfluence, upsertTicketRow } = require('./commands/confluence');
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
@@ -15,15 +16,22 @@ const ticketKeyRegex = /SSPLAN-\d+/gi;
 app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(express.json());
 
-function sendEvent(res, payload) {
-  res.write(`data: ${JSON.stringify(payload)}\n\n`);
-}
-
 function startStream(res) {
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache, no-transform');
   res.setHeader('Connection', 'keep-alive');
-  res.flushHeaders?.();
+  res.setHeader('X-Accel-Buffering', 'no');
+  // Disable TCP Nagle algorithm so small SSE packets are sent immediately
+  if (res.socket) {
+    res.socket.setNoDelay(true);
+  }
+  res.flushHeaders();
+}
+
+function sendEvent(res, payload) {
+  res.write(`data: ${JSON.stringify(payload)}\n\n`);
+  // Flush after every event so the browser receives it immediately
+  if (typeof res.flush === 'function') res.flush();
 }
 
 function extractTicketKeys(text) {
@@ -43,20 +51,37 @@ function buildEnv() {
 }
 
 async function handleJiraStatus(res, status, maxResults) {
-  sendEvent(res, { type: 'line', text: `Fetching Jira tickets with status \"${status}\"...` });
+  sendEvent(res, { type: 'line', text: `Fetching Jira tickets with status "${status}"...` });
   const tickets = await listTicketsByStatus(status, buildEnv(), maxResults);
 
   if (!tickets.length) {
     sendEvent(res, { type: 'line', text: `No ${status} tickets found.` });
   } else {
-    tickets.forEach((ticket) => {
-      sendEvent(res, { type: 'line', text: `${ticket.key} — ${ticket.summary} [${ticket.status}]` });
-    });
+    // Emit structured ticket list so the frontend can render action buttons
+    sendEvent(res, { type: 'tickets', tickets });
   }
 
   sendEvent(res, { type: 'done', text: `Returned ${tickets.length} ${status} ticket(s).` });
   res.end();
 }
+
+app.post('/api/confluence-write', async (req, res) => {
+  try {
+    const { ticketKey, ticketSummary, tests, markAsPassed } = req.body || {};
+    const result = await upsertTicketRow({
+      env: buildEnv(),
+      ticketKey,
+      ticketSummary,
+      tests,
+      markAsPassed: Boolean(markAsPassed),
+      today: new Date().toISOString().slice(0, 10),
+    });
+
+    res.json({ ok: true, version: result.pageVersion });
+  } catch (error) {
+    res.json({ ok: false, error: error.message });
+  }
+});
 
 app.post('/api/command', async (req, res) => {
   startStream(res);
@@ -66,7 +91,10 @@ app.post('/api/command', async (req, res) => {
   const ticketKeys = extractTicketKeys(text);
   let closed = false;
 
-  req.on('close', () => {
+  // Use res.on('close') not req.on('close') — req closes as soon as the
+  // request body is consumed, which would immediately kill Pablo.
+  // res closes only when the client actually disconnects.
+  res.on('close', () => {
     closed = true;
   });
 
@@ -107,22 +135,39 @@ app.post('/api/command', async (req, res) => {
           }
         },
         onDone: async ({ resultPath }) => {
-          if (closed) {
-            return;
-          }
+          if (closed) return;
 
           try {
+            // Read Susan's latest results and stream as structured test list
+            const susanLatest = path.resolve(
+              path.dirname(resultPath),
+              '../../susan/results/latest.json'
+            );
+            if (fs.existsSync(susanLatest)) {
+              const susan = JSON.parse(fs.readFileSync(susanLatest, 'utf8'));
+              const tests = [];
+              for (const comp of (susan.componentResults || [])) {
+                for (const t of (comp.tests || [])) {
+                  tests.push({
+                    component: comp.component,
+                    testId: t.testId || '',
+                    label: (t.testId || '').includes('HP') ? 'Happy Path' : 'Sad Path',
+                    status: t.status || 'fail',
+                    reasons: (t.checks || [])
+                      .filter(c => c.status === 'fail')
+                      .map(c => c.name),
+                  });
+                }
+              }
+              sendEvent(res, { type: 'tests', tests });
+            }
+
             if (lowerText.includes('confluence')) {
               sendEvent(res, { type: 'line', text: 'Writing latest run summary to Confluence...' });
               const result = await writeRunResultsToConfluence({
-                env: buildEnv(),
-                reportPath: resultPath,
-                ticketKeys,
+                env: buildEnv(), reportPath: resultPath, ticketKeys,
               });
-              sendEvent(res, {
-                type: 'line',
-                text: `Confluence updated: ${result.pageTitle} (version ${result.pageVersion})`,
-              });
+              sendEvent(res, { type: 'line', text: `Confluence updated: ${result.pageTitle} (version ${result.pageVersion})` });
             }
 
             sendEvent(res, { type: 'done', text: 'Pablo run complete.' });
@@ -140,7 +185,7 @@ app.post('/api/command', async (req, res) => {
         },
       });
 
-      req.on('close', () => {
+      res.on('close', () => {
         if (child && !child.killed) {
           child.kill('SIGTERM');
         }

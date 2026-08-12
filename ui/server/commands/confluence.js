@@ -7,6 +7,15 @@ const SECTION_START = '<!-- GM_QA_RESULTS_START -->';
 const SECTION_END = '<!-- GM_QA_RESULTS_END -->';
 const REPO_ROOT = path.resolve(__dirname, '../../..');
 const QA_RUNS_DIR = path.join(REPO_ROOT, 'QA-Runs');
+const FAILURE_REASON_DESCRIPTIONS = {
+  'sad-path-source-signals': 'Components are missing error handling, loading states, or fallback UI — sad-path tests require these signals to validate against.',
+  'jira-issue-key-coverage': 'Test plans were generated without this Jira ticket scoped in — plans need to be regenerated with the ticket key to pass this check.',
+};
+const ROW_COLORS = {
+  pass: 'rgb(227,252,239)',
+  blocked: 'rgb(255,247,214)',
+  fail: 'rgb(255,235,230)',
+};
 
 function requestJson(urlString, options = {}) {
   return new Promise((resolve, reject) => {
@@ -96,12 +105,134 @@ function findLatestSusanResult(ticketKey) {
 }
 
 function escapeXml(value) {
-  return String(value)
+  return String(value ?? '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+function escapeRegex(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function normalizeTests(tests, markAsPassed) {
+  const safeTests = Array.isArray(tests) ? tests : [];
+  if (!markAsPassed) {
+    return safeTests.map((test) => ({
+      ...test,
+      reasons: Array.isArray(test?.reasons) ? test.reasons.filter(Boolean) : [],
+    }));
+  }
+
+  return safeTests.map((test) => ({
+    ...test,
+    status: 'pass',
+    reasons: [],
+  }));
+}
+
+function getCounts(tests) {
+  return tests.reduce(
+    (totals, test) => {
+      if (test.status === 'pass') {
+        totals.passed += 1;
+      } else if (test.status === 'blocked') {
+        totals.blocked += 1;
+      } else {
+        totals.failed += 1;
+      }
+      return totals;
+    },
+    { passed: 0, failed: 0, blocked: 0 }
+  );
+}
+
+function getRowColor({ failed, blocked }) {
+  if (failed > 0) return ROW_COLORS.fail;
+  if (blocked > 0) return ROW_COLORS.blocked;
+  return ROW_COLORS.pass;
+}
+
+function formatToday(today) {
+  if (today && /^\d{4}-\d{2}-\d{2}$/.test(today)) {
+    return today;
+  }
+  return new Date().toISOString().slice(0, 10);
+}
+
+function buildFailureSummary(tests) {
+  const counts = new Map();
+
+  tests
+    .filter((test) => test.status !== 'pass' && test.status !== 'blocked')
+    .forEach((test) => {
+      (test.reasons || []).forEach((reason) => {
+        counts.set(reason, (counts.get(reason) || 0) + 1);
+      });
+    });
+
+  if (!counts.size) {
+    return '';
+  }
+
+  const items = Array.from(counts.entries())
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .map(([reason, count]) => {
+      const description = FAILURE_REASON_DESCRIPTIONS[reason] || reason;
+      return `<li style="margin:0;padding:0;line-height:1.6;"><strong>${escapeXml(count)}x ${escapeXml(reason)}:</strong> ${escapeXml(description)}</li>`;
+    })
+    .join('');
+
+  return `<p><strong>⚠️ Why tests failed:</strong></p><ul style="margin:0;padding-left:16px;">${items}</ul><p> </p>`;
+}
+
+function buildTestItem(test) {
+  const icon = test.status === 'pass' ? '✅' : test.status === 'blocked' ? '⛔' : '❌';
+  const label = test.label || 'Test';
+  const testId = test.testId ? ` (${test.testId})` : '';
+  return `<li style="margin:0;padding:0;line-height:1.2;">${escapeXml(icon)} ${escapeXml(test.component || 'Unknown component')} — ${escapeXml(label)}${escapeXml(testId)}</li>`;
+}
+
+function buildTicketRowMarkup({ env, ticketKey, ticketSummary, tests, today }) {
+  const counts = getCounts(tests);
+  const color = getRowColor(counts);
+  const jiraBase = (env.JIRA_BASE_URL || env.JIRA_BASE || '').replace(/\/$/, '');
+  const ticketHref = `${jiraBase}/browse/${ticketKey}`;
+  const totalTests = tests.length;
+  const failureSummary = counts.failed > 0 ? buildFailureSummary(tests) : '';
+  const testItems = tests.map(buildTestItem).join('');
+  const detailMarkup = `${failureSummary}<ul>${testItems}</ul>`;
+  const cell = (value) => `<td style="background-color:${color};"><p>${value}</p></td>`;
+
+  return [
+    '<tr>',
+    cell(`<a href="${escapeXml(ticketHref)}" target="_blank" rel="noopener noreferrer">${escapeXml(ticketKey)}</a>`),
+    cell(escapeXml(today)),
+    cell(escapeXml(ticketSummary)),
+    cell(escapeXml(counts.passed)),
+    cell(escapeXml(counts.failed)),
+    cell(escapeXml(counts.blocked)),
+    cell(escapeXml(counts.failed)),
+    '</tr>',
+    `<tr><td colspan="7" style="background-color:${color};border-top:none;padding:0 8px 6px 8px;"><ac:structured-macro ac:name="expand" ac:schema-version="1"><ac:parameter ac:name="title">Show tests (${escapeXml(totalTests)})</ac:parameter><ac:rich-text-body>${detailMarkup}</ac:rich-text-body></ac:structured-macro></td></tr>`,
+  ].join('');
+}
+
+function upsertManagedTicketRows(storageValue, ticketKey, rowMarkup) {
+  const escapedTicketKey = escapeRegex(ticketKey);
+  const existingRowPattern = new RegExp(`<tr>[\\s\\S]*?${escapedTicketKey}[\\s\\S]*?<\\/tr>\\s*<tr>[\\s\\S]*?<\\/tr>`, 'i');
+  if (existingRowPattern.test(storageValue)) {
+    return storageValue.replace(existingRowPattern, rowMarkup);
+  }
+
+  const tableEnd = '</tbody></table>';
+  if (!storageValue.includes(tableEnd)) {
+    throw new Error('Unable to find AI QA Summary table closing tag.');
+  }
+
+  return storageValue.replace(tableEnd, `${rowMarkup}${tableEnd}`);
 }
 
 function buildRunSection({ report, ticketKeys }) {
@@ -113,7 +244,7 @@ function buildRunSection({ report, ticketKeys }) {
     }
 
     const totals = susan.totals || {};
-    return `<li><strong>${escapeXml(ticketKey)}</strong> — ${escapeXml(susan.overall_status || 'UNKNOWN')} (pass: ${escapeXml(totals.PASS || 0)}, fail: ${escapeXml(totals.FAIL || 0)}, partial: ${escapeXml(totals['PARTIAL'] || 0)}, manual-only: ${escapeXml(totals['MANUAL-ONLY'] || 0)})</li>`;
+    return `<li><strong>${escapeXml(ticketKey)}</strong> — ${escapeXml(susan.overall_status || 'UNKNOWN')} (pass: ${escapeXml(totals.PASS || 0)}, fail: ${escapeXml(totals.FAIL || 0)}, partial: ${escapeXml(totals.PARTIAL || 0)}, manual-only: ${escapeXml(totals['MANUAL-ONLY'] || 0)})</li>`;
   });
 
   const generatedAt = new Date().toISOString();
@@ -181,7 +312,35 @@ async function writeRunResultsToConfluence({ env, reportPath, ticketKeys }) {
   };
 }
 
+async function upsertTicketRow({ env, ticketKey, ticketSummary, tests, markAsPassed, today }) {
+  if (!ticketKey) {
+    throw new Error('ticketKey is required');
+  }
+  if (!ticketSummary) {
+    throw new Error('ticketSummary is required');
+  }
+
+  const normalizedTicketKey = String(ticketKey).toUpperCase();
+  const page = await getPage(env);
+  const normalizedTests = normalizeTests(tests, markAsPassed);
+  const currentStorage = page.body?.storage?.value || '';
+  const rowMarkup = buildTicketRowMarkup({
+    env,
+    ticketKey: normalizedTicketKey,
+    ticketSummary,
+    tests: normalizedTests,
+    today: formatToday(today),
+  });
+  const updatedStorage = upsertManagedTicketRows(currentStorage, normalizedTicketKey, rowMarkup);
+  const updatedPage = await updatePage(env, page, updatedStorage);
+
+  return {
+    pageVersion: updatedPage.version?.number,
+  };
+}
+
 module.exports = {
   getConfluenceTicketList,
   writeRunResultsToConfluence,
+  upsertTicketRow,
 };

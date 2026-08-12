@@ -1,0 +1,4367 @@
+{
+  "runId": "susan-for-pablo-20260812-132005",
+  "agentId": "susan",
+  "startedAt": "2026-08-12T13:20:05.975Z",
+  "endedAt": "2026-08-12T13:20:05.988Z",
+  "overallStatus": "fail",
+  "totals": {
+    "components": 34,
+    "tests": 68,
+    "passed": 46,
+    "failed": 22
+  },
+  "componentResults": [
+    {
+      "component": "accept-login",
+      "source": "../gm-salesplanning-frontend/src/components/AcceptLogin/accept-login.tsx",
+      "status": "pass",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed, async-success-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "pass",
+              "details": "Source includes error or fallback signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "component": "card",
+      "source": "../gm-salesplanning-frontend/src/components/Card/card.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "gap-to-close",
+      "source": "../gm-salesplanning-frontend/src/components/GapToClose/gap-to-close.tsx",
+      "status": "pass",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "pass",
+              "details": "Source includes error or fallback signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "component": "header",
+      "source": "../gm-salesplanning-frontend/src/components/Header/header.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "ikea-current-week",
+      "source": "../gm-salesplanning-frontend/src/components/IkeaCurrentWeek/ikea-current-week.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "kpi-summary-card",
+      "source": "../gm-salesplanning-frontend/src/components/KpiSummaryCard/kpi-summary-card.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "metric-row-cell",
+      "source": "../gm-salesplanning-frontend/src/components/MetricRowCell/metric-row-cell.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "page-column",
+      "source": "../gm-salesplanning-frontend/src/components/PageColumn/page-column.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "page-layout",
+      "source": "../gm-salesplanning-frontend/src/components/PageLayout/page-layout.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "page-row",
+      "source": "../gm-salesplanning-frontend/src/components/PageRow/page-row.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "back-button",
+      "source": "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/BackButton/back-button.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "breadcrumbs",
+      "source": "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/Breadcrumbs/breadcrumbs.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "dashboard-title-row",
+      "source": "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/DashboardTitleRow/dashboard-title-row.tsx",
+      "status": "pass",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "pass",
+              "details": "Source includes error or fallback signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "component": "sales-by-week",
+      "source": "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx",
+      "status": "pass",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed, loading-to-terminal-state"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "pass",
+              "details": "Source includes error or fallback signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "component": "sales-index-trend",
+      "source": "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesIndexTrend/sales-index-trend.tsx",
+      "status": "pass",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed, loading-to-terminal-state"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "pass",
+              "details": "Source includes error or fallback signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "component": "year-to-date-Index",
+      "source": "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/YearToDateIndex/year-to-date-Index.tsx",
+      "status": "pass",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed, loading-to-terminal-state"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "pass",
+              "details": "Source includes error or fallback signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "component": "hero-metric",
+      "source": "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/HeroMetric/hero-metric.tsx",
+      "status": "pass",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "pass",
+              "details": "Source includes error or fallback signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "component": "hfb-list",
+      "source": "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/HfbList/hfb-list.tsx",
+      "status": "pass",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "pass",
+              "details": "Source includes error or fallback signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "component": "navigation-bar",
+      "source": "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/NavigationBar/navigation-bar.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "product-area-summary-list",
+      "source": "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/ProductAreaSummaryList/product-area-summary-list.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "product-area-summary",
+      "source": "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/ProductAreaSummary/product-area-summary.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "sales-graphs-row",
+      "source": "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/SalesGraphsRow/sales-graphs-row.tsx",
+      "status": "pass",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "pass",
+              "details": "Source includes error or fallback signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "component": "segment-control",
+      "source": "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/SegmentControl/segment-control.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "welcome-user",
+      "source": "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/WelcomeUser/welcome-user.tsx",
+      "status": "pass",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "pass",
+              "details": "Source includes error or fallback signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "component": "signin",
+      "source": "../gm-salesplanning-frontend/src/components/Signin/signin.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "placeholder-avatar",
+      "source": "../gm-salesplanning-frontend/src/components/User/placeholder-avatar.tsx",
+      "status": "pass",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "pass",
+              "details": "Source includes error or fallback signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "component": "user",
+      "source": "../gm-salesplanning-frontend/src/components/User/user.tsx",
+      "status": "pass",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "pass",
+              "details": "Source includes error or fallback signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "component": "welcome",
+      "source": "../gm-salesplanning-frontend/src/components/Welcome/welcome.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed, async-success-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "root",
+      "source": "../gm-salesplanning-frontend/src/routes/__root.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "_authenticated",
+      "source": "../gm-salesplanning-frontend/src/routes/_authenticated.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "hfb.$hfbId",
+      "source": "../gm-salesplanning-frontend/src/routes/_authenticated/region-dashboard/$region/hfb.$hfbId.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "hfb_.$hfbId.pa.$paId",
+      "source": "../gm-salesplanning-frontend/src/routes/_authenticated/region-dashboard/$region/hfb_.$hfbId.pa.$paId.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "index",
+      "source": "../gm-salesplanning-frontend/src/routes/_authenticated/region-dashboard/$region/index.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "index",
+      "source": "../gm-salesplanning-frontend/src/routes/index.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "BOB-HP-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: interaction-path-covered, state-transition-observed"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-001",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "happy-and-sad-sections-present",
+              "status": "pass",
+              "details": "Both happy and sad path sections present"
+            },
+            {
+              "name": "data-consistency-coverage",
+              "status": "pass",
+              "details": "At least three data consistency checks present"
+            },
+            {
+              "name": "accessibility-coverage",
+              "status": "pass",
+              "details": "Accessibility section present"
+            },
+            {
+              "name": "runtime-profile-present",
+              "status": "pass",
+              "details": "Runtime execution profile section present"
+            },
+            {
+              "name": "runtime-signal-alignment",
+              "status": "pass",
+              "details": "Runtime signals in Bob plan align with source component behavior"
+            },
+            {
+              "name": "runtime-assertion-coverage",
+              "status": "pass",
+              "details": "Required runtime assertions present: sad-input-branch-covered, error-or-fallback-observed"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "fail",
+              "details": "Source lacks obvious error, loading, or fallback handling signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            },
+            {
+              "name": "jira-criteria-not-assumed",
+              "status": "pass",
+              "details": "Plan includes Jira-derived criteria text"
+            }
+          ],
+          "reasons": [
+            "BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+          ]
+        }
+      ]
+    }
+  ],
+  "failureReasons": [
+    "_authenticated (../gm-salesplanning-frontend/src/routes/_authenticated.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "back-button (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/BackButton/back-button.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "breadcrumbs (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/Breadcrumbs/breadcrumbs.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "card (../gm-salesplanning-frontend/src/components/Card/card.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "header (../gm-salesplanning-frontend/src/components/Header/header.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "hfb.$hfbId (../gm-salesplanning-frontend/src/routes/_authenticated/region-dashboard/$region/hfb.$hfbId.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "hfb_.$hfbId.pa.$paId (../gm-salesplanning-frontend/src/routes/_authenticated/region-dashboard/$region/hfb_.$hfbId.pa.$paId.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "ikea-current-week (../gm-salesplanning-frontend/src/components/IkeaCurrentWeek/ikea-current-week.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "index (../gm-salesplanning-frontend/src/routes/_authenticated/region-dashboard/$region/index.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "index (../gm-salesplanning-frontend/src/routes/index.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "kpi-summary-card (../gm-salesplanning-frontend/src/components/KpiSummaryCard/kpi-summary-card.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "metric-row-cell (../gm-salesplanning-frontend/src/components/MetricRowCell/metric-row-cell.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "navigation-bar (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/NavigationBar/navigation-bar.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "page-column (../gm-salesplanning-frontend/src/components/PageColumn/page-column.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "page-layout (../gm-salesplanning-frontend/src/components/PageLayout/page-layout.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "page-row (../gm-salesplanning-frontend/src/components/PageRow/page-row.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "product-area-summary (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/ProductAreaSummary/product-area-summary.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "product-area-summary-list (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/ProductAreaSummaryList/product-area-summary-list.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "root (../gm-salesplanning-frontend/src/routes/__root.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "segment-control (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/SegmentControl/segment-control.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "signin (../gm-salesplanning-frontend/src/components/Signin/signin.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals",
+    "welcome (../gm-salesplanning-frontend/src/components/Welcome/welcome.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+  ]
+}

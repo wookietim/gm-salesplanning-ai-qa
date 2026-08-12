@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const readline = require('readline');
 const { spawn } = require('child_process');
 
 const REPO_ROOT = path.resolve(__dirname, '../../..');
@@ -47,6 +46,7 @@ function runPabloStream({ ticketKeys, env, onLine, onDone, onError }) {
 
   const child = spawn(process.execPath, buildArgs(ticketKeys, env), {
     cwd: REPO_ROOT,
+    stdio: ['ignore', 'pipe', 'pipe'],  // close stdin so child never blocks waiting for input
     env: {
       ...process.env,
       ...env,
@@ -54,20 +54,42 @@ function runPabloStream({ ticketKeys, env, onLine, onDone, onError }) {
   });
 
   let combinedOutput = '';
+  let stdoutBuffer = '';
+  let stderrBuffer = '';
 
-  const pipeStream = (stream, prefix = '') => {
-    const rl = readline.createInterface({ input: stream });
-    rl.on('line', (line) => {
-      const formatted = prefix ? `${prefix}${line}` : line;
-      combinedOutput += `${formatted}\n`;
-      onLine(formatted);
-    });
-  };
+  function processBuffer(buf, prefix, onFlushLine) {
+    const parts = buf.split('\n');
+    for (let i = 0; i < parts.length - 1; i++) {
+      const line = parts[i];
+      if (line.trim()) {
+        const formatted = prefix ? `${prefix}${line}` : line;
+        combinedOutput += `${formatted}\n`;
+        onFlushLine(formatted);
+      }
+    }
+    return parts[parts.length - 1];
+  }
 
-  pipeStream(child.stdout);
-  pipeStream(child.stderr, '[stderr] ');
+  child.stdout.on('data', (chunk) => {
+    stdoutBuffer += chunk.toString();
+    stdoutBuffer = processBuffer(stdoutBuffer, '', onLine);
+  });
 
-  child.on('error', (error) => onError(error));
+  child.stdout.on('end', () => {
+    if (stdoutBuffer.trim()) {
+      combinedOutput += `${stdoutBuffer}\n`;
+      onLine(stdoutBuffer);
+    }
+  });
+
+  child.stderr.on('data', (chunk) => {
+    stderrBuffer += chunk.toString();
+    stderrBuffer = processBuffer(stderrBuffer, '[stderr] ', onLine);
+  });
+
+  child.on('error', (error) => {
+    onError(error);
+  });
   child.on('close', (code) => {
     if (code === 0) {
       const resultPath = extractResultPath(combinedOutput);

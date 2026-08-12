@@ -47,7 +47,8 @@ async function listTicketsByStatus(status, env, maxResults = 50) {
     throw new Error('Missing JIRA_BASE_URL or JIRA_API_TOKEN in .env');
   }
 
-  const jql = `status = \"${status}\" ORDER BY updated DESC`;
+  const project = env.JIRA_PROJECT || 'SSPLAN';
+  const jql = `project = "${project}" AND status = "${status}" ORDER BY updated DESC`;
   const baseUrl = env.JIRA_BASE_URL.replace(/\/$/, '');
   const url = `${baseUrl}/rest/api/2/search?jql=${encodeURIComponent(jql)}&maxResults=${maxResults}&fields=${encodeURIComponent('summary,status')}`;
 

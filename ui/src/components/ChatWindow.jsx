@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import MessageBubble from './MessageBubble';
 
-export default function ChatWindow({ messages, isStreaming }) {
+export default function ChatWindow({ messages, isStreaming, onRunTicket, onRunAll }) {
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -11,7 +11,14 @@ export default function ChatWindow({ messages, isStreaming }) {
   return (
     <section className="chat-window">
       {messages.map((message) => (
-        <MessageBubble key={message.id} role={message.role} text={message.text} />
+        <MessageBubble
+          key={message.id}
+          role={message.role}
+          text={message.text}
+          tickets={message.tickets}
+          onRunTicket={onRunTicket}
+          onRunAll={onRunAll}
+        />
       ))}
 
       {isStreaming && (

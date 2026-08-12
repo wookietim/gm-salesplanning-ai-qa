@@ -34,6 +34,7 @@ Create `.env` by copying the template below:
 JIRA_BASE_URL=https://jira.digital.ingka.com
 JIRA_USER_EMAIL=your.email@ingka.ikea.com
 JIRA_API_TOKEN=your_jira_personal_access_token
+JIRA_PROJECT=SSPLAN
 
 # Confluence credentials / settings
 CONFLUENCE_BASE_URL=https://confluence.build.ingka.ikea.com

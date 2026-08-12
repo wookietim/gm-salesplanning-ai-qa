@@ -48,6 +48,14 @@
             "description": "Latest ticket-scoped test execution date for this story (YYYY-MM-DD)."
           },
           "jiraTitle": { "type": "string", "minLength": 1 },
+          "isSubtask": {
+            "type": "boolean",
+            "description": "True when the Jira ticket is a subtask."
+          },
+          "parentKey": {
+            "type": "string",
+            "description": "Parent ticket key when isSubtask is true, e.g. SSPLAN-623."
+          },
           "testsPassing": { "type": "number", "minimum": 0 },
           "testsFailing": { "type": "number", "minimum": 0 },
           "testsVlocked": {
@@ -55,7 +63,20 @@
             "minimum": 0,
             "description": "Blocked/skipped/todo test count written to the 'tests blocked' table column."
           },
-          "bugsFound": { "type": "number", "minimum": 0 }
+          "bugsFound": { "type": "number", "minimum": 0 },
+          "testDetails": {
+            "type": "array",
+            "description": "Individual test results used to populate the expand macro inside each row.",
+            "items": {
+              "type": "object",
+              "required": ["name", "status"],
+              "properties": {
+                "name": { "type": "string" },
+                "status": { "type": "string", "enum": ["passed", "failed", "blocked"] }
+              },
+              "additionalProperties": false
+            }
+          }
         },
         "additionalProperties": false
       }

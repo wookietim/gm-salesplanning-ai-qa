@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Ensure node is on PATH (handles nvm, Homebrew, and standard installs)
+export PATH="$HOME/.nvm/versions/node/$(ls $HOME/.nvm/versions/node | sort -V | tail -1)/bin:/usr/local/bin:/opt/homebrew/bin:$PATH"
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 SCRIPT_PATH="$REPO_ROOT/component-poc/qa-agent/scripts/run-guide-sync.js"
 

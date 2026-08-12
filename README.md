@@ -23,6 +23,27 @@ Only add behavior under `adapters/` when a repository requires a specific condit
 - `adapters/gm-salesplanning-backend/`
 - `adapters/gm-salesplanning-dbt/`
 
+## Environment Setup
+
+The agents require a `.env` file in the repo root for credentials. This file is git-ignored and must be created locally.
+
+Create `.env` by copying the template below:
+
+```bash
+# Jira credentials for Pablo / QA agent
+JIRA_BASE_URL=https://jira.digital.ingka.com
+JIRA_USER_EMAIL=your.email@ingka.ikea.com
+JIRA_API_TOKEN=your_jira_personal_access_token
+
+# Confluence credentials / settings
+CONFLUENCE_BASE_URL=https://confluence.build.ingka.ikea.com
+CONFLUENCE_SPACE_KEY=SSP
+CONFLUENCE_PAGE_ID=your_confluence_page_id
+CONFLUENCE_API_TOKEN=your_confluence_personal_access_token
+```
+
+> **Never commit `.env` to source control.** It is listed in `.gitignore`.
+
 ## Notes
 
 - The original QA assets were migrated from:

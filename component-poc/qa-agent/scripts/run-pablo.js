@@ -621,6 +621,32 @@ async function main() {
     }
   }
 
+  // Before Bob regenerates plans, purge any stale plan files for those components.
+  // Susan reads ALL .qa.md files in the bob dir, so old files from prior ticket runs
+  // would cause false jira-issue-key-coverage failures.
+  const bobDir = path.resolve(repoRoot, path.dirname(
+    args['bob-memory'] || 'component-poc/qa-agent/agents/bob/generated-tests/.bob-memory.json'
+  ));
+  if (toRegenerate.length > 0 && fs.existsSync(bobDir)) {
+    let stalePurged = 0;
+    for (const compPath of toRegenerate) {
+      // Convert component relative path to the slug used in plan filenames:
+      // e.g. ../gm-salesplanning-frontend/src/components/Card/card.tsx
+      //   -> ..__gm-salesplanning-frontend__src__components__Card__card
+      const slug = compPath.replace(/\//g, '__').replace(/\.[^.]+$/, '');
+      const existing = fs.readdirSync(bobDir).filter(
+        (f) => f.endsWith('.qa.md') && f.includes(`__${slug}.qa.md`)
+      );
+      for (const stale of existing) {
+        fs.unlinkSync(path.join(bobDir, stale));
+        stalePurged += 1;
+      }
+    }
+    if (stalePurged > 0) {
+      console.log(`[Pablo] Purged ${stalePurged} stale plan file(s) before Bob regeneration.`);
+    }
+  }
+
   let bobStdout = '';
   if (toRegenerate.length > 0) {
     console.log(`[Pablo] Invoking Bob for ${toRegenerate.length} component(s) to regenerate plans.`);

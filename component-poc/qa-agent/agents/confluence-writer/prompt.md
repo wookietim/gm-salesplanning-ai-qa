@@ -42,12 +42,41 @@ Rules:
 - Only upsert ticket rows for tickets with real ticket-scoped execution output.
   Never write fallback/full-suite totals under a Jira ticket key.
 - The `Jira Ticket` cell must be a Confluence link to Jira for that ticket.
-  Use `jiraBaseUrl` + `/browse/<TICKET_KEY>` (or `<jiraBaseUrl>/browse/<TICKET_KEY>`
-  if `jiraBaseUrl` does not already include `/browse`).
-- Apply row background colors:
-  - red when `Tests failing` > 0
-  - yellow when `Tests failing` = 0 and `tests blocked` > 0
-  - green when `Tests failing` = 0 and `tests blocked` = 0
+  Use `jiraBaseUrl` + `/browse/<TICKET_KEY>` with `target="_blank" rel="noopener noreferrer"` so links open in a new tab.
+- If the ticket is a subtask (`issuetype.subtask === true` in Jira), render a
+  second line in the ticket cell: `↳ subtask of <a href="…/browse/PARENT">PARENT</a>`
+- Each ticket occupies **two consecutive rows**:
+  - **Row 1 (summary):** the 7-column data row. Apply background color to every cell.
+  - **Row 2 (detail):** a single `<td colspan="7">` cell immediately after Row 1.
+    - Background color **must exactly match** Row 1 (same RGB value — see color rules below).
+    - Set `border-top: none` so the rows appear visually merged.
+    - Contains a Confluence expand macro titled `Show tests (N)` where N = total tests.
+    - Inside the expand, when any tests failed, show a failure explanation first:
+      - `⚠️ Why tests failed:` heading followed by bullets: `<count>x <check>: <description>`
+    - Then list every test: `✅ <component> — Happy/Sad Path (<testId>)` for passed,
+      `❌ ...` for failed, `⛔ ...` for blocked.
+    - If the ticket is a subtask, use `padding: 0 8px 6px 24px` on the Row 2 `<td>`
+      — **never use `padding-left` separately** as it will be overridden by any
+      `padding` shorthand. For non-subtask rows use `padding: 0 8px 6px 8px`.
+    ```xml
+    <!-- non-subtask -->
+    <tr><td colspan="7" style="background-color:<ROW_COLOR>;border-top:none;padding:0 8px 6px 8px;">
+    <!-- subtask -->
+    <tr><td colspan="7" style="background-color:<ROW_COLOR>;border-top:none;padding:0 8px 6px 24px;">
+      <ac:structured-macro ac:name="expand" ac:schema-version="1">
+        <ac:parameter ac:name="title">Show tests (N)</ac:parameter>
+        <ac:rich-text-body>
+          <!-- optional failure explanation -->
+          <ul><li>✅ component — Happy Path (BOB-HP-001)</li>...</ul>
+        </ac:rich-text-body>
+      </ac:structured-macro>
+    </td></tr>
+    ```
+- Apply row background colors using these **exact RGB values**:
+  - **Red** `rgb(255,235,230)` — when `Tests failing` > 0
+  - **Yellow** `rgb(255,247,214)` — when `Tests failing` = 0 and `tests blocked` > 0
+  - **Green** `rgb(227,252,239)` — when `Tests failing` = 0 and `tests blocked` = 0
+  - Always derive the color from the counts in Row 1. Never reuse a stale color.
 - Add/update a legend block at the top of the page (before the summary table)
   that explains these colors.
 
@@ -63,6 +92,8 @@ You receive `ticketSummaries[]` where each entry has:
 - `testsFailing`
 - `testsVlocked`
 - `bugsFound`
+- `testDetails` — optional array of `{ name, status }` for each individual test case
+  (`status`: `"passed"`, `"failed"`, or `"blocked"`)
 
 When a value is missing, block the run and report which field is missing.
 When upstream provides both plan-level and runner-level counts, always use the

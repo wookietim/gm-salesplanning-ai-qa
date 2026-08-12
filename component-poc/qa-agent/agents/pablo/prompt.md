@@ -131,10 +131,19 @@ It must be complete, accurate, and actionable.
      - `Tests failing`
      - `tests blocked`
      - `No of Bugs found`
-   - Confluence-Writer must color rows by outcome:
-     - red for any failed tests
-     - yellow for blocked tests with no failures
-     - green for fully passing rows
+   - Confluence-Writer must color rows by outcome using exact RGB values:
+     - **Red** `rgb(255,235,230)` — any failed tests
+     - **Yellow** `rgb(255,247,214)` — blocked tests with no failures
+     - **Green** `rgb(227,252,239)` — fully passing rows
+   - Each ticket row is followed immediately by a detail row (`colspan="7"`) with
+     a "Show tests (N)" expand macro. Rules for the detail row:
+     - Background color must **exactly match** the data row's color (same RGB value).
+     - Set `border-top: none` so the two rows appear visually merged.
+     - For non-subtask tickets use `padding: 0 8px 6px 8px`. For subtask tickets
+       use `padding: 0 8px 6px 24px` — **never use `padding-left` separately**
+       as it is overridden by the `padding` shorthand and the indent will not appear.
+     - When tests failed, include a ⚠️ failure explanation section inside the
+       expand (above the test list) listing each failing check and its description.
    - Confluence-Writer must place a color legend above the table explaining
      red/yellow/green meanings.
    - Pass `jiraBaseUrl` so Confluence-Writer can render Jira ticket cells as links.

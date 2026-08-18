@@ -1,0 +1,37 @@
+Issue SSPLAN-78: Establish an Ad-Hoc Database for Initial Data Onboarding and Experimentation
+Acceptance Criteria (derived from description):
+{color:#de350b}*TO BE REFINED!*{color}
+
+*Key Target User(s):*
+
+Development Team (Software Engineers)
+
+Data Analysts
+
+Product Team
+
+*Problem & Opportunity:* We cannot effectively design or build the final sales forecast simulation engine without first understanding the structure, quality, and relationships within our source data. This epic provides the opportunity to create a simple, low-effort sandbox where the team can explore the data and validate assumptions before we commit to a complex, production-grade architecture.
+
+*Current Situation & Consequences of Inaction:* Our understanding of the source data is purely theoretical. If we proceed to build the final system without this hands-on exploration, we risk designing a flawed architecture based on incorrect assumptions, leading to significant rework and delays.
+
+*Proposed Solution:* We will stand up a simple, standalone database within our development GCP environment. This database will be populated with one-time, manual or semi-automated data dumps from a few key source systems. This is *not* about building automated pipelines; it is about creating a static snapshot of the data for the explicit purpose of team onboarding, testing, and experimentation.
+
+*Clear Expected Deliverable:* A standalone database, populated with sample data from at least two key data domains, that is accessible to the development and data teams.
+
+*Business Value:* The primary value is *risk reduction* and {*}accelerated learning{*}. This ad-hoc database unblocks the team, allowing them to validate assumptions about the data early. This will lead to a better-designed final product and less rework.
+
+*Key Outcomes:*
+
+A tangible data environment for the team to work with.
+
+Early identification of data quality issues or structural complexities.
+
+A shared understanding of the data across the team.
+
+*Goal:* To provide the project team with hands-on access to the core data needed for the project.
+
+*Assumptions:* We can obtain a one-time data dump or temporary access to the necessary source systems.
+
+*Dependencies:* This epic depends on the completion of the "Establish Core Infrastructure" epic (SSPLAN-79) to provide the GCP environment.
+
+*Risks:* The process of manually extracting the data may be more complex than anticipated; the sample data might not be fully representative.

@@ -31,13 +31,21 @@ function tsCompact(date) {
   return `${date.getUTCFullYear()}${pad(date.getUTCMonth() + 1)}${pad(date.getUTCDate())}-${pad(date.getUTCHours())}${pad(date.getUTCMinutes())}${pad(date.getUTCSeconds())}`;
 }
 
-function listBobPlans(bobDir) {
+function listBobPlans(bobDir, ticketPrefixes = []) {
   if (!fs.existsSync(bobDir)) {
     return [];
   }
+  const prefixes = ticketPrefixes.map((prefix) => String(prefix || '').trim().toUpperCase()).filter(Boolean);
   return fs
     .readdirSync(bobDir)
     .filter((file) => file.endsWith('.qa.md'))
+    .filter((file) => {
+      if (prefixes.length === 0) {
+        return true;
+      }
+      const upper = file.toUpperCase();
+      return prefixes.some((prefix) => upper.startsWith(`${prefix}__`));
+    })
     .sort()
     .map((file) => path.join(bobDir, file));
 }
@@ -132,7 +140,7 @@ function getRequiredRuntimeAssertions(testId, runtimeProfile) {
 
 function parsePlan(planText) {
   const sourceMatch = planText.match(/- Source component:\s*(.+)/);
-  const sourcePath = sourceMatch ? sourceMatch[1].trim() : '';
+  let sourcePath = sourceMatch ? sourceMatch[1].trim() : '';
 
   const jiraIssueLineMatch = planText.match(/- Jira issue keys:\s*(.+)/);
   const jiraIssueKeys = jiraIssueLineMatch
@@ -142,12 +150,36 @@ function parsePlan(planText) {
         .filter((key) => key && key.toLowerCase() !== 'not provided')
     : [];
 
+  if (jiraIssueKeys.length === 0) {
+    const ticketMatch = planText.match(/Ticket:\s*\*?\*?([A-Z]+-\d+)/i);
+    if (ticketMatch) {
+      jiraIssueKeys.push(ticketMatch[1].toUpperCase());
+    }
+  }
+
   const testIdRegex = /^###\s+Test ID:\s*(.+)$/gm;
   const testIds = [];
   let match = testIdRegex.exec(planText);
   while (match) {
     testIds.push(match[1].trim());
     match = testIdRegex.exec(planText);
+  }
+
+  const matrixTestIds = Array.from(
+    new Set(
+      Array.from(planText.matchAll(/^\|\s*([A-Z0-9]{1,10}-\d+)\s*\|/gm)).map((m) => m[1].trim())
+    )
+  );
+
+  if (testIds.length === 0 && matrixTestIds.length > 0) {
+    testIds.push(...matrixTestIds);
+  }
+
+  if (!sourcePath) {
+    const featureMatch = planText.match(/-\s*Feature under test:\s*`?([^`\n]+)`?/i);
+    if (featureMatch) {
+      sourcePath = `__feature__:${featureMatch[1].trim()}`;
+    }
   }
 
   const hasHappySection = /##\s+\d+\.\s+Happy Path Tests/i.test(planText);
@@ -167,6 +199,7 @@ function parsePlan(planText) {
   };
 
   const runtimeAssertionIds = extractRuntimeAssertionIds(planText);
+  const planFormat = matrixTestIds.length > 0 ? 'manual-matrix' : 'bob-runtime';
 
   return {
     sourcePath,
@@ -180,6 +213,7 @@ function parsePlan(planText) {
     hasRuntimeProfile,
     runtimeSignals,
     runtimeAssertionIds,
+    planFormat,
   };
 }
 
@@ -194,6 +228,10 @@ function isComponentSourceLikelyValid(sourceText) {
 }
 
 function runChecksForTest(testId, context) {
+  if (context.planFormat === 'manual-matrix') {
+    return runChecksForManualTest(testId, context);
+  }
+
   const checks = [];
   const reasons = [];
 
@@ -360,6 +398,60 @@ function runChecksForTest(testId, context) {
   return { testId, status, checks, reasons };
 }
 
+function runChecksForManualTest(testId, context) {
+  const checks = [];
+  const reasons = [];
+
+  const addCheck = (name, status, details) => {
+    checks.push({ name, status, details });
+    if (status === 'fail') {
+      reasons.push(`${testId}: ${name} failed - ${details}`);
+    }
+  };
+
+  addCheck(
+    'source-file-exists',
+    context.sourceExists ? 'pass' : 'fail',
+    context.sourceExists ? 'Source component file found' : 'Source component file missing'
+  );
+
+  addCheck(
+    'source-shape-valid',
+    context.sourceShapeValid ? 'pass' : 'fail',
+    context.sourceShapeValid
+      ? 'Source appears to contain component export or JSX structure'
+      : 'Source does not appear to be a valid component structure'
+  );
+
+  if (/^SP-/i.test(testId)) {
+    addCheck(
+      'sad-path-source-signals',
+      context.hasSadSourceSignals ? 'pass' : 'fail',
+      context.hasSadSourceSignals
+        ? 'Source includes error or fallback signals'
+        : 'Source lacks obvious error, loading, or fallback handling signals'
+    );
+  }
+
+  if (context.expectedJiraIssues.length > 0) {
+    const planIssueSet = new Set(context.planJiraIssues.map((item) => item.toLowerCase()));
+    const missingIssues = context.expectedJiraIssues.filter(
+      (issue) => !planIssueSet.has(issue.toLowerCase())
+    );
+
+    addCheck(
+      'jira-issue-key-coverage',
+      missingIssues.length === 0 ? 'pass' : 'fail',
+      missingIssues.length === 0
+        ? 'Plan includes requested Jira issue keys'
+        : `Plan missing Jira issue keys: ${missingIssues.join(', ')}`
+    );
+  }
+
+  const status = reasons.length === 0 ? 'pass' : 'fail';
+  return { testId, status, checks, reasons };
+}
+
 function deriveComponentName(planPath) {
   const base = path.basename(planPath).replace('.qa.md', '');
   const parts = base.split('__');
@@ -455,11 +547,20 @@ function main() {
         .map((item) => item.trim())
         .filter(Boolean)
     : [];
+  const planFileArg = args['plan-file'] ? path.resolve(repoRoot, args['plan-file']) : '';
+  const componentSourceArg = String(args['component-source'] || '').trim();
+  const componentNameArg = String(args['component-name'] || '').trim();
 
   const bobDir = path.resolve(
     repoRoot,
     args['bob-dir'] || 'component-poc/qa-agent/agents/bob/generated-tests'
   );
+  const ticketPrefixes = args['ticket-prefixes']
+    ? args['ticket-prefixes']
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean)
+    : [];
   const resultsDir = path.resolve(
     repoRoot,
     args['results-dir'] || 'component-poc/qa-agent/agents/susan/results'
@@ -467,13 +568,17 @@ function main() {
 
   ensureDir(resultsDir);
 
-  console.log(`[Susan] Reading Bob plans from: ${bobDir}`);
+  if (planFileArg) {
+    console.log(`[Susan] Reading explicit plan file: ${planFileArg}`);
+  } else {
+    console.log(`[Susan] Reading Bob plans from: ${bobDir}`);
+  }
 
   const started = new Date();
   const startedAt = started.toISOString();
   const runId = args['run-id'] || `susan-${tsCompact(started)}`;
 
-  const planFiles = listBobPlans(bobDir);
+  const planFiles = planFileArg ? [planFileArg] : listBobPlans(bobDir, ticketPrefixes);
 
   console.log(`[Susan] Found ${planFiles.length} plan file(s) to evaluate before scope filtering.`);
 
@@ -484,9 +589,15 @@ function main() {
   let failed = 0;
 
   for (const planPath of planFiles) {
+    if (!fs.existsSync(planPath)) {
+      continue;
+    }
     const planText = fs.readFileSync(planPath, 'utf8');
     const parsed = parsePlan(planText);
-    const componentName = deriveComponentName(planPath);
+    const componentName = componentNameArg || deriveComponentName(planPath);
+    if (componentSourceArg) {
+      parsed.sourcePath = componentSourceArg;
+    }
 
     if (!shouldRunForComponent(requestedSet, componentName, parsed.sourcePath)) {
       continue;
@@ -520,6 +631,7 @@ function main() {
       expectedJiraIssues,
       planJiraIssues: parsed.jiraIssueKeys,
       hasAssumedCriteria: parsed.hasAssumedCriteria,
+      planFormat: parsed.planFormat,
     };
 
     const testIds = parsed.testIds.length > 0 ? parsed.testIds : ['UNSPECIFIED-TEST-ID'];

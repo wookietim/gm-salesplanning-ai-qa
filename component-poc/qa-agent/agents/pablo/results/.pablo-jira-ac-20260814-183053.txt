@@ -1,0 +1,7 @@
+Issue SSPLAN-736: Tooltip styling for charts
+Acceptance Criteria (derived from description):
+*As a* user viewing data visualizations,
+*I want* the chart tooltips to be readable and follow Skapa
+*So that* I can read the data points clearly and experience a polished, professional interface.
+
+Please update the recharts tooltip to use Skapa tip component styling:  https://www.figma.com/design/HdtKcUKqPyPfxr3Er8sStc/Sales-Planning---Spec?node-id=3006-10198&t=SYwSgQCe5lmPLJTv-0

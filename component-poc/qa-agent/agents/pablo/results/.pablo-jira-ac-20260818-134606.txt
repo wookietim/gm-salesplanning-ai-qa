@@ -1,0 +1,54 @@
+Issue SSPLAN-691: Segmented Control QTY/Price Toggle
+Acceptance Criteria (derived from description):
+*Feature:* Segmented Control to toggle data between QTY and Sales
+
+*User Story:* As an HFB leader I want the option to toggle my data view by QTY Index, QTY, Sales Index, and Sales, so that I may have flexibility in monitoring sales performance.
+
+*Background:*
+    *Given* I am logged into the sales planning dashboard
+    *And* The Weekly Sales Graph is visible
+    *And* All data sources(Actual sales, Goal, Last Year sales, Financial Forecast, Demand plan) are loaded ({color:#00875a}Or Mocked until Data is available{color})
+
+*Scenario 1:* Display QTY Index view
+*When* I select "QTY Index" from the segmented control
+*Then* The sales graph displays QTY index data
+*And* the graph shows QTY Index values from Actual Sales
+*And* the graph shows QTY Index Values from Goal {color:#00875a}- Mocked until Data is available{color}
+*And* the graph shows QTY Index Values from Last Year Sales
+*And* the graph shows QTY Index Values from Financial Forecast
+*And* the graph shows QTY Index Values from Demand Plan {color:#00875a}- Mocked until Data is available{color}
+*And* the segmented control "QTY Index" button is highlighted as active
+
+*Scenario 2:* Display QTY (pieces) view
+*When* I select "QTY" from the segmented control
+*Then* The sales graph displays QTY data
+*And* the graph shows QTY Values from Actual Sales
+*And* the graph shows QTY Values from Goal {color:#00875a}- Mocked until Data is available{color}
+*And* the graph shows QTY Values from Last Year Sales
+*And* the graph shows QTY Values from Financial Forecast
+*And* the graph shows QTY Values from Demand Plan {color:#00875a}- Mocked until Data is available{color}
+*And* the segmented control "QTY" button is highlighted as active
+
+*Scenario 3:* Display sales Index view
+*When* I select "Sales Index" from the segmented control
+*Then* The sales graph displays Sales index data
+*And* the graph shows sales Index Values from Actual Sales
+*And* the graph shows sales Index Values from Goal
+*And* the graph shows sales Index Values from Last Year Sales
+*And* the graph shows sales Index Values from Demand Plan {color:#00875a}- Mocked until Data is available{color}
+*And* the segmented control "sales Index" button is highlighted as active
+
+*Scenario 4:* Display sales ($$) view
+*When* I select "Sales" from the segmented control
+*Then* The sales graph displays Sales ($$) actuals data
+*And* the graph shows sales Values from Actual Sales
+*And* the graph shows sales Values from Goal
+*And* the graph shows sales Values from Last Year Sales
+*And* the graph shows sales Values from Demand Plan {color:#00875a}- Mocked until Data is available{color}
+*And* the segmented control "sales" button is highlighted as active
+
+*Figma Design:* [Solo Component|https://www.figma.com/design/HdtKcUKqPyPfxr3Er8sStc/Sales-Planning---Spec?node-id=2189-5328&t=PXLklxgT5Ss1ZCW7-4] - [Component in Graph|https://www.figma.com/design/HdtKcUKqPyPfxr3Er8sStc/Sales-Planning---Spec?node-id=3006-10198&t=PXLklxgT5Ss1ZCW7-4]
+
+!image-2026-07-21-15-43-00-674.png!
+
+*Note:* Data validation will occur in context with overall component feature. For example: Sales by Week(Country-HFB views), PA Performance, News, Commercial Activities, etc.

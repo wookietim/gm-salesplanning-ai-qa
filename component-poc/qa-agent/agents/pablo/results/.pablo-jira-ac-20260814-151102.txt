@@ -1,0 +1,50 @@
+Issue SSPLAN-407: Create Initial Power BI Dashboard for Happy Commercial Sales Planning Score
+Acceptance Criteria (derived from description):
+*Key Target Users:* ** Sales Planners
+
+*Problem Statement:* Sales Planning currently lacks a single, measurable metric that clearly reflects the current state of sales performance against initial planning goals. This absence makes it difficult to quickly identify problem areas and significant deviations, leading to less accurate and responsive sales planning.
+ 
+*Current Situation & Consequences if Unaddressed:* Without a consolidated score, Sales Planners must manually correlate various data points to understand performance, a time-consuming and error-prone process. This can result in delayed identification of under-performing areas, missed opportunities to adjust strategies, and ultimately, less effective sales planning that does not accurately reflect market realities or contribute optimally to business objectives.
+ 
+*Proposed Solution & Deliverables:* This Epic aims to introduce a "Happy Commercial Sales Planning Score" that aggregates key sales planning metrics into a clear, actionable indicator. The initial phase will involve developing a proof-of-concept (POC) Power BI dashboard using live data and refining the score's calculation and visualization.
+ 
+ * *Deliverables (Initial Phase):*
+ ** Power BI dashboard visualizing a "Happy Commercial Sales Planning Score" using live data from "News on-time," "EDS Precision (Rest to Sell Left %)," and "SDS Overwrites 4 weeks plan." (Optional SCIN Data)
+ ** Defined methodology for calculating the "Happy Commercial Sales Planning Score" for the POC.
+ 
+*Business Value and Key Outcomes:* The consistent tracking and updating of the "Happy Commercial Sales Planning Score" will provide Sales Planners with immediate, actionable insights into sales performance against objectives. This will enable:
+ 
+ * *Improved Decision-Making:* Sales Planners can quickly identify deviations and problem areas, allowing for timely adjustments to sales strategies.
+ * *Enhanced Sales Planning Accuracy:* By understanding past performance trends and the impact of various factors, future sales planning can become more precise and realistic.
+ * *Alignment with Objectives:* A clear score helps ensure that sales activities are consistently aligned with overall business goals and contributes to their achievement.
+ * *Efficiency Gains:* Reduces the manual effort required for performance analysis, freeing up Sales Planners to focus on strategic initiatives.
+ 
+*Goals and Success Metrics:*
+ 
+ * *Goal:* To establish a reliable and actionable "Happy Commercial Sales Planning Score" that empowers Sales Planners to improve sales forecasting and performance.
+ * *Success Metrics (for initial phase):*
+ ** Successful creation and validation of the Power BI dashboard POC.
+ ** Positive feedback from Sales Planners on the clarity and utility of the score and dashboard during the POC phase.
+ ** Establishment of a baseline for the "Happy Commercial Sales Planning Score" using live data.
+ 
+*Assumptions:*
+ 
+ * Business stakeholders will provide clear input on the definition and weighting of components contributing to the "Happy Commercial Sales Planning Score" for both the POC and future iterations.
+ 
+*Dependencies:*
+ 
+ * Availability of Sales Planners for feedback and validation throughout the development process.
+ * Access to live sales DATA from F&CS and SCIN.
+ 
+*Risks:*
+ 
+ * Difficulty in obtaining or integrating comprehensive live data.
+ * Lack of clear consensus on the definition or calculation of the "Happy Commercial Sales Planning Score" among stakeholders.
+ * Technical challenges in developing the Power BI dashboard or integrating future live data sources.
+ 
+*High-Level Acceptance Criteria:*
+ 
+ * The "Happy Commercial Sales Planning Score" is clearly defined and its calculation methodology is documented.
+ * The Power BI dashboard effectively visualizes the score and its contributing factors using live data.
+ * Sales Planners can interpret the score and identify areas of deviation from goals.
+ * The Epic has a clear roadmap for transitioning from current live data integration to future iterations.

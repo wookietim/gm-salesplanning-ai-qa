@@ -1,0 +1,2 @@
+Issue SSPLAN-747: Create GapToClose component
+Acceptance Criteria: Not found in Jira fields or description.

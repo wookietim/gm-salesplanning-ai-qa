@@ -1,0 +1,7 @@
+Issue SSPLAN-714: Create Blank Card Component
+Acceptance Criteria (derived from description):
+Create blank card component to be used for card modules within the sales planning tool.
+
+[Figma Link to Component|https://www.figma.com/design/HdtKcUKqPyPfxr3Er8sStc/Sales-Planning---Spec?node-id=3280-12820&t=9kAvJIGvNgWFCQf4-4]
+
+[Figma link to no content view|https://www.figma.com/design/HdtKcUKqPyPfxr3Er8sStc/Sales-Planning---Spec?node-id=3280-14601&amp;t=EEyDWqUBSD2vth34-0]

@@ -1,0 +1,43 @@
+{
+  "runId": "pablo-20260814-154607",
+  "agentId": "pablo",
+  "startedAt": "2026-08-14T15:46:07.428Z",
+  "endedAt": "2026-08-14T15:46:07.951Z",
+  "mode": "components",
+  "targetComponents": [],
+  "bob": {
+    "checked": 0,
+    "regenerated": 0,
+    "reused": 0,
+    "regeneratedComponents": [],
+    "stdout": ""
+  },
+  "susan": {
+    "overallStatus": "pass",
+    "components": 0,
+    "tests": 0,
+    "passed": 0,
+    "failed": 0,
+    "stdout": "",
+    "componentResults": []
+  },
+  "jira": {
+    "project": "SSPLAN",
+    "issueKeys": [
+      "SSPLAN-730"
+    ],
+    "source": "jira-api",
+    "warnings": [],
+    "issues": [
+      {
+        "key": "SSPLAN-730",
+        "summary": "Weekly Sales Chart has week 36 twice",
+        "updatedAt": "2026-08-11T17:34:51.011+0000",
+        "hasAcceptanceCriteria": true
+      }
+    ],
+    "acFilePath": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/pablo/results/.pablo-jira-ac-20260814-154607.txt"
+  },
+  "overallStatus": "pass",
+  "failureReasons": []
+}

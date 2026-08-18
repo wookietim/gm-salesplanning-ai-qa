@@ -1,0 +1,7 @@
+Issue SSPLAN-679: Run QA tests
+Acceptance Criteria (derived from description):
+Run QA tests for this ticket 
+
+ 
+
+QA tests will be found at [SSPLAN-623 Test Script (CY vs LY sales graph).xlsx|https://iweof.sharepoint.com/:x:/r/teams/o365g_digitalsalesplanning_itus013/Shared%20Documents/QA/Test%20Cases/Sales%20By%20Week%20Component/SSPLAN-623%20Test%20Script%20(CY%20vs%20LY%20sales%20graph).xlsx?d=w6d47d72f0c19475c9004c48f272efd43&csf=1&web=1&e=9M6eVm]

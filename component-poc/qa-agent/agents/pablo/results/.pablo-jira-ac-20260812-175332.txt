@@ -1,0 +1,69 @@
+Issue SSPLAN-719: Article Badges Component
+Acceptance Criteria (derived from description):
+*User Story:* As an HFB leader I need to know if an article is a new, BTI or other flag.
+
+*Description:* This covers the development of a reusable badge component to display strategic classification flags on articles, such as "New", "BTI" (Breath-Taking Item), or "EDS" (End Date Sales).
+
+*Background:*
+  Given I am an HFB leader logged into the Sales Planning monitoring tool
+  And I have access to current fiscal year sales data
+  And the Article Badges component is embedded in the article list
+
+*Scenario:* Display "New" badge for recently launched articles
+  Given an article has a Sales Start Date within the last 12 weeks
+  When the article is rendered in the list
+  Then I should see a "New" badge next to the article details
+
+*Scenario:* Display "BTI" badge for Breath-Taking Items
+  Given an article is flagged as a BTI in the system
+  When the article is rendered in the list
+  Then I should see a "BTI" badge next to the article details
+
+*Scenario:* Display multiple badges simultaneously
+  Given an article is both a recently launched "New" item and a "BTI"
+  When the article is rendered in the list
+  Then I should see both the "New" and "BTI" badges displayed side-by-side
+
+ 
+
+*Design:* [Article badges component in Figma|https://www.figma.com/design/HdtKcUKqPyPfxr3Er8sStc/Sales-Planning---Spec?node-id=2312-6411&amp;t=XnlRLLiCWynZQ98q-0]
+
+!image-2026-08-03-11-41-47-428.png!
+
+datacatalog.ingka.com/attribute/7124488/
+
+Issue SSPLAN-730: Weekly Sales Chart has week 36 twice
+Acceptance Criteria (derived from description):
+Weekly Sales Chart has week 36 twice, and the values are very low, looks like 0. There should only be one week 36, and last year's sales should be accurate. 
+
+!image-2026-08-05-13-21-54-393.png!
+
+Issue SSPLAN-740: Update RollingSalesTrend Metric API
+Acceptance Criteria (derived from description):
+Update data mapping for additions and changes to data structure for API metric rollingsalestrend.
+
+Data structure TBD
+
+Issue SSPLAN-739: Update RollingSalesTrend datasets
+Acceptance Criteria (derived from description):
+Update dataset for RollingSalesTrend. This dataset needs the following:
+ * Sales Index current year vs last year
+ * Quantity Index current year vs last year
+ * Goal Sales Index current year vs sales goal
+ * Goal Quantity Index current year vs quantity goal
+ * Each metric needs an index for 1w,4w,8w,13w, and fiscal YTD
+
+Issue SSPLAN-747: Create GapToClose component
+Acceptance Criteria: Not found in Jira fields or description.
+
+Issue SSPLAN-714: Create Blank Card Component
+Acceptance Criteria (derived from description):
+Create blank card component to be used for card modules within the sales planning tool.
+
+[Figma Link to Component|https://www.figma.com/design/HdtKcUKqPyPfxr3Er8sStc/Sales-Planning---Spec?node-id=3280-12820&t=9kAvJIGvNgWFCQf4-4]
+
+[Figma link to no content view|https://www.figma.com/design/HdtKcUKqPyPfxr3Er8sStc/Sales-Planning---Spec?node-id=3280-14601&amp;t=EEyDWqUBSD2vth34-0]
+
+Issue SSPLAN-704: [FE] Add storybook publishing on each PR
+Acceptance Criteria (derived from description):
+We need a way to see new components implementation and storybook can help with that but we need to have a preview published on each PR open

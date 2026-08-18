@@ -1,0 +1,5 @@
+Issue SSPLAN-374: Target state data concepts
+Acceptance Criteria (derived from description):
+*Description:* Define and document the target state data concepts, the entities, relationships, and data structures that the commercial planning & activities processes will be built around. this epic is intentionally forward-looking, while aligning with current SSPLAN-424 data needs but not limited by them, targeting the complete data model commercial planning & activities requires at full maturity.
+
+{*}Core Question{*}:"What are the core data entities, relationships, and concepts that support commercial planning & activities, and what does the ideal end state look like?"

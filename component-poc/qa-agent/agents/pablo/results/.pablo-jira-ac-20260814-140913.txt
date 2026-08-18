@@ -1,0 +1,39 @@
+Issue SSPLAN-623: Show Weekly Sales vs Latest Financial Forecast
+Acceptance Criteria (derived from description):
+*Feature:* HFB Leaders can view weekly sales actuals against the latest financial forecast in pieces at country level _when the view is toggled to "pieces"._ 
+
+The latest financial forecast will not be visible when toggled to another other view. 
+
+As an HFB Leader, I want to see actual sales against the latest financial forecast (What we sold vs what we thought we would sell in our forecast) on a weekly time frame on the country level, so that I can quickly assess forecast accuracy and risk.
+
+*In scope: Pieces granularity only*
+
+*Out of scope: Turnover*
+
+*Background:* *Given* the sales planning tool landing screen is displayed {*}AND{*}:
+ * The latest financial forecast data is available
+ * Weekly sales actuals data is available
+ * Yearly sales actuals data is available
+
+*Scenario:* 
+
+ 
+*When* I view the line graph and toggle the view to *Pieces*
+ 
+*Then* I should see a visual representation of actual sales quantity plotted against the latest financial forecast quantity at a country level, and the data should show weekly time intervals based on the financial calendar, and the graph should display last year's actual pieces sold that occurred in the same weekly time intervals.
+
+ 
+
+*Definitions:*
+ * *Forecast:* A best *prediction* of what will actually happen based on current trends, data, and historical sales.
+ * The Financial Forecast is submitted bi-monthly. Each submission is a revised total year forecast—a complete reforecast, not an incremental update.
+ * Each submission is assigned a sequential letter (A, B, C, etc.). Submission lettering skips a month in the case that IKEA wants to change and submit monthly.
+ * *Latest forecast* = the most recent financial forecast published in BIM 
+
+*Dependencies:*
+ # *Data:*
+ ** *Business Intelligence & Management System (BIM)*
+ *** Must onboard to BIM for Financial Forecast
+ *** Data discovery must be performed by engineering team
+ *** Financial Forecast is labeled within sales planning leaders excel sheet as "FCast 'X'" and "F'X'" with X being the letter corresponding to the submission.
+ # *Design: [Figma|https://www.figma.com/design/HdtKcUKqPyPfxr3Er8sStc/Sales-Planning?node-id=2205-4950&t=sICU9Qs8qeh0Qmbj-4]*

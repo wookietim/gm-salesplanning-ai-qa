@@ -1,0 +1,5 @@
+Issue SSPLAN-730: Weekly Sales Chart has week 36 twice
+Acceptance Criteria (derived from description):
+Weekly Sales Chart has week 36 twice, and the values are very low, looks like 0. There should only be one week 36, and last year's sales should be accurate. 
+
+!image-2026-08-05-13-21-54-393.png!

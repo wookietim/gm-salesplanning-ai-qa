@@ -1,0 +1,43 @@
+{
+  "runId": "pablo-20260814-154350",
+  "agentId": "pablo",
+  "startedAt": "2026-08-14T15:43:50.036Z",
+  "endedAt": "2026-08-14T15:43:50.701Z",
+  "mode": "components",
+  "targetComponents": [],
+  "bob": {
+    "checked": 0,
+    "regenerated": 0,
+    "reused": 0,
+    "regeneratedComponents": [],
+    "stdout": ""
+  },
+  "susan": {
+    "overallStatus": "pass",
+    "components": 0,
+    "tests": 0,
+    "passed": 0,
+    "failed": 0,
+    "stdout": "",
+    "componentResults": []
+  },
+  "jira": {
+    "project": "SSPLAN",
+    "issueKeys": [
+      "SSPLAN-455"
+    ],
+    "source": "jira-api",
+    "warnings": [],
+    "issues": [
+      {
+        "key": "SSPLAN-455",
+        "summary": "Schema Design & Domain Modeling",
+        "updatedAt": "2026-08-07T14:53:28.283+0000",
+        "hasAcceptanceCriteria": true
+      }
+    ],
+    "acFilePath": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/pablo/results/.pablo-jira-ac-20260814-154350.txt"
+  },
+  "overallStatus": "pass",
+  "failureReasons": []
+}

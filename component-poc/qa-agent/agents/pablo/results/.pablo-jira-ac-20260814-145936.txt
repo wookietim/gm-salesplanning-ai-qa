@@ -1,0 +1,5 @@
+Issue SSPLAN-585: Consumption Layer: Scope & Requirements
+Acceptance Criteria (derived from description):
+*Story:* 
+
+{*}Description{*}:

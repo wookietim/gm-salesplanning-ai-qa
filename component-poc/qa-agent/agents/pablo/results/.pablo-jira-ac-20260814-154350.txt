@@ -1,0 +1,5 @@
+Issue SSPLAN-455: Schema Design & Domain Modeling
+Acceptance Criteria (derived from description):
+*Description:* 
+
+{*}Core Question{*}:

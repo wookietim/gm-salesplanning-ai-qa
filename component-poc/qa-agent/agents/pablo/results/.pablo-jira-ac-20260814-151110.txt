@@ -1,0 +1,37 @@
+Issue SSPLAN-425: Baseline isolation and consumption layer prototype
+Acceptance Criteria (derived from description):
+*Objective:* Validate that baseline isolation methodology works on real data and prove a consumption layer pattern that commercial consumers can use to access and query commercial data.
+
+{*}Description{*}: Using the architecture and design from SSPLAN-426, prototype the baseline isolation methodology on real commercial data for at least one PA, and stand up a working consumption layer that proves consumers can send a request, have it routed correctly, retrieve data from the right sources, and receive a coherent response.
+
+{*}Deliverables{*}: 
+ * Organic baseline isolation prototype (1 PA validated)
+ * Baseline isolation methodology documentation
+ * Consumption layer prototype
+ * e2e validation
+ * Data architecture documentation
+
+ 
+
+ 
+|| ||Please fill the details here||
+||For:
+{color:#505f79}_Who is the key target user(s)_{color}| |
+||Who:
+{color:#505f79}_What problem are you trying to solve?_
+_Think about customer needs or pain points, opportunity_{color}| |
+||Our idea is:
+{color:#505f79}_Describe WHAT we want to get in place to meet_
+_the customer needs and wants_{color}| |
+||That will provide this value:
+{color:#505f79}_Identify the benefits/value we will get_
+_(WHY/VALUE)_{color}| |
+||Unlike today where the customer:
+{color:#505f79}_Identify what the situation is if we do not do anything._
+_Competitor, customer solution, non-existing solution_{color}| |
+||Expected business result:
+{color:#505f79}_What key benefits/outcomes do we expect?_{color}| -  |
+||Indicators:
+{color:#505f79}_What data will we use to track if we get the expected_
+_benefits or not?_{color}| *  |
+||Assumptions and other aspects to consider:| *  |

@@ -117,6 +117,7 @@ function buildFailureSummary(tests) {
 export default function ResultsPanel({ runState }) {
   const bottomRef = useRef(null);
   const [confluenceState, setConfluenceState] = useState({ status: 'idle', message: '' });
+  const [suppressingAllFailures, setSuppressingAllFailures] = useState(false);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -125,13 +126,21 @@ export default function ResultsPanel({ runState }) {
   useEffect(() => {
     if (!runState.ticket) {
       setConfluenceState({ status: 'idle', message: '' });
+      setSuppressingAllFailures(false);
       return;
     }
 
     if (runState.status === 'running' && runState.lines.length === 0) {
       setConfluenceState({ status: 'idle', message: '' });
+      setSuppressingAllFailures(false);
     }
   }, [runState.ticket, runState.status, runState.lines.length]);
+
+  useEffect(() => {
+    if (runState.tests && runState.tests.length > 0) {
+      setConfluenceState({ status: 'idle', message: '' });
+    }
+  }, [runState.tests]);
 
   if (!runState.ticket) {
     return (
@@ -197,6 +206,46 @@ export default function ResultsPanel({ runState }) {
     }
   };
 
+  const handleSuppressFailingTests = async () => {
+    const failingTests = (runState.tests || []).filter((test) => test.status === 'fail');
+    if (!failingTests.length) return;
+
+    setSuppressingAllFailures(true);
+    try {
+      const responses = await Promise.all(
+        failingTests.map((test) =>
+          fetch(`${API_BASE}/api/suppress-test`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              ticketKey: runState.ticket.key,
+              component: test.component,
+              source: test.source,
+              testId: test.testId,
+            }),
+          }).then(async (response) => {
+            const payload = await response.json();
+            if (!response.ok || !payload.ok) {
+              throw new Error(payload.error || `Request failed with status ${response.status}`);
+            }
+            return payload;
+          })
+        )
+      );
+      setConfluenceState({
+        status: 'success',
+        message: `✅ Removed ${responses.length} failing test${responses.length === 1 ? '' : 's'} from future runs`,
+      });
+    } catch (error) {
+      setConfluenceState({
+        status: 'error',
+        message: `❌ Error: ${error.message}`,
+      });
+    } finally {
+      setSuppressingAllFailures(false);
+    }
+  };
+
   return (
     <aside className="results-panel">
       <div className="results-header">
@@ -244,6 +293,16 @@ export default function ResultsPanel({ runState }) {
               >
                 {confluenceState.status === 'loading' ? '⏳ Writing…' : '✅ Mark as Passed & Write'}
               </button>
+              {testCounts.failed > 0 && (
+                <button
+                  type="button"
+                  className={`confluence-btn suppress-all${confluenceState.status === 'success' ? ' success' : ''}`}
+                  onClick={handleSuppressFailingTests}
+                  disabled={suppressingAllFailures}
+                >
+                  {suppressingAllFailures ? '⏳ Removing failing tests…' : '🗑 Remove all failing tests from future runs'}
+                </button>
+              )}
             </div>
 
             {confluenceState.message && (

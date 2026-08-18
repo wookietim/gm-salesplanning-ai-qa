@@ -59,6 +59,118 @@ function hasRuntimeContract(planAbsolutePath) {
   );
 }
 
+function extractSourceFromPlan(planPath) {
+  if (!fs.existsSync(planPath)) {
+    return '';
+  }
+
+  const text = fs.readFileSync(planPath, 'utf8');
+  const match = text.match(/^- Source component:\s*(.+)$/m);
+  return match ? match[1].trim() : '';
+}
+
+function normalizeMatchToken(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+}
+
+function getQaPlanStem(planPath) {
+  const base = path.basename(planPath, '.qa.md');
+  const parts = base.split('__');
+  if (parts.length < 2) {
+    return '';
+  }
+  return parts.slice(1).join('__').trim();
+}
+
+function findComponentForQaPlan(components, qaPlanPath) {
+  const stem = getQaPlanStem(qaPlanPath);
+  if (!stem) {
+    return null;
+  }
+
+  const normalizedStem = normalizeMatchToken(stem);
+  return (
+    components.find((component) => normalizeMatchToken(component.stem) === normalizedStem) ||
+    components.find((component) => normalizeMatchToken(component.componentName) === normalizedStem) ||
+    null
+  );
+}
+
+function inferComponentsFromJiraText(components, jiraText) {
+  const normalizedText = normalizeMatchToken(jiraText);
+  if (!normalizedText) {
+    return [];
+  }
+
+  return components.filter((component) => {
+    const candidates = [
+      component.componentName,
+      path.basename(component.relativePath, path.extname(component.relativePath)),
+      component.stem,
+    ]
+      .map(normalizeMatchToken)
+      .filter(Boolean);
+
+    return candidates.some((candidate) => normalizedText.includes(candidate));
+  });
+}
+
+function isStorybookTarget(filePath) {
+  const normalizedPath = filePath.replace(/\\/g, '/').toLowerCase();
+  const base = path.basename(normalizedPath);
+  return (
+    normalizedPath.includes('/.storybook/') ||
+    /\.stories\.(tsx|ts|jsx|js)$/.test(base) ||
+    base === 'mock-store.ts'
+  );
+}
+
+function discoverStorybookTargets(repoRoot, targetRoot) {
+  const absoluteRoot = path.resolve(repoRoot, targetRoot);
+  const allFiles = walkFiles(absoluteRoot);
+  const targets = [];
+
+  for (const filePath of allFiles) {
+    if (!isStorybookTarget(filePath)) {
+      continue;
+    }
+
+    const content = fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf8') : '';
+    const relativePath = path.relative(repoRoot, filePath).replace(/\\/g, '/');
+    targets.push({
+      relativePath,
+      absolutePath: filePath,
+      componentName: deriveComponentName(filePath, content),
+      stem: path.basename(filePath, path.extname(filePath)),
+      mtimeMs: fs.statSync(filePath).mtimeMs,
+    });
+  }
+
+  targets.sort((a, b) => a.relativePath.localeCompare(b.relativePath));
+  return targets;
+}
+
+function inferTicketTargetEntries({ components, storybookTargets, jiraContext }) {
+  const jiraText = [
+    ...(jiraContext?.issues || []).map((issue) => `${issue.key || ''} ${issue.summary || ''}`),
+    jiraContext?.text || '',
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+  const normalizedText = normalizeMatchToken(jiraText);
+  if (!normalizedText) {
+    return [];
+  }
+
+  if (normalizedText.includes('storybook')) {
+    return { targets: storybookTargets, isStorybook: true };
+  }
+
+  const matched = inferComponentsFromJiraText(components, jiraText);
+  return { targets: matched, isStorybook: false };
+}
+
 function parseCsv(value) {
   return String(value || '')
     .split(',')
@@ -148,7 +260,7 @@ async function fetchJiraAcceptanceCriteria(params) {
 
   const auth = Buffer.from(`${userEmail}:${apiToken}`).toString('base64');
   const headers = {
-    Authorization: `Basic ${auth}`,
+    Authorization: `Bearer ${apiToken}`,
     Accept: 'application/json',
   };
 
@@ -169,7 +281,7 @@ async function fetchJiraAcceptanceCriteria(params) {
   for (const issueKey of issueKeys) {
     try {
       const issue = await httpGetJson(
-        `${baseUrl.replace(/\/$/, '')}/rest/api/3/issue/${encodeURIComponent(
+        `${baseUrl.replace(/\/$/, '')}/rest/api/2/issue/${encodeURIComponent(
           issueKey
         )}?fields=summary,description,updated`,
         headers
@@ -247,12 +359,16 @@ function walkFiles(rootDir, output = []) {
   return output;
 }
 
-function isLikelyComponent(filePath, content) {
+function isLikelyComponent(filePath, content, includeStorybook = false) {
   if (!/\.(tsx|jsx)$/i.test(filePath)) {
     return false;
   }
 
-  if (/\.(test|spec|stories)\.(tsx|jsx)$/i.test(filePath)) {
+  if (!includeStorybook && /\.(test|spec|stories)\.(tsx|jsx)$/i.test(filePath)) {
+    return false;
+  }
+
+  if (includeStorybook && /\.(test|spec)\.(tsx|jsx)$/i.test(filePath)) {
     return false;
   }
 
@@ -291,7 +407,7 @@ function deriveComponentName(filePath, content) {
   return path.basename(filePath, path.extname(filePath));
 }
 
-function discoverComponents(repoRoot, targetRoot) {
+function discoverComponents(repoRoot, targetRoot, includeStorybook = false) {
   const absoluteRoot = path.resolve(repoRoot, targetRoot);
   const allFiles = walkFiles(absoluteRoot);
   const components = [];
@@ -302,7 +418,7 @@ function discoverComponents(repoRoot, targetRoot) {
     }
 
     const content = fs.readFileSync(filePath, 'utf8');
-    if (!isLikelyComponent(filePath, content)) {
+    if (!isLikelyComponent(filePath, content, includeStorybook)) {
       continue;
     }
 
@@ -489,6 +605,7 @@ async function main() {
   const jiraAcFileArg = String(args['jira-ac-file'] || '').trim();
 
   const targetRoot = args.root || 'sp-monitor-dashboard/frontend/src';
+  const qaTestsRoot = String(args['qa-tests-root'] || '').trim();
   const bobMemoryPath = path.resolve(
     repoRoot,
     args['bob-memory'] || 'component-poc/qa-agent/agents/bob/generated-tests/.bob-memory.json'
@@ -550,16 +667,60 @@ async function main() {
     }
   }
 
-  const components = discoverComponents(repoRoot, targetRoot);
-  const changedFiles = getChangedFiles(repoRoot);
-  const selected = selectTargetComponents(mode, components, explicitComponents, changedFiles);
+  let qaTestPlanPath = '';
+  let qaMappedComponent = null;
 
-  console.log(
-    `[Pablo] Component discovery complete: ${components.length} found, ${selected.length} selected for this run.`
-  );
+  if (qaTestsRoot && jiraIssueKeys.length === 1) {
+    const preferredPlan = path.resolve(qaTestsRoot, `${jiraIssueKeys[0].toUpperCase()}__sales-by-week.qa.md`);
+    if (fs.existsSync(preferredPlan)) {
+      qaTestPlanPath = preferredPlan;
+      console.log(`[Pablo] Using existing QA test plan for ${jiraIssueKeys[0]} from ${preferredPlan}.`);
+    }
+  }
+
+  const components = discoverComponents(repoRoot, targetRoot);
+  const storybookTargets = discoverStorybookTargets(repoRoot, targetRoot);
+  const changedFiles = getChangedFiles(repoRoot);
+  let selected = selectTargetComponents(mode, components, explicitComponents, changedFiles);
+  let storybookMode = false;
+
+  if (qaTestPlanPath) {
+    const mappedComponent = findComponentForQaPlan(components, qaTestPlanPath);
+    if (mappedComponent) {
+      qaMappedComponent = mappedComponent;
+      selected = [mappedComponent];
+      storybookMode = false;
+      console.log(
+        `[Pablo] QA-Tests plan mapped ${jiraIssueKeys[0]} to ${mappedComponent.relativePath}.`
+      );
+    } else {
+      console.log(
+        `[Pablo] Warning: could not map QA-Tests plan to a component for ${jiraIssueKeys[0]}; falling back to Jira inference.`
+      );
+      qaTestPlanPath = '';
+    }
+  }
+
+  if (!qaTestPlanPath && jiraIssueKeys.length === 1 && jiraContext.text) {
+    const inferredTargets = inferTicketTargetEntries({
+      components,
+      storybookTargets,
+      jiraContext,
+    });
+    if (inferredTargets.targets.length > 0) {
+      selected = inferredTargets.targets;
+      storybookMode = inferredTargets.isStorybook;
+      console.log(`[Pablo] Inferred ${selected.length} target file(s) from Jira text for ${jiraIssueKeys[0]}.`);
+    }
+  }
 
   const bobMemory = readJson(bobMemoryPath, { components: {} });
   const bobMemoryComponents = bobMemory && bobMemory.components ? bobMemory.components : {};
+  const scopedSelected = selected;
+
+  console.log(
+    `[Pablo] Component discovery complete: ${components.length} found, ${scopedSelected.length} selected for this run.`
+  );
 
   const toRegenerate = [];
   const reused = [];
@@ -570,7 +731,7 @@ async function main() {
   );
   const hasJiraScope = jiraIssueKeys.length > 0;
 
-  for (const component of selected) {
+  for (const component of scopedSelected) {
     const memoryEntry = bobMemoryComponents[component.relativePath];
     const outputAbsolutePath =
       memoryEntry && memoryEntry.outputFile
@@ -621,34 +782,11 @@ async function main() {
     }
   }
 
-  // Before Bob regenerates plans, purge any stale plan files for those components.
-  // Susan reads ALL .qa.md files in the bob dir, so old files from prior ticket runs
-  // would cause false jira-issue-key-coverage failures.
-  const bobDir = path.resolve(repoRoot, path.dirname(
-    args['bob-memory'] || 'component-poc/qa-agent/agents/bob/generated-tests/.bob-memory.json'
-  ));
-  if (toRegenerate.length > 0 && fs.existsSync(bobDir)) {
-    let stalePurged = 0;
-    for (const compPath of toRegenerate) {
-      // Convert component relative path to the slug used in plan filenames:
-      // e.g. ../gm-salesplanning-frontend/src/components/Card/card.tsx
-      //   -> ..__gm-salesplanning-frontend__src__components__Card__card
-      const slug = compPath.replace(/\//g, '__').replace(/\.[^.]+$/, '');
-      const existing = fs.readdirSync(bobDir).filter(
-        (f) => f.endsWith('.qa.md') && f.includes(`__${slug}.qa.md`)
-      );
-      for (const stale of existing) {
-        fs.unlinkSync(path.join(bobDir, stale));
-        stalePurged += 1;
-      }
-    }
-    if (stalePurged > 0) {
-      console.log(`[Pablo] Purged ${stalePurged} stale plan file(s) before Bob regeneration.`);
-    }
-  }
+  const useQaPlanExecution = Boolean(qaTestPlanPath && qaMappedComponent);
+  const skipBob = String(args['skip-bob'] || 'false').toLowerCase() === 'true' || useQaPlanExecution;
 
   let bobStdout = '';
-  if (toRegenerate.length > 0) {
+  if (!skipBob && toRegenerate.length > 0) {
     console.log(`[Pablo] Invoking Bob for ${toRegenerate.length} component(s) to regenerate plans.`);
     const bobArgs = ['--components', toRegenerate.join(',')];
     if (jiraProject) {
@@ -669,6 +807,9 @@ async function main() {
     if (args.root) {
       bobArgs.push('--root', args.root);
     }
+    if (storybookMode) {
+      bobArgs.push('--include-storybook', 'true');
+    }
 
     bobStdout = runCommandNode(
       bobScript,
@@ -681,7 +822,7 @@ async function main() {
       console.log('[Pablo] Bob output end');
     }
   } else {
-    console.log('[Pablo] Bob step skipped; all selected plans are current.');
+    console.log(skipBob ? '[Pablo] Bob step skipped by request.' : '[Pablo] Bob step skipped; all selected plans are current.');
   }
 
   let susanStdout = '';
@@ -691,9 +832,19 @@ async function main() {
     failureReasons: [],
   };
 
-  if (selected.length > 0) {
-    console.log(`[Pablo] Invoking Susan for ${selected.length} selected component(s).`);
-    const susanArgs = ['--components', selected.map((c) => c.relativePath).join(','), '--run-id', `susan-for-${runId}`];
+  let susanComponents = scopedSelected.map((c) => c.relativePath);
+
+  if (susanComponents.length > 0) {
+    console.log(`[Pablo] Invoking Susan for ${susanComponents.length} selected component(s).`);
+    const susanArgs = ['--components', susanComponents.join(','), '--run-id', `susan-for-${runId}`];
+    if (useQaPlanExecution) {
+      susanArgs.push('--plan-file', qaTestPlanPath);
+      susanArgs.push('--component-source', qaMappedComponent.relativePath);
+      susanArgs.push('--component-name', qaMappedComponent.componentName);
+    }
+    if (jiraIssueKeys.length > 0) {
+      susanArgs.push('--ticket-prefixes', jiraIssueKeys.join(','));
+    }
     if (jiraIssueKeys.length > 0) {
       susanArgs.push('--jira-issues', jiraIssueKeys.join(','));
     }
@@ -739,6 +890,7 @@ async function main() {
       passed: susanResult.totals ? susanResult.totals.passed : 0,
       failed: susanResult.totals ? susanResult.totals.failed : 0,
       stdout: susanStdout,
+      componentResults: susanResult.componentResults || [],
     },
     jira: {
       project: jiraProject || '',
@@ -763,7 +915,7 @@ async function main() {
 
   console.log('[Pablo] Orchestration complete.');
   console.log(`[Pablo] Mode: ${mode}`);
-  console.log(`[Pablo] Target components: ${selected.length}`);
+  console.log(`[Pablo] Target components: ${scopedSelected.length}`);
   if (jiraIssueKeys.length > 0) {
     console.log(`[Pablo] Jira project: ${jiraProject || 'not provided'}`);
     console.log(`[Pablo] Jira issues: ${jiraIssueKeys.join(', ')}`);

@@ -1,0 +1,334 @@
+{
+  "runId": "susan-for-pablo-20260814-140921",
+  "agentId": "susan",
+  "startedAt": "2026-08-14T14:09:22.414Z",
+  "endedAt": "2026-08-14T14:09:22.416Z",
+  "overallStatus": "fail",
+  "totals": {
+    "components": 1,
+    "tests": 12,
+    "passed": 0,
+    "failed": 12
+  },
+  "componentResults": [
+    {
+      "component": "SalesByWeek",
+      "source": "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx",
+      "status": "fail",
+      "tests": [
+        {
+          "testId": "HP-01",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "fail",
+              "details": "Plan missing Jira issue keys: SSPLAN-623"
+            }
+          ],
+          "reasons": [
+            "HP-01: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623"
+          ]
+        },
+        {
+          "testId": "HP-02",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "fail",
+              "details": "Plan missing Jira issue keys: SSPLAN-623"
+            }
+          ],
+          "reasons": [
+            "HP-02: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623"
+          ]
+        },
+        {
+          "testId": "SP-01",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "pass",
+              "details": "Source includes error or fallback signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "fail",
+              "details": "Plan missing Jira issue keys: SSPLAN-623"
+            }
+          ],
+          "reasons": [
+            "SP-01: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623"
+          ]
+        },
+        {
+          "testId": "SP-02",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "sad-path-source-signals",
+              "status": "pass",
+              "details": "Source includes error or fallback signals"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "fail",
+              "details": "Plan missing Jira issue keys: SSPLAN-623"
+            }
+          ],
+          "reasons": [
+            "SP-02: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623"
+          ]
+        },
+        {
+          "testId": "DC-01",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "fail",
+              "details": "Plan missing Jira issue keys: SSPLAN-623"
+            }
+          ],
+          "reasons": [
+            "DC-01: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623"
+          ]
+        },
+        {
+          "testId": "DC-02",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "fail",
+              "details": "Plan missing Jira issue keys: SSPLAN-623"
+            }
+          ],
+          "reasons": [
+            "DC-02: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623"
+          ]
+        },
+        {
+          "testId": "API-01",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "fail",
+              "details": "Plan missing Jira issue keys: SSPLAN-623"
+            }
+          ],
+          "reasons": [
+            "API-01: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623"
+          ]
+        },
+        {
+          "testId": "API-02",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "fail",
+              "details": "Plan missing Jira issue keys: SSPLAN-623"
+            }
+          ],
+          "reasons": [
+            "API-02: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623"
+          ]
+        },
+        {
+          "testId": "REG-01",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "fail",
+              "details": "Plan missing Jira issue keys: SSPLAN-623"
+            }
+          ],
+          "reasons": [
+            "REG-01: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623"
+          ]
+        },
+        {
+          "testId": "A11Y-01",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "fail",
+              "details": "Plan missing Jira issue keys: SSPLAN-623"
+            }
+          ],
+          "reasons": [
+            "A11Y-01: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623"
+          ]
+        },
+        {
+          "testId": "PERF-01",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "fail",
+              "details": "Plan missing Jira issue keys: SSPLAN-623"
+            }
+          ],
+          "reasons": [
+            "PERF-01: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623"
+          ]
+        },
+        {
+          "testId": "I18N-01",
+          "status": "fail",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "fail",
+              "details": "Plan missing Jira issue keys: SSPLAN-623"
+            }
+          ],
+          "reasons": [
+            "I18N-01: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623"
+          ]
+        }
+      ]
+    }
+  ],
+  "failureReasons": [
+    "SalesByWeek (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx): A11Y-01: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623",
+    "SalesByWeek (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx): API-01: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623",
+    "SalesByWeek (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx): API-02: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623",
+    "SalesByWeek (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx): DC-01: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623",
+    "SalesByWeek (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx): DC-02: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623",
+    "SalesByWeek (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx): HP-01: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623",
+    "SalesByWeek (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx): HP-02: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623",
+    "SalesByWeek (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx): I18N-01: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623",
+    "SalesByWeek (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx): PERF-01: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623",
+    "SalesByWeek (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx): REG-01: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623",
+    "SalesByWeek (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx): SP-01: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623",
+    "SalesByWeek (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx): SP-02: jira-issue-key-coverage failed - Plan missing Jira issue keys: SSPLAN-623"
+  ]
+}

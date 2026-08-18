@@ -3,9 +3,10 @@ const path = require('path');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const express = require('express');
-const { listTicketsByStatus } = require('./commands/jira');
+const { listTicketsByStatus, postComment, attachFile } = require('./commands/jira');
 const { runPabloStream } = require('./commands/pablo');
-const { getConfluenceTicketList, writeRunResultsToConfluence, upsertTicketRow } = require('./commands/confluence');
+const { getConfluenceTicketList, upsertTicketRow } = require('./commands/confluence');
+const { suppressTest } = require('./commands/suppressTest');
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
@@ -65,6 +66,126 @@ async function handleJiraStatus(res, status, maxResults) {
   res.end();
 }
 
+function runPabloForTickets({ res, ticketKeys, forceBobRegenerate = false, skipBob = false, closedRef }) {
+  sendEvent(
+    res,
+    {
+      type: 'line',
+      text: `${forceBobRegenerate ? 'Regenerating' : 'Running'} Pablo for ${ticketKeys.join(', ')}...`,
+    }
+  );
+
+  const child = runPabloStream({
+    ticketKeys,
+    env: buildEnv(),
+    forceBobRegenerate,
+    skipBob,
+    mode: 'components',
+    onLine: (line) => {
+      if (!closedRef.value) {
+        sendEvent(res, { type: 'line', text: line });
+      }
+    },
+    onDone: async ({ resultPath }) => {
+      if (closedRef.value) return;
+
+      try {
+        let tests = [];
+        let noPlanFound = false;
+
+        if (fs.existsSync(resultPath)) {
+          const pabloResult = JSON.parse(fs.readFileSync(resultPath, 'utf8'));
+          const targetCount = (pabloResult.targetComponents || []).length;
+
+          if (targetCount === 0) {
+            noPlanFound = true;
+          } else {
+            for (const comp of (pabloResult.susan?.componentResults || [])) {
+              for (const t of (comp.tests || [])) {
+                tests.push({
+                  component: comp.component,
+                  source: comp.source || '',
+                  testId: t.testId || '',
+                  label: (t.testId || '').includes('HP') ? 'Happy Path' : 'Sad Path',
+                  status: t.status || 'fail',
+                  reasons: (t.checks || []).filter((c) => c.status === 'fail').map((c) => c.name),
+                });
+              }
+            }
+          }
+        }
+
+        if (noPlanFound) {
+          sendEvent(res, { type: 'line', text: `No test plan found for ${ticketKeys.join(', ')}. Generate one first or add a QA-Tests plan file.` });
+          sendEvent(res, { type: 'tests', tests: [] });
+          sendEvent(res, { type: 'done', text: 'No plan found.' });
+          res.end();
+          return;
+        }
+
+        sendEvent(res, { type: 'tests', tests });
+
+        sendEvent(res, {
+          type: 'done',
+          text: forceBobRegenerate ? 'Pablo regeneration complete.' : 'Pablo run complete.',
+        });
+        res.end();
+      } catch (error) {
+        sendEvent(res, { type: 'error', text: error.message });
+        res.end();
+      }
+    },
+    onError: (error) => {
+      if (!closedRef.value) {
+        sendEvent(res, { type: 'error', text: error.message });
+        res.end();
+      }
+    },
+  });
+
+  res.on('close', () => {
+    if (child && !child.killed) {
+      child.kill('SIGTERM');
+    }
+  });
+}
+
+app.post('/api/suppress-test', async (req, res) => {
+  try {
+    const { ticketKey, component, source, testId } = req.body || {};
+    const result = suppressTest({ ticketKey, component, source, testId });
+    res.json({ ok: true, ...result });
+  } catch (error) {
+    res.json({ ok: false, error: error.message });
+  }
+});
+
+app.post('/api/jira-attach', async (req, res) => {
+  try {
+    const { ticketKey, filePath } = req.body || {};
+    if (!ticketKey || !filePath) {
+      return res.json({ ok: false, error: 'ticketKey and filePath are required' });
+    }
+    const result = await attachFile(ticketKey, filePath, buildEnv());
+    res.json({ ok: true, result });
+  } catch (error) {
+    res.json({ ok: false, error: error.message });
+  }
+});
+
+app.post('/api/jira-comment', async (req, res) => {
+  try {
+    const { ticketKey, comment } = req.body || {};
+    if (!ticketKey || !comment) {
+      return res.json({ ok: false, error: 'ticketKey and comment are required' });
+    }
+    await postComment(ticketKey, comment, buildEnv());
+    res.json({ ok: true });
+  } catch (error) {
+    res.json({ ok: false, error: error.message });
+  }
+});
+
 app.post('/api/confluence-write', async (req, res) => {
   try {
     const { ticketKey, ticketSummary, tests, markAsPassed } = req.body || {};
@@ -90,12 +211,14 @@ app.post('/api/command', async (req, res) => {
   const lowerText = text.toLowerCase();
   const ticketKeys = extractTicketKeys(text);
   let closed = false;
+  const closedRef = { value: false };
 
   // Use res.on('close') not req.on('close') — req closes as soon as the
   // request body is consumed, which would immediately kill Pablo.
   // res closes only when the client actually disconnects.
   res.on('close', () => {
     closed = true;
+    closedRef.value = true;
   });
 
   try {
@@ -106,6 +229,11 @@ app.post('/api/command', async (req, res) => {
 
     if (lowerText.includes('done')) {
       await handleJiraStatus(res, 'Done', 50);
+      return;
+    }
+
+    if (lowerText.includes('regenerate') && ticketKeys.length) {
+      runPabloForTickets({ res, ticketKeys, forceBobRegenerate: true, skipBob: false, closedRef });
       return;
     }
 
@@ -124,72 +252,7 @@ app.post('/api/command', async (req, res) => {
     }
 
     if ((lowerText.includes('run tests') || lowerText.includes('test')) && ticketKeys.length) {
-      sendEvent(res, { type: 'line', text: `Running Pablo for ${ticketKeys.join(', ')}...` });
-
-      const child = runPabloStream({
-        ticketKeys,
-        env: buildEnv(),
-        onLine: (line) => {
-          if (!closed) {
-            sendEvent(res, { type: 'line', text: line });
-          }
-        },
-        onDone: async ({ resultPath }) => {
-          if (closed) return;
-
-          try {
-            // Read Susan's latest results and stream as structured test list
-            const susanLatest = path.resolve(
-              path.dirname(resultPath),
-              '../../susan/results/latest.json'
-            );
-            if (fs.existsSync(susanLatest)) {
-              const susan = JSON.parse(fs.readFileSync(susanLatest, 'utf8'));
-              const tests = [];
-              for (const comp of (susan.componentResults || [])) {
-                for (const t of (comp.tests || [])) {
-                  tests.push({
-                    component: comp.component,
-                    testId: t.testId || '',
-                    label: (t.testId || '').includes('HP') ? 'Happy Path' : 'Sad Path',
-                    status: t.status || 'fail',
-                    reasons: (t.checks || [])
-                      .filter(c => c.status === 'fail')
-                      .map(c => c.name),
-                  });
-                }
-              }
-              sendEvent(res, { type: 'tests', tests });
-            }
-
-            if (lowerText.includes('confluence')) {
-              sendEvent(res, { type: 'line', text: 'Writing latest run summary to Confluence...' });
-              const result = await writeRunResultsToConfluence({
-                env: buildEnv(), reportPath: resultPath, ticketKeys,
-              });
-              sendEvent(res, { type: 'line', text: `Confluence updated: ${result.pageTitle} (version ${result.pageVersion})` });
-            }
-
-            sendEvent(res, { type: 'done', text: 'Pablo run complete.' });
-            res.end();
-          } catch (error) {
-            sendEvent(res, { type: 'error', text: error.message });
-            res.end();
-          }
-        },
-        onError: (error) => {
-          if (!closed) {
-            sendEvent(res, { type: 'error', text: error.message });
-            res.end();
-          }
-        },
-      });
-
-      res.on('close', () => {
-        if (child && !child.killed) {
-          child.kill('SIGTERM');
-        }
-      });
+      runPabloForTickets({ res, ticketKeys, closedRef });
       return;
     }
 

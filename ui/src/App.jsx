@@ -228,7 +228,7 @@ export default function App() {
     }
   };
 
-  const runAllTickets = async (tickets) => {
+  const runBatchTickets = async (tickets, { regenerate = false } = {}) => {
     if (!tickets?.length) {
       return;
     }
@@ -276,7 +276,7 @@ export default function App() {
 
       try {
         await streamCommand({
-          text: `Run tests for ${ticket.key}`,
+          text: `${regenerate ? 'Regenerate tests for' : 'Run tests for'} ${ticket.key}`,
           signal: controller.signal,
           onEvent: (event) => {
             if (batchRequestIdRef.current !== runId) {
@@ -343,6 +343,10 @@ export default function App() {
       batchAbortControllerRef.current = null;
     }
   };
+
+  const runAllTickets = (tickets) => runBatchTickets(tickets);
+
+  const regenerateAllTickets = (tickets) => runBatchTickets(tickets, { regenerate: true });
 
   const sendCommand = async (text) => {
     const trimmed = text.trim();
@@ -448,6 +452,7 @@ export default function App() {
             isStreaming={isStreaming}
             onRunTicket={runTicket}
             onRunAll={runAllTickets}
+            onRegenerateAll={regenerateAllTickets}
           />
 
           <div className="composer-panel">

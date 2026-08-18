@@ -1,0 +1,48 @@
+{
+  "runId": "pablo-20260814-135057",
+  "agentId": "pablo",
+  "startedAt": "2026-08-14T13:50:57.888Z",
+  "endedAt": "2026-08-14T13:50:58.778Z",
+  "mode": "components",
+  "targetComponents": [
+    "../gm-salesplanning-frontend/src/components/Card/card.tsx"
+  ],
+  "bob": {
+    "checked": 1,
+    "regenerated": 1,
+    "reused": 0,
+    "regeneratedComponents": [
+      "../gm-salesplanning-frontend/src/components/Card/card.tsx"
+    ],
+    "stdout": "[Bob] Starting test generation run.\n[Bob] Scanning components under: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-frontend/src\n[Bob] Discovered 34 component candidates; targeting 1 component(s).\n[Bob] Created runtime-aware QA plan for Card.\n[Bob] Generation complete.\n[Bob] Target root: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-frontend/src\n[Bob] Output dir: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests\n[Bob] Components discovered: 34\n[Bob] Components targeted: 1\n[Bob] Created: 1, Updated: 0, Skipped: 0\n[Bob] State file: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests/.bob-memory.json\n[Bob] Index: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests/INDEX.md\n"
+  },
+  "susan": {
+    "overallStatus": "fail",
+    "components": 1,
+    "tests": 2,
+    "passed": 1,
+    "failed": 1,
+    "stdout": "[Susan] Starting QA execution run.\n[Susan] Reading Bob plans from: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests\n[Susan] Found 1 plan file(s) to evaluate before scope filtering.\n[Susan] Running tests for card (../gm-salesplanning-frontend/src/components/Card/card.tsx).\n[Susan] Execution complete.\n[Susan] Bob plans directory: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests\n[Susan] Components checked: 1\n[Susan] Tests executed: 2\n[Susan] Passed: 1, Failed: 1\n[Susan] Overall: fail\n[Susan] JSON result: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/susan/results/susan-result-20260814-135058.json\n[Susan] Markdown result: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/susan/results/susan-result-20260814-135058.md\n[Susan] Failure reasons:\n[Susan] - card (../gm-salesplanning-frontend/src/components/Card/card.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals\n"
+  },
+  "jira": {
+    "project": "SSPLAN",
+    "issueKeys": [
+      "SSPLAN-714"
+    ],
+    "source": "jira-api",
+    "warnings": [],
+    "issues": [
+      {
+        "key": "SSPLAN-714",
+        "summary": "Create Blank Card Component",
+        "updatedAt": "2026-08-07T18:09:21.277+0000",
+        "hasAcceptanceCriteria": true
+      }
+    ],
+    "acFilePath": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/pablo/results/.pablo-jira-ac-20260814-135057.txt"
+  },
+  "overallStatus": "fail",
+  "failureReasons": [
+    "card (../gm-salesplanning-frontend/src/components/Card/card.tsx): BOB-SP-001: sad-path-source-signals failed - Source lacks obvious error, loading, or fallback handling signals"
+  ]
+}

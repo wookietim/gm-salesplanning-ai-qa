@@ -1,0 +1,8 @@
+Issue SSPLAN-739: Update RollingSalesTrend datasets
+Acceptance Criteria (derived from description):
+Update dataset for RollingSalesTrend. This dataset needs the following:
+ * Sales Index current year vs last year
+ * Quantity Index current year vs last year
+ * Goal Sales Index current year vs sales goal
+ * Goal Quantity Index current year vs quantity goal
+ * Each metric needs an index for 1w,4w,8w,13w, and fiscal YTD

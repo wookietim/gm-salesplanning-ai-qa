@@ -1,0 +1,3 @@
+Issue SSPLAN-710: [BE] Update caching logic
+Acceptance Criteria (derived from description):
+We need to update cache logic to prevent our API failing because of schema change and cache corruption.

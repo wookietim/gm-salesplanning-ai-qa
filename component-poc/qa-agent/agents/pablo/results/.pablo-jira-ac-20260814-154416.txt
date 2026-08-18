@@ -1,0 +1,34 @@
+Issue SSPLAN-646: Show Actual Sales vs Financial Forecast on HFB Level
+Acceptance Criteria (derived from description):
+{*}{{*}}{*}Feature:{*} HFB Leaders can view weekly sales actuals against the latest financial forecast at an HFB level.
+
+As an HFB Leader, I want to see actual sales against the latest financial forecast(What we sold vs what we thought we would sell in our forecast) on a weekly time frame on the HFB level, so that I can quickly assess forecast accuracy and risk.
+
+ 
+
+*Background:* *Given* the sales planning tool HFB screen is displayed {*}AND{*}:
+ * The latest financial forecast data is available
+ * Weekly sales actuals data is available
+ * Yearly sales actuals data is available
+
+*Scenario:* 
+
+View Weekly sales actuals vs latest financial forecast on an HFB level
+
+*When* I view the line graph (labeled as *D* on the *HFB* page design) *Then* I should see a visual representation of actual sales plotted against the latest financial forecast at an HFB level *and* the data should show weekly time intervals based on the financial calendar *and* the graph should display last years actual sales that occurred in the same weekly time intervals.
+
+*Definitions:*
+ * 
+ ** *Forecast:* A best *prediction* of what will actually happen based on current trends, data, and historical sales. The financial forecast is dynamic and will update as new data arrives. {*}The forecast is not the Plan{*}, but will allow us to adjust our plan if our sales actuals are not trending to meet our forecast expectations. This allows the user to adjust in order to meet our sales plan.
+
+*Dependencies:*
+ # *Data:*
+ ** *Business Intelligence & Management System (BIM)*
+ *** Must onboard to BIM for Financial Forecast
+ *** Data discovery must be performed by engineering team
+ *** Financial Forecast is labeled within sales planning leaders excel sheet as "FC forecast"(correct this if inaccurate) prior to consumption by BIM.
+ # *Design:* 
+[https://www.figma.com/design/HdtKcUKqPyPfxr3Er8sStc/Sales-Planning---Spec?node-id=2559-46992&t=v6KO6mgnvtJDF9Bo-0]
+
+When user clicks on sales on the HFB level page, the forecast line should disappear because we don't have the forecast at the HFB level, here is an example of what the chart should look like in that instance: [https://www.figma.com/design/HdtKcUKqPyPfxr3Er8sStc/Sales-Planning---Spec?node-id=2559-47964&t=v6KO6mgnvtJDF9Bo-0]
+Note: Since we don't have the forecast at the PA level, the forecast line shouldn't show up when Qty is selected either.

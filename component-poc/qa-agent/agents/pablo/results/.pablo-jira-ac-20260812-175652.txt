@@ -1,0 +1,3 @@
+Issue SSPLAN-704: [FE] Add storybook publishing on each PR
+Acceptance Criteria (derived from description):
+We need a way to see new components implementation and storybook can help with that but we need to have a preview published on each PR open

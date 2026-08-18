@@ -124,12 +124,20 @@ function walkFiles(rootDir, output = []) {
   return output;
 }
 
-function isLikelyComponent(filePath, content) {
+function isLikelyStorybookFile(filePath) {
+  return /\.(stories)\.(tsx|ts|jsx|js)$/i.test(filePath);
+}
+
+function isLikelyComponent(filePath, content, includeStorybook = false) {
   if (!/\.(tsx|jsx)$/i.test(filePath)) {
     return false;
   }
 
-  if (/\.(test|spec|stories)\.(tsx|jsx)$/i.test(filePath)) {
+  if (!includeStorybook && /\.(test|spec|stories)\.(tsx|jsx)$/i.test(filePath)) {
+    return false;
+  }
+
+  if (includeStorybook && /\.(test|spec)\.(tsx|jsx)$/i.test(filePath)) {
     return false;
   }
 
@@ -256,6 +264,153 @@ function hasRuntimeContract(planPath) {
   );
 }
 
+function normalizeTestId(value) {
+  return String(value || '').trim().toUpperCase();
+}
+
+function buildExpandedRuntimeTests(componentName, runtimeProfile) {
+  const base = normalizeTestId(componentName).replace(/[^A-Z0-9]+/g, '').slice(0, 6) || 'COMP';
+  const tests = [
+    {
+      id: `BOB-HP-${base}-001`,
+      title: `${componentName} renders baseline view with valid defaults`,
+      priority: 'High',
+      preconditions: [
+        'Component dependencies are available',
+        'Baseline data fixture with valid required fields is provided',
+      ],
+      testData: ['Valid representative payload for all required fields'],
+      runtimeAssertions: ['interaction-path-covered', 'state-transition-observed'],
+      steps: [
+        `Open the screen where ${componentName} is rendered with baseline valid data.`,
+        'Wait for initial render to settle and verify primary visual blocks.',
+        'Confirm no runtime warnings or rendering exceptions are present.',
+      ],
+      expected: [
+        'Primary UI renders with expected baseline values.',
+        'No crash, blank panel, or unhandled error is observed.',
+      ],
+      failureSignals: ['Missing baseline content', 'Runtime exception', 'State does not initialize'],
+    },
+    {
+      id: `BOB-HP-${base}-002`,
+      title: `${componentName} supports primary interaction updates`,
+      priority: 'High',
+      preconditions: ['At least one interactive control is present'],
+      testData: ['User input values spanning common edits and toggles'],
+      runtimeAssertions: ['interaction-path-covered', 'state-transition-observed'],
+      steps: [
+        'Execute the primary interaction path (edit/select/toggle as applicable).',
+        'Trigger update/submit action for the modified values.',
+        'Verify downstream UI state reflects the interaction outcome.',
+      ],
+      expected: [
+        'Interaction updates are reflected in rendered state.',
+        'No stale or contradictory values remain in related fields.',
+      ],
+      failureSignals: ['Control does not update', 'State reverts unexpectedly', 'Incorrect dependent values'],
+    },
+    {
+      id: `BOB-SP-${base}-001`,
+      title: `${componentName} handles invalid or incomplete input safely`,
+      priority: 'High',
+      preconditions: ['Validation or guard behavior is active for bad input'],
+      testData: ['Missing required fields', 'Type-mismatched values', 'Out-of-range values'],
+      runtimeAssertions: ['sad-input-branch-covered', 'error-or-fallback-observed'],
+      steps: [
+        `Render ${componentName} with incomplete or invalid values.`,
+        'Execute the same interaction flow used for valid input.',
+        'Observe validation, blocked actions, or fallback messaging.',
+      ],
+      expected: [
+        'User receives clear feedback and invalid transition is blocked or safely handled.',
+        'Component remains stable without misleading success state.',
+      ],
+      failureSignals: ['Silent acceptance of invalid state', 'Unhandled error', 'Inconsistent error messaging'],
+    },
+    {
+      id: `BOB-SP-${base}-002`,
+      title: `${componentName} preserves consistency across linked fields`,
+      priority: 'Medium',
+      preconditions: ['Derived fields or totals exist in the component'],
+      testData: ['Input combinations that affect multiple displayed values'],
+      runtimeAssertions: ['interaction-path-covered', 'state-transition-observed'],
+      steps: [
+        'Apply a change that impacts at least two related fields.',
+        'Review all dependent values, labels, and aggregates.',
+        'Repeat with a second data permutation.',
+      ],
+      expected: [
+        'All linked values remain logically consistent after each update.',
+        'No contradictory totals or stale labels remain.',
+      ],
+      failureSignals: ['Derived mismatch', 'Stale dependent value', 'Conflicting displayed totals'],
+    },
+    {
+      id: `BOB-A11Y-${base}-001`,
+      title: `${componentName} supports keyboard and assistive flows`,
+      priority: 'Medium',
+      preconditions: ['Interactive controls are reachable via keyboard'],
+      testData: ['Keyboard-only traversal with and without validation errors'],
+      runtimeAssertions: ['interaction-path-covered'],
+      steps: [
+        'Navigate controls using keyboard only (Tab/Shift+Tab/Enter/Space).',
+        'Trigger an error state and verify announcement/label behavior.',
+        'Confirm focus remains visible and logical through transitions.',
+      ],
+      expected: [
+        'All controls are reachable and operable with keyboard.',
+        'Error/status information is programmatically conveyed.',
+      ],
+      failureSignals: ['Keyboard trap', 'Hidden focus', 'Error text is color-only or unlabeled'],
+    },
+  ];
+
+  if (runtimeProfile.hasAsyncDataFlow || runtimeProfile.hasNetworkDependencies) {
+    tests.push({
+      id: `BOB-ASYNC-${base}-001`,
+      title: `${componentName} handles async success and failure transitions`,
+      priority: 'High',
+      preconditions: ['API/service calls can be simulated for success and error'],
+      testData: ['Successful response payload', '5xx/timeout/empty response variants'],
+      runtimeAssertions: ['async-success-observed', 'error-or-fallback-observed'],
+      steps: [
+        'Trigger async load path and validate loading-to-success transition.',
+        'Repeat with service failure and timeout conditions.',
+        'Verify final UI state and retry or fallback behavior.',
+      ],
+      expected: [
+        'Success responses render correct terminal state.',
+        'Failures surface actionable feedback without component crash.',
+      ],
+      failureSignals: ['Infinite loading', 'Unhandled promise error', 'No visible failure feedback'],
+    });
+  }
+
+  if (runtimeProfile.hasLoadingUi) {
+    tests.push({
+      id: `BOB-STATE-${base}-001`,
+      title: `${componentName} transitions from loading to terminal states correctly`,
+      priority: 'Medium',
+      preconditions: ['Loading state is observable in component lifecycle'],
+      testData: ['Delayed responses for loading verification'],
+      runtimeAssertions: ['loading-to-terminal-state'],
+      steps: [
+        'Render component and capture loading indicators immediately.',
+        'Complete data resolution and observe transition.',
+        'Repeat under failure response to verify non-success terminal state.',
+      ],
+      expected: [
+        'Loading indicator appears and then clears for a terminal state.',
+        'No orphaned spinner or mixed loading/content UI remains.',
+      ],
+      failureSignals: ['Stuck loading', 'Loading never appears', 'Mixed terminal/loading visuals'],
+    });
+  }
+
+  return tests;
+}
+
 function generateHumanReadablePlan(params) {
   const {
     componentName,
@@ -265,17 +420,29 @@ function generateHumanReadablePlan(params) {
     criteria,
     generatedAt,
     runtimeProfile,
+    suppressedTestIds = [],
   } = params;
+
+  const expandedTests = buildExpandedRuntimeTests(componentName, runtimeProfile);
+  const happyTestIds = expandedTests
+    .map((test) => test.id)
+    .filter((id) => /^BOB-HP-/i.test(id));
+  const sadTestIds = expandedTests
+    .map((test) => test.id)
+    .filter((id) => /^BOB-SP-/i.test(id));
+  const suppressedSet = new Set(suppressedTestIds.map(normalizeTestId));
+  const activeTests = expandedTests.filter((test) => !suppressedSet.has(normalizeTestId(test.id)));
+  const activeTestIds = activeTests.map((test) => test.id);
+  const happySuppressed = happyTestIds.every((id) => suppressedSet.has(normalizeTestId(id)));
+  const sadSuppressed = sadTestIds.every((id) => suppressedSet.has(normalizeTestId(id)));
 
   const acRows = criteria
     .map((criterion, index) => {
       const acId = `AC-${index + 1}`;
-      return `| ${acId} | ${escapePipes(criterion)} | BOB-HP-001, BOB-SP-001 |`;
+      const coveredBy = activeTestIds.length > 0 ? activeTestIds.join(', ') : 'SUPPRESSED';
+      return `| ${acId} | ${escapePipes(criterion)} | ${coveredBy} |`;
     })
     .join('\n');
-
-  const happyTestId = 'BOB-HP-001';
-  const sadTestId = 'BOB-SP-001';
 
   const happyRuntimeAssertions = [
     '- Runtime assertion: interaction-path-covered',
@@ -299,6 +466,50 @@ function generateHumanReadablePlan(params) {
     runtimeProfile.interactionHandlers.length > 0
       ? runtimeProfile.interactionHandlers.join(', ')
       : 'none';
+
+  const renderTestCase = (test) => `### Test ID: ${test.id}
+
+- Title: ${test.title}
+- Priority: ${test.priority}
+- Preconditions:
+${test.preconditions.map((item) => `  - ${item}`).join('\n')}
+- Test data:
+${test.testData.map((item) => `  - ${item}`).join('\n')}
+- Runtime assertions:
+${test.runtimeAssertions.map((item) => `- Runtime assertion: ${item}`).join('\n')}
+- Steps:
+${test.steps.map((step, index) => `${index + 1}. ${step}`).join('\n')}
+- Expected result:
+${test.expected.map((item) => `  - ${item}`).join('\n')}
+- Failure signals:
+${test.failureSignals.map((item) => `  - ${item}`).join('\n')}
+`;
+
+  const happySection = happySuppressed
+    ? `## 4. Happy Path Tests
+
+- Suppressed by user action: ${happyTestId} removed from future runs.
+`
+    : `## 4. Happy Path Tests
+
+${activeTests
+  .filter((test) => /^BOB-HP-/i.test(test.id))
+  .map((test) => renderTestCase(test))
+  .join('\n')}
+`;
+
+  const sadSection = sadSuppressed
+    ? `## 5. Sad Path Tests
+
+- Suppressed by user action: ${sadTestId} removed from future runs.
+`
+    : `## 5. Sad Path Tests
+
+${activeTests
+  .filter((test) => /^BOB-SP-/i.test(test.id))
+  .map((test) => renderTestCase(test))
+  .join('\n')}
+`;
 
   return `# Bob QA Test Plan - ${componentName}
 
@@ -328,50 +539,9 @@ ${criteria.map((c) => `  - ${c}`).join('\n')}
 - Runtime signal: network-dependencies=${yesNo(runtimeProfile.hasNetworkDependencies)}
 - Runtime signal detail: interaction-handler-names=${interactionList}
 
-## 4. Happy Path Tests
+${happySection}
 
-### Test ID: ${happyTestId}
-
-- Title: ${componentName} renders and completes primary user flow successfully
-- Priority: High
-- Preconditions:
-  - Component dependencies are available
-  - Required API mocks or backend responses are configured
-- Test data:
-  - Valid representative payload for all required fields
-- Runtime assertions:
-${happyRuntimeAssertions.join('\n')}
-- Steps:
-1. Open the page or parent container where ${componentName} is rendered.
-2. Provide valid input data and execute the primary interaction.
-3. Verify rendered output, state updates, and success messaging.
-- Expected result:
-  - Component displays expected UI and state.
-  - No console errors or failed network calls.
-- Failure signals:
-  - Missing expected content, broken interaction, incorrect state, or runtime error.
-
-## 5. Sad Path Tests
-
-### Test ID: ${sadTestId}
-
-- Title: ${componentName} handles invalid or missing data and dependency failures
-- Priority: High
-- Preconditions:
-  - Component dependencies can be mocked to return invalid, null, or error responses
-- Test data:
-  - Missing required fields, inconsistent values, and failed API responses
-- Runtime assertions:
-${sadRuntimeAssertions.join('\n')}
-- Steps:
-1. Render ${componentName} with incomplete or invalid input data.
-2. Trigger dependent interactions that rely on external state or APIs.
-3. Validate visible error handling, fallback UI, and recovery behavior.
-- Expected result:
-  - Component shows clear error or empty-state behavior.
-  - No silent failure, crash, or misleading success state.
-- Failure signals:
-  - Unhandled exception, contradictory UI values, or inaccessible error messaging.
+${sadSection}
 
 ## 6. Data Self-Consistency Checks
 
@@ -493,7 +663,7 @@ async function main() {
     }
 
     const content = fs.readFileSync(filePath, 'utf8');
-    if (!isLikelyComponent(filePath, content)) {
+    if (!isLikelyComponent(filePath, content, String(args['include-storybook'] || 'false').toLowerCase() === 'true')) {
       continue;
     }
 
@@ -545,7 +715,8 @@ async function main() {
     let outputFileName = defaultOutputFileName;
     let outputFilePath = path.join(outputDir, outputFileName);
 
-    const previous = state.components[relativeSource];
+      const previous = state.components[relativeSource];
+      const suppressedTestIds = Array.isArray(previous?.suppressedTestIds) ? previous.suppressedTestIds : [];
     const previousJiraUpdatedAt =
       previous && previous.jiraTicketKey === ticketPrefix ? previous.jiraStoryUpdatedAt : null;
     const currentJiraUpdatedAt = jiraIssueMeta ? jiraIssueMeta.updatedAt : null;
@@ -586,6 +757,7 @@ async function main() {
       criteria,
       generatedAt: now,
       runtimeProfile,
+      suppressedTestIds,
     });
 
     const existed = fs.existsSync(outputFilePath);
@@ -603,6 +775,7 @@ async function main() {
       generatedAt: now,
       jiraTicketKey: ticketPrefix || null,
       jiraStoryUpdatedAt: currentJiraUpdatedAt || null,
+      suppressedTestIds,
       status: 'written',
     };
 

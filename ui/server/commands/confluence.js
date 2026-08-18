@@ -1,12 +1,6 @@
-const fs = require('fs');
-const path = require('path');
 const https = require('https');
 const http = require('http');
 
-const SECTION_START = '<!-- GM_QA_RESULTS_START -->';
-const SECTION_END = '<!-- GM_QA_RESULTS_END -->';
-const REPO_ROOT = path.resolve(__dirname, '../../..');
-const QA_RUNS_DIR = path.join(REPO_ROOT, 'QA-Runs');
 const FAILURE_REASON_DESCRIPTIONS = {
   'sad-path-source-signals': 'Components are missing error handling, loading states, or fallback UI — sad-path tests require these signals to validate against.',
   'jira-issue-key-coverage': 'Test plans were generated without this Jira ticket scoped in — plans need to be regenerated with the ticket key to pass this check.',
@@ -220,45 +214,129 @@ function buildTicketRowMarkup({ env, ticketKey, ticketSummary, tests, today }) {
   ].join('');
 }
 
-function upsertManagedTicketRows(storageValue, ticketKey, rowMarkup) {
-  const escapedTicketKey = escapeRegex(ticketKey);
-  const existingRowPattern = new RegExp(`<tr>[\\s\\S]*?${escapedTicketKey}[\\s\\S]*?<\\/tr>\\s*<tr>[\\s\\S]*?<\\/tr>`, 'i');
-  if (existingRowPattern.test(storageValue)) {
-    return storageValue.replace(existingRowPattern, rowMarkup);
-  }
+/**
+ * Extract all data row-pairs (summary row + detail row) from the table body.
+ * Header rows (those whose first <td> does not contain an SSPLAN- key) are
+ * returned separately so we can rebuild the table cleanly.
+ *
+ * Returns { headerRows: string[], dataPairs: Array<{ ticketNumber: number, parentNumber: number|null, markup: string }> }
+ */
+function parseTableRows(tableBody) {
+  // Split into individual <tr>…</tr> blocks, preserving their content.
+  const trPattern = /<tr[\s\S]*?<\/tr>/gi;
+  const allRows = tableBody.match(trPattern) || [];
 
-  const tableEnd = '</tbody></table>';
-  if (!storageValue.includes(tableEnd)) {
-    throw new Error('Unable to find AI QA Summary table closing tag.');
-  }
+  const headerRows = [];
+  const dataPairs = [];
+  let i = 0;
 
-  return storageValue.replace(tableEnd, `${rowMarkup}${tableEnd}`);
-}
+  while (i < allRows.length) {
+    const row = allRows[i];
+    const ticketMatch = row.match(/SSPLAN-(\d+)/i);
 
-function buildRunSection({ report, ticketKeys }) {
-  const heading = '<h2>Latest QA Agent Runs</h2>';
-  const items = ticketKeys.map((ticketKey) => {
-    const susan = findLatestSusanResult(ticketKey);
-    if (!susan) {
-      return `<li><strong>${escapeXml(ticketKey)}</strong>: no matching Susan result was found in QA-Runs.</li>`;
+    if (!ticketMatch) {
+      headerRows.push(row);
+      i += 1;
+      continue;
     }
 
-    const totals = susan.totals || {};
-    return `<li><strong>${escapeXml(ticketKey)}</strong> — ${escapeXml(susan.overall_status || 'UNKNOWN')} (pass: ${escapeXml(totals.PASS || 0)}, fail: ${escapeXml(totals.FAIL || 0)}, partial: ${escapeXml(totals.PARTIAL || 0)}, manual-only: ${escapeXml(totals['MANUAL-ONLY'] || 0)})</li>`;
-  });
+    // This is a summary row — the next row is its detail row.
+    const detailRow = allRows[i + 1] || '';
+    const pairMarkup = detailRow ? row + detailRow : row;
+    const ticketNumber = parseInt(ticketMatch[1], 10);
 
-  const generatedAt = new Date().toISOString();
-  const reportPath = report?.runId ? escapeXml(report.runId) : 'manual';
-  const details = `<p>Generated from Pablo run <code>${reportPath}</code> at ${escapeXml(generatedAt)}.</p>`;
-  return `${SECTION_START}${heading}${details}<ul>${items.join('')}</ul>${SECTION_END}`;
+    // Detect subtask: rendered markup contains "↳ subtask of SSPLAN-NNN"
+    const parentMatch = pairMarkup.match(/↳\s*subtask\s*of\s*SSPLAN-(\d+)/i);
+    const parentNumber = parentMatch ? parseInt(parentMatch[1], 10) : null;
+
+    dataPairs.push({ ticketNumber, parentNumber, markup: pairMarkup });
+    i += detailRow ? 2 : 1;
+  }
+
+  return { headerRows, dataPairs };
 }
 
-function upsertRunSection(storageValue, sectionMarkup) {
-  const pattern = new RegExp(`${SECTION_START}[\\s\\S]*?${SECTION_END}`);
-  if (pattern.test(storageValue)) {
-    return storageValue.replace(pattern, sectionMarkup);
+/**
+ * Sort data row-pairs: stories in ascending numeric order, subtasks
+ * immediately after their parent story in ascending numeric order.
+ * Orphaned subtasks (parent not present) are sorted by their own number.
+ */
+function sortDataPairs(dataPairs) {
+  const stories = dataPairs.filter((p) => p.parentNumber === null);
+  const subtasks = dataPairs.filter((p) => p.parentNumber !== null);
+
+  stories.sort((a, b) => a.ticketNumber - b.ticketNumber);
+
+  const sorted = [];
+  for (const story of stories) {
+    sorted.push(story);
+    const children = subtasks
+      .filter((s) => s.parentNumber === story.ticketNumber)
+      .sort((a, b) => a.ticketNumber - b.ticketNumber);
+    sorted.push(...children);
   }
-  return `${sectionMarkup}${storageValue}`;
+
+  // Append orphaned subtasks (parent story not in the table) sorted numerically.
+  const placedSubtaskNums = new Set(subtasks.filter((s) => stories.some((st) => st.ticketNumber === s.parentNumber)).map((s) => s.ticketNumber));
+  const orphans = subtasks
+    .filter((s) => !placedSubtaskNums.has(s.ticketNumber))
+    .sort((a, b) => a.ticketNumber - b.ticketNumber);
+  sorted.push(...orphans);
+
+  return sorted;
+}
+
+/**
+ * After upsert, re-sort the table rows so stories appear in ascending numeric
+ * order and subtasks are grouped under their parent in ascending numeric order.
+ */
+function resortTableRows(storageValue) {
+  // Locate the last <table>…</table> block (the AI QA Summary table).
+  const tablePattern = /(<table[\s\S]*?>)([\s\S]*?)(<\/table>)/i;
+  const match = storageValue.match(tablePattern);
+  if (!match) return storageValue;
+
+  const [fullTable, tableOpen, tableBody, tableClose] = match;
+
+  const { headerRows, dataPairs } = parseTableRows(tableBody);
+  const sortedPairs = sortDataPairs(dataPairs);
+
+  const rebuiltBody = [...headerRows, ...sortedPairs.map((p) => p.markup)].join('');
+  const rebuiltTable = `${tableOpen}${rebuiltBody}${tableClose}`;
+
+  return storageValue.replace(fullTable, rebuiltTable);
+}
+
+function upsertManagedTicketRows(storageValue, ticketKey, rowMarkup) {
+  const escapedTicketKey = escapeRegex(ticketKey);
+  // Match only the specific row that contains this ticket key — do NOT allow the
+  // opening <tr> to span across other </tr> boundaries (which would eat the header row).
+  // (?:(?!<\/tr>)[\s\S])*? = any char that does not start </tr>, so the match stays
+  // within a single table row.
+  const singleRow = `(?:(?!<\\/tr>)[\\s\\S])*?`;
+  const existingRowPattern = new RegExp(
+    `<tr[^>]*>${singleRow}${escapedTicketKey}${singleRow}<\\/tr>\\s*<tr[^>]*>${singleRow}<\\/tr>`,
+    'i'
+  );
+  if (existingRowPattern.test(storageValue)) {
+    return resortTableRows(storageValue.replace(existingRowPattern, rowMarkup));
+  }
+
+  // Try </tbody></table> first, then fall back to plain </table>.
+  let updated;
+  if (storageValue.includes('</tbody></table>')) {
+    updated = storageValue.replace('</tbody></table>', `${rowMarkup}</tbody></table>`);
+  } else if (storageValue.includes('</tbody>\n</table>')) {
+    updated = storageValue.replace('</tbody>\n</table>', `${rowMarkup}</tbody>\n</table>`);
+  } else if (storageValue.includes('</table>')) {
+    // Insert before the last </table> in case there are multiple tables.
+    const idx = storageValue.lastIndexOf('</table>');
+    updated = `${storageValue.slice(0, idx)}${rowMarkup}</table>${storageValue.slice(idx + 8)}`;
+  } else {
+    throw new Error('Unable to find the AI QA Summary table closing tag on the Confluence page.');
+  }
+
+  return resortTableRows(updated);
 }
 
 async function updatePage(env, page, storageValue) {
@@ -295,23 +373,6 @@ async function getConfluenceTicketList(env) {
   };
 }
 
-async function writeRunResultsToConfluence({ env, reportPath, ticketKeys }) {
-  const page = await getPage(env);
-  const report = reportPath && fs.existsSync(reportPath)
-    ? JSON.parse(fs.readFileSync(reportPath, 'utf8'))
-    : null;
-  const sectionMarkup = buildRunSection({ report, ticketKeys });
-  const currentStorage = page.body?.storage?.value || '';
-  const updatedStorage = upsertRunSection(currentStorage, sectionMarkup);
-  const updatedPage = await updatePage(env, page, updatedStorage);
-
-  return {
-    pageTitle: updatedPage.title,
-    pageVersion: updatedPage.version?.number,
-    ticketKeys,
-  };
-}
-
 async function upsertTicketRow({ env, ticketKey, ticketSummary, tests, markAsPassed, today }) {
   if (!ticketKey) {
     throw new Error('ticketKey is required');
@@ -341,6 +402,5 @@ async function upsertTicketRow({ env, ticketKey, ticketSummary, tests, markAsPas
 
 module.exports = {
   getConfluenceTicketList,
-  writeRunResultsToConfluence,
   upsertTicketRow,
 };

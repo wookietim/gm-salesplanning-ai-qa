@@ -1,0 +1,99 @@
+{
+  "runId": "pablo-20260814-140935",
+  "agentId": "pablo",
+  "startedAt": "2026-08-14T14:09:35.430Z",
+  "endedAt": "2026-08-14T14:09:36.146Z",
+  "mode": "components",
+  "targetComponents": [
+    "../gm-salesplanning-frontend/src/components/GapToClose/gap-to-close.tsx"
+  ],
+  "bob": {
+    "checked": 1,
+    "regenerated": 1,
+    "reused": 0,
+    "regeneratedComponents": [
+      "../gm-salesplanning-frontend/src/components/GapToClose/gap-to-close.tsx"
+    ],
+    "stdout": "[Bob] Starting test generation run.\n[Bob] Scanning components under: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-frontend/src\n[Bob] Discovered 34 component candidates; targeting 1 component(s).\n[Bob] Reusing existing QA plan for GapToClose.\n[Bob] Generation complete.\n[Bob] Target root: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-frontend/src\n[Bob] Output dir: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests\n[Bob] Components discovered: 34\n[Bob] Components targeted: 1\n[Bob] Created: 0, Updated: 0, Skipped: 1\n[Bob] State file: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests/.bob-memory.json\n[Bob] Index: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests/INDEX.md\n"
+  },
+  "susan": {
+    "overallStatus": "pass",
+    "components": 1,
+    "tests": 2,
+    "passed": 2,
+    "failed": 0,
+    "stdout": "[Susan] Starting QA execution run.\n[Susan] Reading Bob plans from: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests\n[Susan] Found 1 plan file(s) to evaluate before scope filtering.\n[Susan] Running tests for gap-to-close (../gm-salesplanning-frontend/src/components/GapToClose/gap-to-close.tsx).\n[Susan] Execution complete.\n[Susan] Bob plans directory: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests\n[Susan] Components checked: 1\n[Susan] Tests executed: 2\n[Susan] Passed: 2, Failed: 0\n[Susan] Overall: pass\n[Susan] JSON result: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/susan/results/susan-result-20260814-140936.json\n[Susan] Markdown result: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/susan/results/susan-result-20260814-140936.md\n",
+    "componentResults": [
+      {
+        "component": "gap-to-close",
+        "source": "../gm-salesplanning-frontend/src/components/GapToClose/gap-to-close.tsx",
+        "status": "pass",
+        "tests": [
+          {
+            "testId": "BOB-HP-001",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "BOB-SP-001",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          }
+        ]
+      }
+    ]
+  },
+  "jira": {
+    "project": "SSPLAN",
+    "issueKeys": [
+      "SSPLAN-747"
+    ],
+    "source": "jira-api",
+    "warnings": [],
+    "issues": [
+      {
+        "key": "SSPLAN-747",
+        "summary": "Create GapToClose component",
+        "updatedAt": "2026-08-10T16:38:49.610+0000",
+        "hasAcceptanceCriteria": false
+      }
+    ],
+    "acFilePath": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/pablo/results/.pablo-jira-ac-20260814-140935.txt"
+  },
+  "overallStatus": "pass",
+  "failureReasons": []
+}

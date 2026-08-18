@@ -1,0 +1,9 @@
+Issue SSPLAN-655: Add Country level filter to Metrics API
+Acceptance Criteria (derived from description):
+Add country level filters to metric api for following metrics:
+
+RollingSalesTrend
+
+SalesIndexToGoal
+
+WeeklySalesTrend

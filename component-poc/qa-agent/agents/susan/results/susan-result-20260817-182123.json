@@ -1,0 +1,206 @@
+{
+  "runId": "susan-for-pablo-20260817-182122",
+  "agentId": "susan",
+  "startedAt": "2026-08-17T18:21:23.349Z",
+  "endedAt": "2026-08-17T18:21:23.353Z",
+  "overallStatus": "pass",
+  "totals": {
+    "components": 2,
+    "tests": 8,
+    "passed": 8,
+    "failed": 0
+  },
+  "componentResults": [
+    {
+      "component": "article-badges",
+      "source": "../gm-salesplanning-frontend/src/components/Shared/ArticleBadges/article-badges.tsx",
+      "status": "pass",
+      "tests": [
+        {
+          "testId": "BOB-HP-ARTICL-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-HP-ARTICL-002",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-ARTICL-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-ARTICL-002",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            }
+          ],
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "component": "user",
+      "source": "../gm-salesplanning-frontend/src/components/User/user.tsx",
+      "status": "pass",
+      "tests": [
+        {
+          "testId": "BOB-HP-USER-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-HP-USER-002",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-USER-001",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            }
+          ],
+          "reasons": []
+        },
+        {
+          "testId": "BOB-SP-USER-002",
+          "status": "pass",
+          "checks": [
+            {
+              "name": "source-file-exists",
+              "status": "pass",
+              "details": "Source component file found"
+            },
+            {
+              "name": "source-shape-valid",
+              "status": "pass",
+              "details": "Source appears to contain component export or JSX structure"
+            },
+            {
+              "name": "jira-issue-key-coverage",
+              "status": "pass",
+              "details": "Plan includes requested Jira issue keys"
+            }
+          ],
+          "reasons": []
+        }
+      ]
+    }
+  ],
+  "failureReasons": []
+}

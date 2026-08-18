@@ -1,0 +1,5 @@
+Issue SSPLAN-547: Define data concepts
+Acceptance Criteria (derived from description):
+*Story:*  As a product team, we need to translate identified business information objects into defined data concepts, so that we have a shared understanding of how business intent maps to data before physical schema design begins.
+
+{*}Description{*}: Data concepts bridge business language and technical implementation. Without them, engineers make implicit modeling decisions that may not reflect commercial reality, leading to schemas that are technically valid but commercially wrong. This story makes those decisions explicit and reviewable.

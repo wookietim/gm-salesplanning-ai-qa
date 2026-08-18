@@ -1,0 +1,329 @@
+{
+  "runId": "pablo-20260814-145431",
+  "agentId": "pablo",
+  "startedAt": "2026-08-14T14:54:31.221Z",
+  "endedAt": "2026-08-14T14:54:31.823Z",
+  "mode": "components",
+  "targetComponents": [
+    "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx"
+  ],
+  "bob": {
+    "checked": 1,
+    "regenerated": 1,
+    "reused": 0,
+    "regeneratedComponents": [
+      "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx"
+    ],
+    "stdout": ""
+  },
+  "susan": {
+    "overallStatus": "pass",
+    "components": 1,
+    "tests": 12,
+    "passed": 12,
+    "failed": 0,
+    "stdout": "[Susan] Starting QA execution run.\n[Susan] Reading explicit plan file: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/QA-Tests/SSPLAN-623__sales-by-week.qa.md\n[Susan] Found 1 plan file(s) to evaluate before scope filtering.\n[Susan] Running tests for SalesByWeek (../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx).\n[Susan] Execution complete.\n[Susan] Bob plans directory: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests\n[Susan] Components checked: 1\n[Susan] Tests executed: 12\n[Susan] Passed: 12, Failed: 0\n[Susan] Overall: pass\n[Susan] JSON result: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/susan/results/susan-result-20260814-145431.json\n[Susan] Markdown result: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/susan/results/susan-result-20260814-145431.md\n",
+    "componentResults": [
+      {
+        "component": "SalesByWeek",
+        "source": "../gm-salesplanning-frontend/src/components/Shared/DashboardComponents/GraphComponents/SalesByWeek/sales-by-week.tsx",
+        "status": "pass",
+        "tests": [
+          {
+            "testId": "HP-01",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "HP-02",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "SP-01",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "sad-path-source-signals",
+                "status": "pass",
+                "details": "Source includes error or fallback signals"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "SP-02",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "sad-path-source-signals",
+                "status": "pass",
+                "details": "Source includes error or fallback signals"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "DC-01",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "DC-02",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "API-01",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "API-02",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "REG-01",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "A11Y-01",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "PERF-01",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "I18N-01",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          }
+        ]
+      }
+    ]
+  },
+  "jira": {
+    "project": "SSPLAN",
+    "issueKeys": [
+      "SSPLAN-623"
+    ],
+    "source": "jira-api",
+    "warnings": [],
+    "issues": [
+      {
+        "key": "SSPLAN-623",
+        "summary": "Show Weekly Sales vs Latest Financial Forecast",
+        "updatedAt": "2026-08-06T12:50:28.593+0000",
+        "hasAcceptanceCriteria": true
+      }
+    ],
+    "acFilePath": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/pablo/results/.pablo-jira-ac-20260814-145431.txt"
+  },
+  "overallStatus": "pass",
+  "failureReasons": []
+}

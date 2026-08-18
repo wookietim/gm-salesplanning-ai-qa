@@ -1,0 +1,5 @@
+Issue SSPLAN-740: Update RollingSalesTrend Metric API
+Acceptance Criteria (derived from description):
+Update data mapping for additions and changes to data structure for API metric rollingsalestrend.
+
+Data structure TBD

@@ -1,0 +1,33 @@
+Issue SSPLAN-719: Article Badges Component
+Acceptance Criteria (derived from description):
+*User Story:* As an HFB leader I need to know if an article is a new, BTI or other flag.
+
+*Description:* This covers the development of a reusable badge component to display strategic classification flags on articles, such as "New", "BTI" (Breath-Taking Item), or "EDS" (End Date Sales).
+
+*Background:*
+  Given I am an HFB leader logged into the Sales Planning monitoring tool
+  And I have access to current fiscal year sales data
+  And the Article Badges component is embedded in the article list
+
+*Scenario:* Display "New" badge for recently launched articles
+  Given an article has a Sales Start Date within the last 12 weeks
+  When the article is rendered in the list
+  Then I should see a "New" badge next to the article details
+
+*Scenario:* Display "BTI" badge for Breath-Taking Items
+  Given an article is flagged as a BTI in the system
+  When the article is rendered in the list
+  Then I should see a "BTI" badge next to the article details
+
+*Scenario:* Display multiple badges simultaneously
+  Given an article is both a recently launched "New" item and a "BTI"
+  When the article is rendered in the list
+  Then I should see both the "New" and "BTI" badges displayed side-by-side
+
+ 
+
+*Design:* [Article badges component in Figma|https://www.figma.com/design/HdtKcUKqPyPfxr3Er8sStc/Sales-Planning---Spec?node-id=2312-6411&amp;t=XnlRLLiCWynZQ98q-0]
+
+!image-2026-08-03-11-41-47-428.png!
+
+datacatalog.ingka.com/attribute/7124488/

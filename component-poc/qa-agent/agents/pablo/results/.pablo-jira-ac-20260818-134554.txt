@@ -1,0 +1,26 @@
+Issue SSPLAN-701: Hero Metric Component
+Acceptance Criteria (derived from description):
+*Feature:* Component that indicates how many points above or below the metric is compared to target goal.
+
+*User Story:* As an HFB leader, I want to see metrics compared to goals with visual indications of how many points above or below the metric is compared to goal, so that I may quickly monitor performance and influence what actions need to be taken.
+
+*Background:* 
+
+    *Given* I am an HFB leader logged into the Sales Planning monitoring tool
+    *And* I have access to current fiscal year sales data
+    *And* metric data is available from external sources (MSFR, DSP, CAMP/TAKT, BIM) - {color:#00875a}Endpoints may be mocked until Data API's are complete{color}
+    *And* the Hero Metric component is embedded in my sales monitoring dashboard
+
+*Scenario:* Display key metrics in a single component
+    *Given* the hero metric component is initialized
+    *When* I view the component
+    *Then* I should see the relevant metric compared to goal
+    *And* the number of points above or below goal the metric is visually indicated according to design
+
+*Note:* The goal calculation is used in both metric snapshot row and the hero metric component. 
+
+*Design:* [Hero Metric Component|https://www.figma.com/design/HdtKcUKqPyPfxr3Er8sStc/Sales-Planning---Spec?node-id=240-3193&p=f&focus-id=2188-3616&view=focus&m=dev] - 
+
+!image-2026-07-21-14-26-41-617.png!
+
+!image-2026-07-20-14-23-54-684.png!

@@ -1,0 +1,42 @@
+{
+  "runId": "pablo-20260812-183245",
+  "agentId": "pablo",
+  "startedAt": "2026-08-12T18:32:45.787Z",
+  "endedAt": "2026-08-12T18:32:46.243Z",
+  "mode": "components",
+  "targetComponents": [],
+  "bob": {
+    "checked": 0,
+    "regenerated": 0,
+    "reused": 0,
+    "regeneratedComponents": [],
+    "stdout": ""
+  },
+  "susan": {
+    "overallStatus": "pass",
+    "components": 0,
+    "tests": 0,
+    "passed": 0,
+    "failed": 0,
+    "stdout": ""
+  },
+  "jira": {
+    "project": "SSPLAN",
+    "issueKeys": [
+      "SSPLAN-623"
+    ],
+    "source": "jira-api",
+    "warnings": [],
+    "issues": [
+      {
+        "key": "SSPLAN-623",
+        "summary": "Show Weekly Sales vs Latest Financial Forecast",
+        "updatedAt": "2026-08-06T12:50:28.593+0000",
+        "hasAcceptanceCriteria": true
+      }
+    ],
+    "acFilePath": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/pablo/results/.pablo-jira-ac-20260812-183245.txt"
+  },
+  "overallStatus": "pass",
+  "failureReasons": []
+}

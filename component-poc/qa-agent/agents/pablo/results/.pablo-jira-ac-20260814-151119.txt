@@ -1,0 +1,13 @@
+Issue SSPLAN-427: Data source discovery
+Acceptance Criteria (derived from description):
+*Description:*
+This epic covers the discovery work required to map the current state of available data sources in the DBT project against what Plan Management actually needs to monitor performance, identify deviations, and adjust plans. This epic ensures we fully understand what is already there, what gaps exist, and what data sources need to be onboarded, extended, or replaced depending on what Plan Management needs. This gives the team a clear reference point as Plan Management requirements come in, we know what we already have and what needs to be onboarded before staging and transformation can begin.
+ 
+
+*Goals:*
+
+Identify, access, and assess all relevant commercial data sources needed to support plan management monitoring and adjusting capabilities.
+
+ 
+
+*Business Value:*

@@ -4,12 +4,15 @@ const { defineConfig, devices } = require('@playwright/test');
 /**
  * Playwright config for E2E testing of gm-salesplanning-frontend.
  *
- * The frontend app must be running on port 4173 before tests are executed.
- * Start it with:
- *   cd /path/to/gm-salesplanning-frontend && npm run dev -- --port 4173 --strictPort
+ * Default target is the deployed dev environment, so runs exercise the
+ * actually-deployed bundle and are immune to a stale local `dist/`.
  *
- * Then run these tests from this directory:
- *   npm test
+ * Override to test a local build instead:
+ *   E2E_BASE_URL=http://localhost:4173 npm test
+ * (a local target must already be serving a fresh `npm run build` output)
+ *
+ * Note: network calls are still intercepted by page.route(), so this exercises
+ * the deployed bundle against mock data — it does not hit the real backend.
  */
 module.exports = defineConfig({
     testDir: '.',
@@ -20,7 +23,7 @@ module.exports = defineConfig({
     workers: process.env.CI ? 1 : undefined,
     reporter: 'html',
     use: {
-        baseURL: 'http://localhost:4173',
+        baseURL: process.env.E2E_BASE_URL || 'https://dev.salesplanning.ingka.com',
         trace: 'on-first-retry',
     },
     projects: [
@@ -29,6 +32,6 @@ module.exports = defineConfig({
             use: { ...devices['Desktop Chrome'] },
         },
     ],
-    // The frontend app must already be running — we do NOT auto-start it here
-    // because it lives in a separate repo. Start it manually before running tests.
+    // No webServer: the target is a deployed environment by default. When
+    // overriding E2E_BASE_URL to a localhost port, start that server yourself.
 });

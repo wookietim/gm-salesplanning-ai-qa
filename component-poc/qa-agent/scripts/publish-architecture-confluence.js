@@ -374,7 +374,76 @@ function buildBody() {
     )
   );
 
-  out.push(h(3, 'Plain-English requests'));
+  out.push(h(3, 'Asking Pablo to do things'));
+  out.push(
+    p(
+      'Pablo is the orchestration manager and the agent you normally talk to. He decides what is in ' +
+        'scope, has Bob write the test plans, has Susan execute them, and folds the E2E result into ' +
+        'one report. You do not need to name Bob or Susan - asking Pablo is enough.'
+    )
+  );
+  out.push(
+    table(
+      ['Ask Pablo', 'What he does'],
+      [
+        [
+          'Pablo, run QA on what I just changed',
+          'Default changed mode: diffs the working tree, selects changed components, regenerates only stale plans, then executes.',
+        ],
+        [
+          'Pablo, run a full QA pass',
+          'mode=full - every discoverable component, not just changed ones. The long one.',
+        ],
+        [
+          'Pablo, run QA on the User component',
+          'mode=components with an explicit list, so nothing else is touched.',
+        ],
+        [
+          'Pablo, run QA for SSPLAN-623',
+          'Pulls the ticket\u2019s acceptance criteria from Jira and hands them to Bob as authoring context.',
+        ],
+        [
+          'Pablo, run QA for SSPLAN-623 and SSPLAN-708 together',
+          'Multiple tickets in one pass; acceptance criteria from both are combined.',
+        ],
+        [
+          'Pablo, reuse the existing test plans - do not regenerate',
+          'skip-bob=true. Useful when plans are hand-tuned and you only want execution.',
+        ],
+        [
+          'Pablo, skip the browser suite this time',
+          'skip-e2e=true - component-level work only, much faster.',
+        ],
+        [
+          'Pablo, regenerate the stale plans for this ticket',
+          'Bob re-checks each plan against the ticket\u2019s Jira updated timestamp and rewrites only those now out of date.',
+        ],
+        [
+          'Pablo, here are the acceptance criteria in a file - use these instead of Jira',
+          'ac-file=<path>. The offline path when Jira is unreachable or the criteria are not yet written up.',
+        ],
+        [
+          'Pablo, run QA against the live environment',
+          'Passes the live base URL through to the browser suite instead of a local build.',
+        ],
+      ]
+    )
+  );
+  out.push(
+    panel(
+      'note',
+      'What Pablo does not do',
+      p(
+        'Pablo does <strong>not</strong> publish to Confluence - there is no Confluence code in ' +
+          '<code>run-pablo.js</code> at all. Publishing is a separate, deliberate step. He also does ' +
+          'not run the API probes or the UI-API integration checks, because those need an ' +
+          'authenticated browser session that a command-line process does not have. Ask the agent for ' +
+          'those, not Pablo.'
+      )
+    )
+  );
+
+  out.push(h(3, 'Asking for the test suites'));
   out.push(
     table(
       ['Say this', 'What happens'],
@@ -549,6 +618,118 @@ function buildBody() {
           'token</strong> - navigate with in-app clicks or history, never by setting ' +
           '<code>location.href</code>.'
       )
+    )
+  );
+
+  /* -- integrations -- */
+  out.push(h(2, 'Jira and Confluence integration'));
+  out.push(
+    p(
+      'Both integrations are real and both are used routinely, but they work differently from one ' +
+        'another, and neither is quite "automatic". The distinction matters if you are relying on them.'
+    )
+  );
+
+  out.push(h(3, 'Jira - automatic, read-only, opt-in'));
+  out.push(
+    p(
+      'When you name a ticket, Jira is called for you. Two separate calls happen, for two different ' +
+        'purposes:'
+    )
+  );
+  out.push(
+    table(
+      ['Caller', 'What it fetches', 'What it is used for'],
+      [
+        [
+          'Pablo - fetchJiraAcceptanceCriteria',
+          "The ticket's acceptance criteria, via REST API v2 (with a v3 field lookup to locate the custom AC field)",
+          'Handed to Bob as authoring context so generated tests reflect what the ticket actually asked for',
+        ],
+        [
+          'Bob - fetchJiraIssueMeta',
+          "The ticket's updated timestamp and issue type, via REST API v2",
+          'Staleness detection - if the ticket changed after a plan was written, that plan is regenerated; otherwise it is reused',
+        ],
+      ]
+    )
+  );
+  out.push(
+    panel(
+      'note',
+      'Three things to be clear about',
+      p(
+        '<strong>It is opt-in, not always-on.</strong> The Jira call only fires when issue keys are ' +
+          'supplied. A plain changed-mode run never contacts Jira.'
+      ) +
+        p(
+          '<strong>It is strictly read-only.</strong> There is no POST or PUT to Jira anywhere in the ' +
+            'runners. Results are never written back to the ticket - no comment, no status transition, ' +
+            'no attachment. If you want QA results on the ticket, someone puts them there by hand.'
+        ) +
+        p(
+          '<strong>It degrades rather than fails.</strong> If the custom-field lookup is blocked by ' +
+            'permissions or the Jira version differs, it falls back to standard fields and records a ' +
+            'warning instead of aborting the run. Check the warnings in the run report before trusting ' +
+            'that acceptance criteria were actually found.'
+        )
+    )
+  );
+  out.push(
+    p(
+      'Offline alternative: <code>--ac-file=&lt;path&gt;</code> supplies acceptance criteria from a ' +
+        'local file and skips Jira entirely. Requires <code>JIRA_BASE_URL</code>, ' +
+        '<code>JIRA_USER_EMAIL</code>, <code>JIRA_API_TOKEN</code> and <code>JIRA_PROJECT</code> in ' +
+        '<code>.env</code> otherwise.'
+    )
+  );
+
+  out.push(h(3, 'Confluence - explicit, not part of a run'));
+  out.push(
+    p(
+      'Confluence publishing is genuinely useful and fully automated <em>once invoked</em>, but it is ' +
+        'not triggered by a test run. <code>run-pablo.js</code> contains no Confluence code. You ' +
+        'publish by running a publisher, or by asking the agent to.'
+    )
+  );
+  out.push(
+    table(
+      ['Publisher', 'Publishes'],
+      [
+        ['publish-e2e-confluence.js', 'Playwright functional results - the 211-test table'],
+        ['publish-api-confluence.js', 'API probe results'],
+        ['publish-integration-confluence.js', 'UI-API integration results, rendering harness and observation outcomes distinctly'],
+        ['publish-architecture-confluence.js', 'This documentation page'],
+      ]
+    )
+  );
+  out.push(
+    p(
+      'All four are <strong>upsert-style and idempotent</strong>. They locate their own section on the ' +
+        'target page by heading, replace it in place, and bump the page version. ' +
+        '<code>publish-e2e-confluence.js</code> additionally carries a ' +
+        '<code>removeStandaloneSection()</code> guard so results cannot end up rendered twice - once ' +
+        'in the table and again as loose text below it. Re-running a publisher updates; it does not ' +
+        'append.'
+    )
+  );
+  out.push(
+    panel(
+      'warning',
+      'Do not hand-edit generated pages',
+      p(
+        'Anything a publisher owns is overwritten on the next run, including this page. Change the ' +
+          'generator instead. Credentials come from a git-ignored <code>.env</code> ' +
+          '(<code>CONFLUENCE_BASE_URL</code>, <code>CONFLUENCE_API_TOKEN</code>, ' +
+          '<code>CONFLUENCE_SPACE_KEY</code>, <code>CONFLUENCE_PAGE_ID</code>) and are never committed.'
+      )
+    )
+  );
+  out.push(
+    p(
+      'Note that the <strong>Confluence-Agent</strong> and <strong>Confluence-Writer</strong> agent ' +
+        'definitions are definition-only and play no part in this. Publishing works today because of ' +
+        'the four scripts above, not because those agents run.'
     )
   );
 

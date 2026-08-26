@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "E2eAgentInput",
+  "type": "object",
+  "required": ["runId"],
+  "properties": {
+    "runId": { "type": "string", "minLength": 1 },
+    "e2eRoot": {
+      "type": "string",
+      "description": "Directory containing playwright.config.* and the package.json that defines the e2e script. Falls back to the adapter's e2eRoot, then to projectRoot."
+    },
+    "projectRoot": {
+      "type": "string",
+      "description": "Target repository root. Used to resolve e2eRoot when e2eRoot is not supplied."
+    },
+    "e2eCommand": {
+      "type": "string",
+      "description": "Command used to run the suite. Defaults to 'npm run test:e2e'. The agent appends a JSON reporter override so results are machine-readable."
+    },
+    "specs": {
+      "type": "array",
+      "description": "Spec file paths or filename filters to run. Omit to run the entire suite.",
+      "items": { "type": "string" }
+    },
+    "grep": {
+      "type": "string",
+      "description": "Playwright --grep pattern to select tests by title."
+    },
+    "browsers": {
+      "type": "array",
+      "description": "Playwright project names to run (e.g. chromium, firefox, webkit). Omit to run every project defined in playwright.config.",
+      "items": { "type": "string" }
+    },
+    "baseURL": {
+      "type": "string",
+      "description": "Overrides the baseURL from playwright.config. Use when testing a deployed environment instead of the local webServer."
+    },
+    "workers": {
+      "type": "number",
+      "description": "Overrides the Playwright worker count."
+    },
+    "retries": {
+      "type": "number",
+      "description": "Overrides the Playwright retry count. Retries are what allow flaky tests to be detected and reported as high severity."
+    },
+    "timeoutSeconds": {
+      "type": "number",
+      "description": "Hard wall-clock limit for the whole suite. On expiry the agent returns status 'blocked' with a timeout blockedReason."
+    },
+    "installBrowsers": {
+      "type": "boolean",
+      "description": "When true, run 'npx playwright install --with-deps' before executing the suite. Needed on clean CI machines."
+    },
+    "updateSnapshots": {
+      "type": "boolean",
+      "description": "When true, pass --update-snapshots so Playwright rewrites its own visual/DOM snapshots. Never combine with a failing run."
+    },
+    "specMappings": {
+      "type": "array",
+      "description": "Explicit mapping from Bob test case IDs to Playwright spec titles. When supplied, Susan uses this instead of title matching to adopt E2E results.",
+      "items": {
+        "type": "object",
+        "required": ["testId", "specTitle"],
+        "properties": {
+          "testId": { "type": "string" },
+          "specTitle": { "type": "string" },
+          "component": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

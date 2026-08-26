@@ -28,6 +28,7 @@ with consistent inputs, outputs, and reporting.
 - accessibility (WCAG / pa11y validation)
 - api-contract (request/response schema validation)
 - visual-diff (screenshot-based visual regression)
+- e2e (runs the project's real Playwright browser suite)
 - confluence-agent (publishes supplied content to Confluence pages)
 - confluence-writer (upserts per-ticket QA summary table rows on Confluence)
 - guide-sync (keeps `AGENTS_GUIDE.md` and README links synchronized with agent changes)

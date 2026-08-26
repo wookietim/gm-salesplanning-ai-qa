@@ -23,7 +23,7 @@ always match the current state of agent definitions and orchestration rules.
    - Smoke pre-flight
    - API-Agent handoffs
    - Bob/Susan responsibilities
-   - Specialist delegation (Regression, Accessibility, API Contract, Visual Diff)
+   - Specialist delegation (Regression, Accessibility, API Contract, Visual Diff, E2E)
    - Guide-Sync execution point
 4. Ensure all output paths match the current standard:
    - `QA-Tests/` for plans

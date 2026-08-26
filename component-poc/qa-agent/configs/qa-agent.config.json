@@ -21,6 +21,7 @@
     "accessibility",
     "api-contract",
     "visual-diff",
+    "e2e",
     "guide-sync"
   ],
   "agents": [
@@ -89,6 +90,12 @@
       "path": "component-poc/qa-agent/agents/visual-diff",
       "enabled": true,
       "timeoutSeconds": 900
+    },
+    {
+      "id": "e2e",
+      "path": "component-poc/qa-agent/agents/e2e",
+      "enabled": true,
+      "timeoutSeconds": 1800
     },
     {
       "id": "guide-sync",

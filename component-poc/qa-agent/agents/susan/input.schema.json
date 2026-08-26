@@ -45,6 +45,33 @@
       "type": "string",
       "description": "Live backend base URL (e.g. http://localhost:8080). When provided, Susan invokes API Contract to validate actual response schemas against what API-Agent discovered."
     },
+    "e2eRoot": {
+      "type": "string",
+      "description": "Directory containing playwright.config.* for the target project. When provided (or resolvable from the adapter), Susan invokes the E2E agent to execute the real Playwright suite instead of marking REAL FE test cases as MANUAL-ONLY."
+    },
+    "e2eCommand": {
+      "type": "string",
+      "description": "Command used to run the Playwright suite. Defaults to 'npm run test:e2e'. Presence of this or e2eRoot triggers E2E delegation."
+    },
+    "e2eBrowsers": {
+      "type": "array",
+      "description": "Playwright project names to execute (e.g. chromium, firefox, webkit). Omit to run every project defined in playwright.config.",
+      "items": { "type": "string" }
+    },
+    "e2eSpecMappings": {
+      "type": "array",
+      "description": "Explicit mapping from Bob test case IDs to Playwright spec titles. When supplied, Susan adopts E2E results via this mapping instead of normalised title matching.",
+      "items": {
+        "type": "object",
+        "required": ["testId", "specTitle"],
+        "properties": {
+          "testId": { "type": "string" },
+          "specTitle": { "type": "string" },
+          "component": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
     "securityValidationSteps": {
       "type": "array",
       "description": "Source validation steps from Security-QA's susanHandoff. Susan executes each as a SOURCE-venue security check and records PASS/FAIL with evidence.",
@@ -61,5 +88,6 @@
         "additionalProperties": false
       }
     }
+  },
   "additionalProperties": false
 }

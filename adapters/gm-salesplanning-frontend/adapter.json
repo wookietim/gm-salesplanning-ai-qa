@@ -3,5 +3,13 @@
   "targetRepositoryRoot": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-frontend",
   "defaultMode": "full",
   "defaultSourceRoot": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-frontend/src",
-  "jiraProjectKey": "SSPLAN"
+  "jiraProjectKey": "SSPLAN",
+  "e2eRoot": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/e2e",
+  "e2eCommand": "npm test",
+  "e2eTestDir": ".",
+  "e2eConfigPath": "playwright.config.js",
+  "e2eBrowsers": ["chromium"],
+  "e2eBaseUrl": "http://localhost:4173",
+  "e2eRequiresRunningApp": true,
+  "e2eStartAppHint": "cd '/Users/timothy.collins/Documents/ikea work/gm-salesplanning-frontend' && npm run dev -- --port 4173 --strictPort"
 }

@@ -13,12 +13,42 @@ Suggested scripts:
 - run-susan.js: executes Bob tests and writes timestamped pass or fail
 	results per test and overall, including runtime-signal alignment checks against
 	the current source code
-- run-pablo.js: orchestrates Bob and Susan for changed, full, or component
+- run-pablo.js: orchestrates Bob, Susan, and E2E for changed, full, or component
 	subset QA runs
+- run-e2e.js: runs the target project's real Playwright suite and reports
+	per-spec pass/fail with failure reasons, traces, and flaky detection
 - run-guide-sync.js: reconciles AGENTS_GUIDE and README links when agent
 	definitions change
 
 Keep scripts deterministic and non-interactive.
+
+## E2E usage
+
+E2E resolves its target from `adapters/<id>/adapter.json` (`e2eRoot`,
+`e2eCommand`, `e2eBrowsers`), so the common case needs no flags:
+
+```bash
+node component-poc/qa-agent/scripts/run-e2e.js
+```
+
+Useful flags:
+
+- `--browsers chromium,firefox` — limit to specific Playwright projects
+- `--grep "<pattern>"` — run only tests matching a title pattern
+- `--specs e2e/home.spec.ts` — run specific spec files
+- `--retries 1` — enable retries so flaky tests are detected
+- `--e2e-root <path>` / `--e2e-command "<cmd>"` — override the adapter
+- `--adapter <id>` — choose an adapter when several define `e2eRoot`
+- `--install-browsers` — run `playwright install --with-deps` first
+- `--timeout-seconds 1800` — wall-clock limit for the whole suite
+
+Pablo runs E2E automatically. To control it there:
+
+- `--skip-e2e` — skip the E2E step entirely
+- `--browsers`, `--retries`, `--e2e-root`, `--e2e-command`, `--e2e-grep` — forwarded to run-e2e.js
+
+A suite that cannot start reports `blocked`, never `pass`. A flaky test (passed
+only on retry) makes the run `fail` — it is never counted as a pass.
 
 ## Guide-Sync usage
 

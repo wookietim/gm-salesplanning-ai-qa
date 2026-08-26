@@ -22,6 +22,23 @@
       "type": "boolean",
       "description": "When true, Pablo skips the Smoke pre-flight step and proceeds directly to API-Agent and Bob. Use only when you know the build is clean. Default: false."
     },
+    "skipE2e": {
+      "type": "boolean",
+      "description": "When true, Pablo does not pass e2e configuration through to Susan, so the real Playwright suite is not executed. Use when no application build is available. Default: false."
+    },
+    "e2eRoot": {
+      "type": "string",
+      "description": "Overrides the adapter's e2eRoot. Directory containing playwright.config.* for the target project."
+    },
+    "e2eCommand": {
+      "type": "string",
+      "description": "Overrides the adapter's e2eCommand. Defaults to 'npm run test:e2e'."
+    },
+    "e2eBrowsers": {
+      "type": "array",
+      "description": "Playwright project names to execute (e.g. chromium, firefox, webkit). Omit to run every project defined in playwright.config.",
+      "items": { "type": "string" }
+    },
     "abortOnSmokeFailure": {
       "type": "boolean",
       "description": "When true (default), Pablo aborts the run if Smoke reports any critical or high finding. Set to false to continue despite smoke failures (results will be marked as at-risk)."

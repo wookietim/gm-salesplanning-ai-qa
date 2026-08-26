@@ -114,3 +114,16 @@ Suggested execution entry points by agent type.
 - Never assign fallback/full-suite totals to Jira ticket rows
 - Delegate final page publish to `confluence-agent`
 - Supports `dryRun` preview mode without writing to Confluence
+
+## e2e
+
+- Run the target project's real Playwright suite: `cd <e2eRoot> && npm run test:e2e`
+- Machine-readable run: `PLAYWRIGHT_JSON_OUTPUT_NAME=<path> npx playwright test --reporter=json`
+- Single browser: `npx playwright test --project=chromium`
+- Filter by title: `npx playwright test --grep "<pattern>"`
+- Install browsers on a clean machine: `npx playwright install --with-deps`
+- Never start a dev server manually — playwright.config `webServer` owns the app lifecycle
+- Flaky (passed only on retry) is reported high severity, never as a pass
+- A suite that cannot start returns `blocked`, never `pass`
+- Delegated by Susan when `e2eRoot`/`e2eCommand` is set in `adapters/<id>/adapter.json`
+- Standalone: "Pablo, run the e2e tests" or "Pablo, run e2e for SSPLAN-718 on chromium"

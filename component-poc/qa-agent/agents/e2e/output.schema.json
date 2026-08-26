@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "E2eAgentOutput",
+  "type": "object",
+  "required": ["runId", "agentId", "status", "summary", "totals", "specs", "findings"],
+  "properties": {
+    "runId": { "type": "string" },
+    "agentId": { "type": "string", "const": "e2e" },
+    "status": { "type": "string", "enum": ["pass", "fail", "blocked"] },
+    "summary": { "type": "string" },
+    "blockedReason": {
+      "type": "string",
+      "description": "Required when status is 'blocked'. Explains why the suite could not run (missing config, browser install failure, webServer timeout)."
+    },
+    "commandRun": {
+      "type": "string",
+      "description": "The exact command executed, including reporter and filter flags, so the run is reproducible by hand."
+    },
+    "e2eRoot": { "type": "string" },
+    "durationMs": { "type": "number" },
+    "totals": {
+      "type": "object",
+      "required": ["total", "passed", "failed", "flaky", "skipped"],
+      "properties": {
+        "total": { "type": "number" },
+        "passed": { "type": "number" },
+        "failed": { "type": "number" },
+        "flaky": { "type": "number" },
+        "skipped": { "type": "number" }
+      },
+      "additionalProperties": false
+    },
+    "specs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "file", "project", "status"],
+        "properties": {
+          "title": { "type": "string" },
+          "file": { "type": "string" },
+          "project": { "type": "string", "description": "Playwright project name, e.g. chromium." },
+          "status": { "type": "string", "enum": ["passed", "failed", "flaky", "skipped", "timedOut"] },
+          "durationMs": { "type": "number" },
+          "retries": { "type": "number" },
+          "errorMessage": { "type": "string" },
+          "tracePath": { "type": "string" },
+          "screenshotPath": { "type": "string" },
+          "mappedTestId": {
+            "type": "string",
+            "description": "Bob test case ID this spec was mapped to, when a mapping was resolved."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "susanHandoff": {
+      "type": "array",
+      "description": "Per-spec results reduced to the shape Susan needs to convert REAL FE test cases from MANUAL-ONLY into real PASS/FAIL.",
+      "items": {
+        "type": "object",
+        "required": ["specTitle", "result", "venue"],
+        "properties": {
+          "specTitle": { "type": "string" },
+          "testId": { "type": "string" },
+          "result": { "type": "string", "enum": ["PASS", "FAIL", "PARTIAL", "MANUAL-ONLY"] },
+          "venue": { "type": "string" },
+          "evidence": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "title"],
+        "properties": {
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
+          "title": { "type": "string" },
+          "specTitle": { "type": "string" },
+          "project": { "type": "string" },
+          "evidence": { "type": "string" },
+          "recommendedAction": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -14,7 +14,16 @@ function parseArgs(argv) {
       continue;
     }
 
-    const key = token.slice(2);
+    // Support both `--key value` and `--key=value`; the latter was previously
+    // parsed as part of the key and silently ignored.
+    const body = token.slice(2);
+    const eq = body.indexOf('=');
+    if (eq !== -1) {
+      args[body.slice(0, eq)] = body.slice(eq + 1);
+      continue;
+    }
+
+    const key = body;
     const next = argv[i + 1];
     if (next && !next.startsWith('--')) {
       args[key] = next;
@@ -28,6 +37,26 @@ function parseArgs(argv) {
 
 function ensureDir(dirPath) {
   fs.mkdirSync(dirPath, { recursive: true });
+}
+
+/**
+ * Adapters describe the repository under test. Pablo only needs the source root
+ * from it; the e2e fields are read by run-e2e.js, which receives --adapter.
+ */
+function loadAdapterConfig(repoRoot, adapterId) {
+  if (!adapterId || adapterId === 'true') {
+    return {};
+  }
+  const adapterFile = path.resolve(repoRoot, 'adapters', adapterId, 'adapter.json');
+  if (!fs.existsSync(adapterFile)) {
+    return {};
+  }
+  try {
+    return JSON.parse(fs.readFileSync(adapterFile, 'utf8'));
+  } catch (error) {
+    console.warn(`[Pablo] Ignoring unreadable adapter ${adapterId}: ${error.message}`);
+    return {};
+  }
 }
 
 function tsCompact(date) {
@@ -496,6 +525,48 @@ function runCommandNode(scriptPath, args, repoRoot) {
   });
 }
 
+function e2eSection(report) {
+  const e2e = report.e2e || { status: 'skipped' };
+  if (e2e.status === 'skipped') {
+    return '_E2E was skipped for this run._';
+  }
+  if (e2e.status === 'blocked') {
+    return `**BLOCKED** — the suite did not run.\n\n\`\`\`\n${e2e.blockedReason || 'No reason recorded.'}\n\`\`\``;
+  }
+
+  const lines = [];
+  lines.push(`- status: **${e2e.status}**`);
+  lines.push(`- command: \`${e2e.commandRun || ''}\``);
+  lines.push(
+    `- totals: ${e2e.passed}/${e2e.total} passed, ${e2e.failed} failed, ${e2e.flaky} flaky, ${e2e.skipped} skipped`
+  );
+  lines.push('');
+  lines.push('| Test | Browser | Status |');
+  lines.push('|---|---|---|');
+  for (const spec of e2e.specs || []) {
+    lines.push(`| ${spec.title} | ${spec.project} | ${spec.status} |`);
+  }
+  lines.push('');
+
+  const notPassing = (e2e.specs || []).filter((s) => s.status !== 'passed');
+  lines.push('### Why tests did not pass');
+  lines.push('');
+  if (notPassing.length === 0) {
+    lines.push('All tests passed on the first attempt.');
+  } else {
+    for (const spec of notPassing) {
+      lines.push(`#### ${spec.title} — ${spec.project} (${spec.status})`);
+      lines.push('');
+      lines.push('```');
+      lines.push(spec.errorMessage || '(no error detail reported)');
+      lines.push('```');
+      if (spec.tracePath) lines.push(`- Trace: \`${spec.tracePath}\``);
+      lines.push('');
+    }
+  }
+  return lines.join('\n');
+}
+
 function toMarkdown(report) {
   const targets =
     report.targetComponents.length > 0
@@ -567,6 +638,10 @@ ${regen}
 - passed: ${report.susan.passed}
 - failed: ${report.susan.failed}
 
+## E2E Results (real Playwright suite)
+
+${e2eSection(report)}
+
 ## Failure Reasons
 
 ${failures}
@@ -604,7 +679,9 @@ async function main() {
   const jiraApiToken = String(args['jira-api-token'] || process.env.JIRA_API_TOKEN || '').trim();
   const jiraAcFileArg = String(args['jira-ac-file'] || '').trim();
 
-  const targetRoot = args.root || 'sp-monitor-dashboard/frontend/src';
+  const adapterConfig = loadAdapterConfig(repoRoot, args.adapter);
+  const targetRoot =
+    args.root || adapterConfig.defaultSourceRoot || 'sp-monitor-dashboard/frontend/src';
   const qaTestsRoot = String(args['qa-tests-root'] || '').trim();
   const bobMemoryPath = path.resolve(
     repoRoot,
@@ -866,7 +943,44 @@ async function main() {
     }
   }
 
-  const overallStatus = susanResult.overallStatus === 'fail' ? 'fail' : 'pass';
+  const e2eScript = path.resolve(repoRoot, 'component-poc/qa-agent/scripts/run-e2e.js');
+  const e2eLatestPath = path.resolve(
+    repoRoot,
+    'component-poc/qa-agent/agents/e2e/results/latest.json'
+  );
+
+  let e2eResult = null;
+  const skipE2e = args['skip-e2e'] === 'true';
+
+  if (skipE2e) {
+    console.log('[Pablo] Skipping E2E (--skip-e2e).');
+  } else if (!fs.existsSync(e2eScript)) {
+    console.log('[Pablo] E2E runner not found; skipping.');
+  } else {
+    console.log('[Pablo] Invoking E2E (real Playwright suite).');
+    const e2eArgs = ['--run-id', `e2e-for-${runId}`];
+    if (args['e2e-root']) e2eArgs.push('--e2e-root', args['e2e-root']);
+    if (args['e2e-command']) e2eArgs.push('--e2e-command', args['e2e-command']);
+    if (args.browsers) e2eArgs.push('--browsers', args.browsers);
+    if (args.adapter) e2eArgs.push('--adapter', args.adapter);
+    if (args['e2e-grep']) e2eArgs.push('--grep', args['e2e-grep']);
+    if (args.retries) e2eArgs.push('--retries', args.retries);
+
+    try {
+      const e2eStdout = runCommandNode(e2eScript, e2eArgs, repoRoot);
+      if (e2eStdout && e2eStdout.trim()) {
+        process.stdout.write(e2eStdout.endsWith('\n') ? e2eStdout : `${e2eStdout}\n`);
+      }
+    } catch (error) {
+      console.log(`[Pablo] E2E runner error: ${error.message}`);
+    }
+
+    e2eResult = readJson(e2eLatestPath, null);
+  }
+
+  const e2eFailed = Boolean(e2eResult && e2eResult.status === 'fail');
+  const overallStatus =
+    susanResult.overallStatus === 'fail' || e2eFailed ? 'fail' : 'pass';
   const endedAt = new Date().toISOString();
 
   const report = {
@@ -900,8 +1014,33 @@ async function main() {
       issues: jiraContext.issues || [],
       acFilePath: jiraAcFilePath || '',
     },
+    e2e: e2eResult
+      ? {
+          status: e2eResult.status,
+          commandRun: e2eResult.commandRun || '',
+          total: e2eResult.totals ? e2eResult.totals.total : 0,
+          passed: e2eResult.totals ? e2eResult.totals.passed : 0,
+          failed: e2eResult.totals ? e2eResult.totals.failed : 0,
+          flaky: e2eResult.totals ? e2eResult.totals.flaky : 0,
+          skipped: e2eResult.totals ? e2eResult.totals.skipped : 0,
+          blockedReason: e2eResult.blockedReason || '',
+          specs: e2eResult.specs || [],
+        }
+      : { status: 'skipped', total: 0, passed: 0, failed: 0, flaky: 0, skipped: 0 },
     overallStatus,
-    failureReasons: susanResult.failureReasons || [],
+    failureReasons: [
+      ...(susanResult.failureReasons || []),
+      ...(e2eResult && e2eResult.specs
+        ? e2eResult.specs
+            .filter((s) => s.status !== 'passed' && s.status !== 'skipped')
+            .map(
+              (s) =>
+                `E2E ${s.status}: "${s.title}" [${s.project}] — ${
+                  (s.errorMessage || '(no error detail reported)').split('\n')[0]
+                }`
+            )
+        : []),
+    ],
   };
 
   const stamp = tsCompact(started);
@@ -929,6 +1068,30 @@ async function main() {
   }
   console.log(`[Pablo] Bob regenerated: ${toRegenerate.length}, reused: ${reused.length}`);
   console.log(`[Pablo] Susan overall: ${report.susan.overallStatus}`);
+  if (report.e2e.status === 'skipped') {
+    console.log('[Pablo] E2E: skipped');
+  } else if (report.e2e.status === 'blocked') {
+    console.log(`[Pablo] E2E: BLOCKED — ${report.e2e.blockedReason}`);
+  } else {
+    console.log(
+      `[Pablo] E2E: ${report.e2e.status} — ${report.e2e.passed}/${report.e2e.total} passed, ${report.e2e.failed} failed, ${report.e2e.flaky} flaky, ${report.e2e.skipped} skipped`
+    );
+    for (const spec of report.e2e.specs || []) {
+      const mark = spec.status === 'passed' ? 'PASS' : spec.status.toUpperCase();
+      console.log(`[Pablo]   ${mark} — "${spec.title}" [${spec.project}]`);
+    }
+    const notPassing = (report.e2e.specs || []).filter((s) => s.status !== 'passed');
+    if (notPassing.length > 0) {
+      console.log('[Pablo]   Why they did not pass:');
+      for (const spec of notPassing) {
+        console.log(`[Pablo]   - "${spec.title}" [${spec.project}] (${spec.status})`);
+        for (const line of (spec.errorMessage || '(no error detail reported)').split('\n')) {
+          console.log(`[Pablo]       ${line}`);
+        }
+        if (spec.tracePath) console.log(`[Pablo]       trace: ${spec.tracePath}`);
+      }
+    }
+  }
   console.log(`[Pablo] Overall: ${overallStatus}`);
   console.log(`[Pablo] JSON result: ${jsonPath}`);
   console.log(`[Pablo] Markdown result: ${mdPath}`);

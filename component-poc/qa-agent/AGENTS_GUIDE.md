@@ -20,6 +20,7 @@
    - [Accessibility — WCAG Validation](#accessibility--wcag-validation)
    - [API Contract — Schema Drift Detection](#api-contract--schema-drift-detection)
    - [Visual Diff — Screenshot-Based Visual Regression](#visual-diff--screenshot-based-visual-regression)
+   - [E2E — Real Playwright Browser Execution](#e2e--real-playwright-browser-execution)
    - [Guide-Sync — Documentation Synchronization](#guide-sync--documentation-synchronization)
 4. [How the Agents Work Together](#how-the-agents-work-together)
 5. [Asking Pablo to Do Things — Examples](#asking-pablo-to-do-things--examples)
@@ -56,6 +57,7 @@ The QA Agent System is a multi-agent framework for automated and semi-automated 
 | **Accessibility** | WCAG / a11y scanning | You or CI |
 | **API Contract** | Request/response schema validation | You or CI |
 | **Visual Diff** | Screenshot-based visual regression detection | You, Susan (delegated), or CI |
+| **E2E** | Runs the project's real Playwright browser suite | You, Susan (delegated), or CI |
 | **Guide-Sync** | Keeps AGENTS_GUIDE and README links in sync with agent changes | Pablo (after agent-definition changes), or you directly |
 
 ---
@@ -360,6 +362,7 @@ Susan reads Bob's test plans and validates them against the project source code,
   - **Accessibility** (`accessibilityRoutes`) — invoked for any component with a11y test cases; pa11y findings → FAIL/PARTIAL on accessibility tests
   - **API Contract** (`apiBaseUrl` + `discoveredEndpoints`) — invoked when live backend is available; schema drift findings → FAIL on API integration test cases
   - **Visual Diff** — invoked for visual-only test cases; pixel diff result → 1:1 test result
+  - **E2E** (`e2eRoot` / `e2eCommand`) — invoked when a Playwright suite is available; real browser results replace MANUAL-ONLY on `REAL FE` test cases
 - Writes a **Susan Execution Steps** section documenting source-validated, partial, and manual-only checks with evidence.
 
 ---
@@ -528,6 +531,64 @@ Susan may delegate visual-only test cases to Visual Diff rather than marking the
 #### Pass criteria
 
 All diffs within threshold; no critical or high visual findings.
+
+---
+
+### E2E — Real Playwright Browser Execution
+
+**Folder:** `agents/e2e/`
+
+Executes the target project's actual Playwright suite in a real browser. This is the agent that turns `REAL FE` test cases from `MANUAL-ONLY` placeholders into genuine PASS/FAIL results.
+
+E2E does **not** author specs — Bob still writes tests. E2E runs the suite that already exists in the target repo.
+
+#### What E2E does
+
+1. Resolves `e2eRoot` from its input, then the adapter, then `projectRoot`.
+2. Verifies `playwright.config.*` and the `test:e2e` script exist — if not, returns `blocked` rather than a false pass.
+3. Optionally installs browsers (`installBrowsers: true`).
+4. Runs the suite with a JSON reporter override (the project's own config uses `html`, which is not machine-readable).
+5. Parses per-spec, per-browser results and maps them to findings.
+6. Builds a `susanHandoff` so Susan can adopt the results directly.
+
+#### Severity mapping
+
+| Result | Severity |
+|---|---|
+| Failed on every retry | Critical |
+| Failed then passed on retry (flaky) | High |
+| Suite could not start | Critical (`blocked`) |
+| Skipped / `test.fixme` | Low |
+| Passed | Info (no finding) |
+
+#### Flaky tests are not passes
+
+A test that only passes on retry is reported at **high** severity with its retry count. Treating flakes as green is how real defects get missed.
+
+#### Integration with Susan
+
+Susan invokes E2E when `e2eRoot` or `e2eCommand` is present. Mapped `REAL FE` test cases adopt the spec result (`failed`/`timedOut` → FAIL, `flaky` → PARTIAL, `skipped` → MANUAL-ONLY). Specs that execute but map to no Bob test case are still reported in full.
+
+#### Configuration
+
+Set once per repo in `adapters/<id>/adapter.json`:
+
+```json
+{
+  "e2eRoot": "/path/to/gm-salesplanning-frontend",
+  "e2eCommand": "npm run test:e2e",
+  "e2eTestDir": "e2e",
+  "e2eConfigPath": "playwright.config.ts",
+  "e2eBrowsers": ["chromium", "firefox", "webkit"],
+  "e2eBaseUrl": "http://localhost:4173"
+}
+```
+
+Playwright's `webServer` block starts the app itself — never start a dev server manually, it collides with `--strictPort`.
+
+#### Pass criteria
+
+Every test passed on first attempt, zero flaky tests, and the suite actually executed.
 
 ---
 

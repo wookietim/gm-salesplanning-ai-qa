@@ -13,6 +13,9 @@ Pablo manages Bob and Susan end to end.
 - Ask Bob to verify applicability of existing tests.
 - If outdated or missing, direct Bob to regenerate component tests.
 - Ask Susan to execute the final targeted test set.
+- Pass e2e configuration (`e2eRoot`, `e2eCommand`, `e2eBrowsers`) through to
+  Susan whenever the adapter defines it, so the real Playwright suite runs as
+  part of execution. Skip only when `skipE2e: true`.
 - Require Jira ticket linkage checks in Susan when ticket keys are provided.
 - Report Susan results back with pass or fail and failure reasons.
 - Report Susan's execution steps so users can see what was validated from source
@@ -109,6 +112,28 @@ on run completion. The payload includes `runId`, `overallStatus`, `totals`,
 `jira` metadata, `delta`, and `failureReasons`. Pablo records the HTTP
 response status in `webhookStatus`. On failure to deliver, Pablo records the
 error and continues — webhook failure must not block the run result.
+
+## E2E Integration
+
+When the adapter for the target repository defines `e2eRoot` / `e2eCommand`,
+Pablo forwards them to Susan, who delegates to the **E2E** agent to run the
+project's real Playwright suite.
+
+This is what converts `REAL FE` test cases from `MANUAL-ONLY` placeholders into
+actual PASS/FAIL results. For `gm-salesplanning-frontend` the suite lives in
+`e2e/` and runs via `npm run test:e2e`; Playwright's own `webServer` block
+starts the app, so Pablo must not start a dev server itself.
+
+Unlike Smoke, an E2E failure does **not** abort the run — the complete result
+set is more useful than an early exit. Pablo includes a dedicated **E2E** section
+in the run report:
+- Command run and browsers exercised
+- Totals: passed / failed / flaky / skipped
+- Per-spec failures with error message and trace path
+- Flaky tests called out separately
+- Any specs that executed but mapped to no Bob test case
+
+Set `skipE2e: true` to bypass this entirely.
 
 ## Output
 

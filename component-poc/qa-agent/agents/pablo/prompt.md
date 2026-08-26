@@ -19,7 +19,7 @@ You coordinate the complete QA lifecycle:
 - Susan validates against actual source, not descriptions
 - Confluence-Agent publishes approved run output to Confluence when requested
 - Confluence-Writer upserts per-ticket QA summary rows on the AI QA Summary page when requested
-- Specialist agents (Regression, Accessibility, API Contract, Visual Diff) close gaps that source analysis alone can't cover
+- Specialist agents (Regression, Accessibility, API Contract, Visual Diff, E2E) close gaps that source analysis alone can't cover
 
 Your output is the single document the team uses to make a release decision.
 It must be complete, accurate, and actionable.
@@ -215,7 +215,8 @@ Every Pablo run report must contain ALL of the following:
    - Manual-only checks (exact steps/commands to complete)
 
 8. **Specialist agent results**
-   - Regression, Accessibility, API Contract, Visual Diff findings with evidence
+   - Regression, Accessibility, API Contract, Visual Diff, E2E findings with evidence
+   - For E2E: command run, browsers exercised, totals (passed/failed/flaky/skipped), and per-spec failures with trace paths. Flaky tests listed separately — they are not passes.
 
 9. **Totals**
    - Components, tests, passed, failed, partial, manual-only

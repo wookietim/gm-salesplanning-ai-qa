@@ -1,0 +1,4460 @@
+{
+  "runId": "e2e-for-pablo-20260826-141150",
+  "agentId": "e2e",
+  "startedAt": "2026-08-26T14:11:50.994Z",
+  "endedAt": "2026-08-26T14:12:24.544Z",
+  "status": "pass",
+  "summary": "211/211 passed",
+  "commandRun": "npm test -- --reporter=json --project=chromium",
+  "e2eRoot": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/e2e",
+  "durationMs": 33550,
+  "totals": {
+    "total": 211,
+    "passed": 211,
+    "failed": 0,
+    "flaky": 0,
+    "skipped": 0
+  },
+  "byTicket": [
+    {
+      "jiraTicket": "SSPLAN-623",
+      "testsPassing": 6,
+      "testsFailing": 0,
+      "testsBlocked": 0,
+      "tests": [
+        {
+          "name": "\"last year sales\" legend item is always visible in all metric modes",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "\"latest forecast\" legend item is always visible in all metric modes",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "\"actual sales\" legend shows in Sales mode (Pieces)",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "\"actual sales\" legend shows in Qty mode (Pieces)",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "\"actual sales\" legend is HIDDEN in Sales index mode (not a Pieces view)",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "\"actual sales\" legend is HIDDEN in Qty index mode (not a Pieces view)",
+          "status": "passed",
+          "errorMessage": ""
+        }
+      ]
+    },
+    {
+      "jiraTicket": "SSPLAN-628",
+      "testsPassing": 3,
+      "testsFailing": 0,
+      "testsBlocked": 0,
+      "tests": [
+        {
+          "name": "NavigationBar shows \"Welcome {givenName}\" at country level",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "Greeting is replaced by breadcrumbs (not welcome text) on HFB level",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "Greeting is replaced by breadcrumbs (not welcome text) on PA level",
+          "status": "passed",
+          "errorMessage": ""
+        }
+      ]
+    },
+    {
+      "jiraTicket": "SSPLAN-637",
+      "testsPassing": 3,
+      "testsFailing": 0,
+      "testsBlocked": 0,
+      "tests": [
+        {
+          "name": "HFB list section subtitle reads \"By gap to goal (worst first)\"",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "HFB list renders all 16 HFBs as clickable cards",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "HFB list heading reads \"HFB performance\"",
+          "status": "passed",
+          "errorMessage": ""
+        }
+      ]
+    },
+    {
+      "jiraTicket": "SSPLAN-646",
+      "testsPassing": 5,
+      "testsFailing": 0,
+      "testsBlocked": 0,
+      "tests": [
+        {
+          "name": "\"actual sales\" hidden in Sales index mode on HFB page",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "\"actual sales\" hidden in Qty index mode on HFB page",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "\"actual sales\" visible in Sales (Pieces) mode on HFB page",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "\"actual sales\" hidden in Sales index mode on PA page",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "\"actual sales\" visible in Qty (Pieces) mode on PA page",
+          "status": "passed",
+          "errorMessage": ""
+        }
+      ]
+    },
+    {
+      "jiraTicket": "SSPLAN-691",
+      "testsPassing": 4,
+      "testsFailing": 0,
+      "testsBlocked": 0,
+      "tests": [
+        {
+          "name": "SegmentControl with all 4 options appears in SalesByWeek on the country dashboard",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "SegmentControl with all 4 options appears in SalesByWeek on the HFB dashboard",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "SegmentControl with all 4 options appears in SalesByWeek on the PA dashboard",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "Selecting each metric option highlights only that button (aria-pressed=true)",
+          "status": "passed",
+          "errorMessage": ""
+        }
+      ]
+    },
+    {
+      "jiraTicket": "SSPLAN-692",
+      "testsPassing": 6,
+      "testsFailing": 0,
+      "testsBlocked": 0,
+      "tests": [
+        {
+          "name": "Country dashboard KpiSummaryCard shows \"FY26 sales index\" title",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "HFB dashboard KpiSummaryCard shows \"YTD sales index\" title",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "PA dashboard KpiSummaryCard shows \"YTD sales index\" title",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "KpiSummaryCard shows all four metric row cell labels on the country dashboard",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "KpiSummaryCard shows all four metric row cell labels on the HFB dashboard",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "Each HFB card in the HFB list shows its own KpiSummaryCard title",
+          "status": "passed",
+          "errorMessage": ""
+        }
+      ]
+    },
+    {
+      "jiraTicket": "SSPLAN-701",
+      "testsPassing": 6,
+      "testsFailing": 0,
+      "testsBlocked": 0,
+      "tests": [
+        {
+          "name": "Country dashboard KpiSummaryCard shows \"FY26 sales index\" title",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "HFB dashboard KpiSummaryCard shows \"YTD sales index\" title",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "PA dashboard KpiSummaryCard shows \"YTD sales index\" title",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "KpiSummaryCard shows all four metric row cell labels on the country dashboard",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "KpiSummaryCard shows all four metric row cell labels on the HFB dashboard",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "Each HFB card in the HFB list shows its own KpiSummaryCard title",
+          "status": "passed",
+          "errorMessage": ""
+        }
+      ]
+    },
+    {
+      "jiraTicket": "SSPLAN-736",
+      "testsPassing": 2,
+      "testsFailing": 0,
+      "testsBlocked": 0,
+      "tests": [
+        {
+          "name": "SalesByWeek chart renders and tooltip appears on hover over a data bar",
+          "status": "passed",
+          "errorMessage": ""
+        },
+        {
+          "name": "SalesIndexTrend chart renders its SVG on the region dashboard",
+          "status": "passed",
+          "errorMessage": ""
+        }
+      ]
+    }
+  ],
+  "specs": [
+    {
+      "title": "redirects to Microsoft login when no MSAL account exists",
+      "suitePath": [
+        "Unauthenticated home page"
+      ],
+      "fullTitle": "Unauthenticated home page › redirects to Microsoft login when no MSAL account exists",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 793,
+      "retries": 0
+    },
+    {
+      "title": "redirects protected routes through / then on to Microsoft login",
+      "suitePath": [
+        "Unauthenticated home page"
+      ],
+      "fullTitle": "Unauthenticated home page › redirects protected routes through / then on to Microsoft login",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 769,
+      "retries": 0
+    },
+    {
+      "title": "renders the Welcome component for an authenticated user",
+      "suitePath": [
+        "Authenticated home / Welcome page"
+      ],
+      "fullTitle": "Authenticated home / Welcome page › renders the Welcome component for an authenticated user",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 549,
+      "retries": 0
+    },
+    {
+      "title": "shows the header link and authenticated welcome text",
+      "suitePath": [
+        "Authenticated home / Welcome page"
+      ],
+      "fullTitle": "Authenticated home / Welcome page › shows the header link and authenticated welcome text",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 563,
+      "retries": 0
+    },
+    {
+      "title": "renders the country dashboard shell and shows loading states",
+      "suitePath": [
+        "Region dashboard (/region-dashboard/se/)"
+      ],
+      "fullTitle": "Region dashboard (/region-dashboard/se/) › renders the country dashboard shell and shows loading states",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 593,
+      "retries": 0
+    },
+    {
+      "title": "renders HFB cards and graph sections after data loads",
+      "suitePath": [
+        "Region dashboard (/region-dashboard/se/)"
+      ],
+      "fullTitle": "Region dashboard (/region-dashboard/se/) › renders HFB cards and graph sections after data loads",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1447,
+      "retries": 0
+    },
+    {
+      "title": "HfbList shows Qty/Sales index SegmentedControl and switches metric",
+      "suitePath": [
+        "Region dashboard (/region-dashboard/se/)"
+      ],
+      "fullTitle": "Region dashboard (/region-dashboard/se/) › HfbList shows Qty/Sales index SegmentedControl and switches metric",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 623,
+      "retries": 0
+    },
+    {
+      "title": "clicking \"View HFB plan\" navigates to the HFB dashboard",
+      "suitePath": [
+        "Region dashboard (/region-dashboard/se/)"
+      ],
+      "fullTitle": "Region dashboard (/region-dashboard/se/) › clicking \"View HFB plan\" navigates to the HFB dashboard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1148,
+      "retries": 0
+    },
+    {
+      "title": "invalid region (>2 chars) shows the InvalidRegion component",
+      "suitePath": [
+        "Region dashboard (/region-dashboard/se/)"
+      ],
+      "fullTitle": "Region dashboard (/region-dashboard/se/) › invalid region (>2 chars) shows the InvalidRegion component",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 270,
+      "retries": 0
+    },
+    {
+      "title": "header \"Sales Planning\" link is visible on the region dashboard",
+      "suitePath": [
+        "Region dashboard (/region-dashboard/se/)"
+      ],
+      "fullTitle": "Region dashboard (/region-dashboard/se/) › header \"Sales Planning\" link is visible on the region dashboard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 225,
+      "retries": 0
+    },
+    {
+      "title": "renders the HFB title, breadcrumbs, and back button",
+      "suitePath": [
+        "HFB dashboard (/region-dashboard/se/hfb/01)"
+      ],
+      "fullTitle": "HFB dashboard (/region-dashboard/se/hfb/01) › renders the HFB title, breadcrumbs, and back button",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 322,
+      "retries": 0
+    },
+    {
+      "title": "back button navigates to the region dashboard",
+      "suitePath": [
+        "HFB dashboard (/region-dashboard/se/hfb/01)"
+      ],
+      "fullTitle": "HFB dashboard (/region-dashboard/se/hfb/01) › back button navigates to the region dashboard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 415,
+      "retries": 0
+    },
+    {
+      "title": "PA list shows loading state then loaded PA rows",
+      "suitePath": [
+        "HFB dashboard (/region-dashboard/se/hfb/01)"
+      ],
+      "fullTitle": "HFB dashboard (/region-dashboard/se/hfb/01) › PA list shows loading state then loaded PA rows",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1149,
+      "retries": 0
+    },
+    {
+      "title": "clicking a PA row navigates to the PA dashboard",
+      "suitePath": [
+        "HFB dashboard (/region-dashboard/se/hfb/01)"
+      ],
+      "fullTitle": "HFB dashboard (/region-dashboard/se/hfb/01) › clicking a PA row navigates to the PA dashboard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1121,
+      "retries": 0
+    },
+    {
+      "title": "renders HFB-level sales graphs (YTD sales index, Sales by week)",
+      "suitePath": [
+        "HFB dashboard (/region-dashboard/se/hfb/01)"
+      ],
+      "fullTitle": "HFB dashboard (/region-dashboard/se/hfb/01) › renders HFB-level sales graphs (YTD sales index, Sales by week)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1021,
+      "retries": 0
+    },
+    {
+      "title": "NewsInHfbList section renders with title and item list",
+      "suitePath": [
+        "HFB dashboard (/region-dashboard/se/hfb/01)"
+      ],
+      "fullTitle": "HFB dashboard (/region-dashboard/se/hfb/01) › NewsInHfbList section renders with title and item list",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 269,
+      "retries": 0
+    },
+    {
+      "title": "NewsInHfbList shows loading state while item range data is fetching",
+      "suitePath": [
+        "HFB dashboard (/region-dashboard/se/hfb/01)"
+      ],
+      "fullTitle": "HFB dashboard (/region-dashboard/se/hfb/01) › NewsInHfbList shows loading state while item range data is fetching",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 242,
+      "retries": 0
+    },
+    {
+      "title": "renders the PA title, full breadcrumb trail, and back button",
+      "suitePath": [
+        "PA dashboard (/region-dashboard/se/hfb/01/pa/001)"
+      ],
+      "fullTitle": "PA dashboard (/region-dashboard/se/hfb/01/pa/001) › renders the PA title, full breadcrumb trail, and back button",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 234,
+      "retries": 0
+    },
+    {
+      "title": "back button navigates to the HFB dashboard",
+      "suitePath": [
+        "PA dashboard (/region-dashboard/se/hfb/01/pa/001)"
+      ],
+      "fullTitle": "PA dashboard (/region-dashboard/se/hfb/01/pa/001) › back button navigates to the HFB dashboard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 303,
+      "retries": 0
+    },
+    {
+      "title": "renders PA-level sales graphs (no PA list)",
+      "suitePath": [
+        "PA dashboard (/region-dashboard/se/hfb/01/pa/001)"
+      ],
+      "fullTitle": "PA dashboard (/region-dashboard/se/hfb/01/pa/001) › renders PA-level sales graphs (no PA list)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1024,
+      "retries": 0
+    },
+    {
+      "title": "loads without crashing and renders the header",
+      "suitePath": [
+        "Signedout page (/signedout)"
+      ],
+      "fullTitle": "Signedout page (/signedout) › loads without crashing and renders the header",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 220,
+      "retries": 0
+    },
+    {
+      "title": "does not render error text",
+      "suitePath": [
+        "Signedout page (/signedout)"
+      ],
+      "fullTitle": "Signedout page (/signedout) › does not render error text",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 175,
+      "retries": 0
+    },
+    {
+      "title": "\"Sales Planning\" header link navigates home from the region dashboard",
+      "suitePath": [
+        "Header and breadcrumb navigation"
+      ],
+      "fullTitle": "Header and breadcrumb navigation › \"Sales Planning\" header link navigates home from the region dashboard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 269,
+      "retries": 0
+    },
+    {
+      "title": "HFB breadcrumb \"SE\" link navigates back to the region dashboard",
+      "suitePath": [
+        "Header and breadcrumb navigation"
+      ],
+      "fullTitle": "Header and breadcrumb navigation › HFB breadcrumb \"SE\" link navigates back to the region dashboard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 315,
+      "retries": 0
+    },
+    {
+      "title": "PA breadcrumb \"HFB 01\" link navigates back to the HFB dashboard",
+      "suitePath": [
+        "Header and breadcrumb navigation"
+      ],
+      "fullTitle": "Header and breadcrumb navigation › PA breadcrumb \"HFB 01\" link navigates back to the HFB dashboard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 270,
+      "retries": 0
+    },
+    {
+      "title": "clicking the HFB 01 card navigates to the HFB 01 page",
+      "suitePath": [
+        "Navigation path specificity",
+        "HFB card → HFB page (click-based)"
+      ],
+      "fullTitle": "Navigation path specificity › HFB card → HFB page (click-based) › clicking the HFB 01 card navigates to the HFB 01 page",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1072,
+      "retries": 0
+    },
+    {
+      "title": "clicking the HFB 02 card navigates to the HFB 02 page",
+      "suitePath": [
+        "Navigation path specificity",
+        "HFB card → HFB page (click-based)"
+      ],
+      "fullTitle": "Navigation path specificity › HFB card → HFB page (click-based) › clicking the HFB 02 card navigates to the HFB 02 page",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1159,
+      "retries": 0
+    },
+    {
+      "title": "clicking the HFB 05 card navigates to the HFB 05 page",
+      "suitePath": [
+        "Navigation path specificity",
+        "HFB card → HFB page (click-based)"
+      ],
+      "fullTitle": "Navigation path specificity › HFB card → HFB page (click-based) › clicking the HFB 05 card navigates to the HFB 05 page",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1105,
+      "retries": 0
+    },
+    {
+      "title": "clicking the HFB 10 card navigates to the HFB 10 page",
+      "suitePath": [
+        "Navigation path specificity",
+        "HFB card → HFB page (click-based)"
+      ],
+      "fullTitle": "Navigation path specificity › HFB card → HFB page (click-based) › clicking the HFB 10 card navigates to the HFB 10 page",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1079,
+      "retries": 0
+    },
+    {
+      "title": "each HFB card leads to its own independent page (01 and 02 show different h1s)",
+      "suitePath": [
+        "Navigation path specificity",
+        "HFB card → HFB page (click-based)"
+      ],
+      "fullTitle": "Navigation path specificity › HFB card → HFB page (click-based) › each HFB card leads to its own independent page (01 and 02 show different h1s)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1149,
+      "retries": 0
+    },
+    {
+      "title": "clicking PA 001 (Sofas) navigates to the PA 001 page",
+      "suitePath": [
+        "Navigation path specificity",
+        "HFB page → PA page (click-based)"
+      ],
+      "fullTitle": "Navigation path specificity › HFB page → PA page (click-based) › clicking PA 001 (Sofas) navigates to the PA 001 page",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1086,
+      "retries": 0
+    },
+    {
+      "title": "clicking PA 002 (Armchairs) navigates to the PA 002 page",
+      "suitePath": [
+        "Navigation path specificity",
+        "HFB page → PA page (click-based)"
+      ],
+      "fullTitle": "Navigation path specificity › HFB page → PA page (click-based) › clicking PA 002 (Armchairs) navigates to the PA 002 page",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1047,
+      "retries": 0
+    },
+    {
+      "title": "PA 001 and PA 002 are independently navigable and show different pages",
+      "suitePath": [
+        "Navigation path specificity",
+        "HFB page → PA page (click-based)"
+      ],
+      "fullTitle": "Navigation path specificity › HFB page → PA page (click-based) › PA 001 and PA 002 are independently navigable and show different pages",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1158,
+      "retries": 0
+    },
+    {
+      "title": "PA 001 breadcrumb shows HFB 01, PA 002 breadcrumb also shows HFB 01",
+      "suitePath": [
+        "Navigation path specificity",
+        "HFB page → PA page (click-based)"
+      ],
+      "fullTitle": "Navigation path specificity › HFB page → PA page (click-based) › PA 001 breadcrumb shows HFB 01, PA 002 breadcrumb also shows HFB 01",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1196,
+      "retries": 0
+    },
+    {
+      "title": "direct URL /hfb/01 renders HFB 01 with correct title and breadcrumb",
+      "suitePath": [
+        "Navigation path specificity",
+        "Direct URL navigation (specific IDs)"
+      ],
+      "fullTitle": "Navigation path specificity › Direct URL navigation (specific IDs) › direct URL /hfb/01 renders HFB 01 with correct title and breadcrumb",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 264,
+      "retries": 0
+    },
+    {
+      "title": "direct URL /hfb/02 renders HFB 02 with correct title and breadcrumb",
+      "suitePath": [
+        "Navigation path specificity",
+        "Direct URL navigation (specific IDs)"
+      ],
+      "fullTitle": "Navigation path specificity › Direct URL navigation (specific IDs) › direct URL /hfb/02 renders HFB 02 with correct title and breadcrumb",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 216,
+      "retries": 0
+    },
+    {
+      "title": "direct URL /hfb/05 renders HFB 05 — not HFB 01 or HFB 02",
+      "suitePath": [
+        "Navigation path specificity",
+        "Direct URL navigation (specific IDs)"
+      ],
+      "fullTitle": "Navigation path specificity › Direct URL navigation (specific IDs) › direct URL /hfb/05 renders HFB 05 — not HFB 01 or HFB 02",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 265,
+      "retries": 0
+    },
+    {
+      "title": "direct URL /hfb/01/pa/001 renders PA 001 under HFB 01",
+      "suitePath": [
+        "Navigation path specificity",
+        "Direct URL navigation (specific IDs)"
+      ],
+      "fullTitle": "Navigation path specificity › Direct URL navigation (specific IDs) › direct URL /hfb/01/pa/001 renders PA 001 under HFB 01",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 247,
+      "retries": 0
+    },
+    {
+      "title": "direct URL /hfb/01/pa/002 renders PA 002 — not PA 001",
+      "suitePath": [
+        "Navigation path specificity",
+        "Direct URL navigation (specific IDs)"
+      ],
+      "fullTitle": "Navigation path specificity › Direct URL navigation (specific IDs) › direct URL /hfb/01/pa/002 renders PA 002 — not PA 001",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 261,
+      "retries": 0
+    },
+    {
+      "title": "direct URL /hfb/02/pa/001 renders PA 001 under HFB 02 (different parent breadcrumb)",
+      "suitePath": [
+        "Navigation path specificity",
+        "Direct URL navigation (specific IDs)"
+      ],
+      "fullTitle": "Navigation path specificity › Direct URL navigation (specific IDs) › direct URL /hfb/02/pa/001 renders PA 001 under HFB 02 (different parent breadcrumb)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 217,
+      "retries": 0
+    },
+    {
+      "title": "Region → HFB 01 (click) → back → HFB 02 (click) → back → Region",
+      "suitePath": [
+        "Navigation path specificity",
+        "Multi-hop journeys"
+      ],
+      "fullTitle": "Navigation path specificity › Multi-hop journeys › Region → HFB 01 (click) → back → HFB 02 (click) → back → Region",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1265,
+      "retries": 0
+    },
+    {
+      "title": "Region → HFB 01 (click) → PA 001 (click) → back to HFB 01 → PA 002 (click)",
+      "suitePath": [
+        "Navigation path specificity",
+        "Multi-hop journeys"
+      ],
+      "fullTitle": "Navigation path specificity › Multi-hop journeys › Region → HFB 01 (click) → PA 001 (click) → back to HFB 01 → PA 002 (click)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1484,
+      "retries": 0
+    },
+    {
+      "title": "Full breadcrumb round-trip: Region → HFB 01 → PA 001 → breadcrumb HFB 01 → breadcrumb SE → Region",
+      "suitePath": [
+        "Navigation path specificity",
+        "Multi-hop journeys"
+      ],
+      "fullTitle": "Navigation path specificity › Multi-hop journeys › Full breadcrumb round-trip: Region → HFB 01 → PA 001 → breadcrumb HFB 01 → breadcrumb SE → Region",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 338,
+      "retries": 0
+    },
+    {
+      "title": "Each HFB page shows only its own data in the SalesIndexTrend title",
+      "suitePath": [
+        "Navigation path specificity",
+        "Multi-hop journeys"
+      ],
+      "fullTitle": "Navigation path specificity › Multi-hop journeys › Each HFB page shows only its own data in the SalesIndexTrend title",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 350,
+      "retries": 0
+    },
+    {
+      "title": "Each PA page shows only its own data in the SalesIndexTrend title",
+      "suitePath": [
+        "Navigation path specificity",
+        "Multi-hop journeys"
+      ],
+      "fullTitle": "Navigation path specificity › Multi-hop journeys › Each PA page shows only its own data in the SalesIndexTrend title",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 307,
+      "retries": 0
+    },
+    {
+      "title": "HfbList shows error message when HFB performance data fails",
+      "suitePath": [
+        "Error states"
+      ],
+      "fullTitle": "Error states › HfbList shows error message when HFB performance data fails",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 8593,
+      "retries": 0
+    },
+    {
+      "title": "PA list shows error message when PA performance data fails",
+      "suitePath": [
+        "Error states"
+      ],
+      "fullTitle": "Error states › PA list shows error message when PA performance data fails",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 8647,
+      "retries": 0
+    },
+    {
+      "title": "SalesByWeek shows error message when metrics API returns 500",
+      "suitePath": [
+        "Error states"
+      ],
+      "fullTitle": "Error states › SalesByWeek shows error message when metrics API returns 500",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 7559,
+      "retries": 0
+    },
+    {
+      "title": "loads without crashing (MSAL redirect callback page)",
+      "suitePath": [
+        "/accept_login route (MSAL redirect callback)"
+      ],
+      "fullTitle": "/accept_login route (MSAL redirect callback) › loads without crashing (MSAL redirect callback page)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 163,
+      "retries": 0
+    },
+    {
+      "title": "renders the user avatar button in the header",
+      "suitePath": [
+        "User component (header avatar & flyout modal)"
+      ],
+      "fullTitle": "User component (header avatar & flyout modal) › renders the user avatar button in the header",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 214,
+      "retries": 0
+    },
+    {
+      "title": "opens the flyout modal showing the user display name, job title and country",
+      "suitePath": [
+        "User component (header avatar & flyout modal)"
+      ],
+      "fullTitle": "User component (header avatar & flyout modal) › opens the flyout modal showing the user display name, job title and country",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 340,
+      "retries": 0
+    },
+    {
+      "title": "closes the flyout when Escape is pressed",
+      "suitePath": [
+        "User component (header avatar & flyout modal)"
+      ],
+      "fullTitle": "User component (header avatar & flyout modal) › closes the flyout when Escape is pressed",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 526,
+      "retries": 0
+    },
+    {
+      "title": "\"Sign out\" button is present in the modal and triggers sign-out navigation",
+      "suitePath": [
+        "User component (header avatar & flyout modal)"
+      ],
+      "fullTitle": "User component (header avatar & flyout modal) › \"Sign out\" button is present in the modal and triggers sign-out navigation",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 600,
+      "retries": 0
+    },
+    {
+      "title": "renders the current IKEA week number in the NavigationBar",
+      "suitePath": [
+        "IkeaCurrentWeek component"
+      ],
+      "fullTitle": "IkeaCurrentWeek component › renders the current IKEA week number in the NavigationBar",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 211,
+      "retries": 0
+    },
+    {
+      "title": "IKEA week is also visible on the HFB dashboard NavigationBar",
+      "suitePath": [
+        "IkeaCurrentWeek component"
+      ],
+      "fullTitle": "IkeaCurrentWeek component › IKEA week is also visible on the HFB dashboard NavigationBar",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 214,
+      "retries": 0
+    },
+    {
+      "title": "IKEA week is also visible on the PA dashboard NavigationBar",
+      "suitePath": [
+        "IkeaCurrentWeek component"
+      ],
+      "fullTitle": "IkeaCurrentWeek component › IKEA week is also visible on the PA dashboard NavigationBar",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 190,
+      "retries": 0
+    },
+    {
+      "title": "renders on the region dashboard with the country-level title",
+      "suitePath": [
+        "SalesIndexTrend chart"
+      ],
+      "fullTitle": "SalesIndexTrend chart › renders on the region dashboard with the country-level title",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 202,
+      "retries": 0
+    },
+    {
+      "title": "renders on the HFB dashboard with the HFB-scoped title",
+      "suitePath": [
+        "SalesIndexTrend chart"
+      ],
+      "fullTitle": "SalesIndexTrend chart › renders on the HFB dashboard with the HFB-scoped title",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 214,
+      "retries": 0
+    },
+    {
+      "title": "renders on the PA dashboard with the PA-scoped title",
+      "suitePath": [
+        "SalesIndexTrend chart"
+      ],
+      "fullTitle": "SalesIndexTrend chart › renders on the PA dashboard with the PA-scoped title",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 200,
+      "retries": 0
+    },
+    {
+      "title": "shows loading state while trend data is fetching",
+      "suitePath": [
+        "SalesIndexTrend chart"
+      ],
+      "fullTitle": "SalesIndexTrend chart › shows loading state while trend data is fetching",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 239,
+      "retries": 0
+    },
+    {
+      "title": "shows error message when the metrics API returns 500",
+      "suitePath": [
+        "SalesIndexTrend chart"
+      ],
+      "fullTitle": "SalesIndexTrend chart › shows error message when the metrics API returns 500",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 7536,
+      "retries": 0
+    },
+    {
+      "title": "defaults to Sales and shows all four metric options",
+      "suitePath": [
+        "SalesByWeek SegmentControl (metric type switching)"
+      ],
+      "fullTitle": "SalesByWeek SegmentControl (metric type switching) › defaults to Sales and shows all four metric options",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 204,
+      "retries": 0
+    },
+    {
+      "title": "switches to Qty metric",
+      "suitePath": [
+        "SalesByWeek SegmentControl (metric type switching)"
+      ],
+      "fullTitle": "SalesByWeek SegmentControl (metric type switching) › switches to Qty metric",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 237,
+      "retries": 0
+    },
+    {
+      "title": "switches to Sales index metric",
+      "suitePath": [
+        "SalesByWeek SegmentControl (metric type switching)"
+      ],
+      "fullTitle": "SalesByWeek SegmentControl (metric type switching) › switches to Sales index metric",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 290,
+      "retries": 0
+    },
+    {
+      "title": "switches to Qty index metric",
+      "suitePath": [
+        "SalesByWeek SegmentControl (metric type switching)"
+      ],
+      "fullTitle": "SalesByWeek SegmentControl (metric type switching) › switches to Qty index metric",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 220,
+      "retries": 0
+    },
+    {
+      "title": "defaults to Qty index and shows all four metric options",
+      "suitePath": [
+        "ProductAreaSummaryList SegmentControl (metric type switching)"
+      ],
+      "fullTitle": "ProductAreaSummaryList SegmentControl (metric type switching) › defaults to Qty index and shows all four metric options",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 250,
+      "retries": 0
+    },
+    {
+      "title": "switches to Sales index metric and PA rows remain visible",
+      "suitePath": [
+        "ProductAreaSummaryList SegmentControl (metric type switching)"
+      ],
+      "fullTitle": "ProductAreaSummaryList SegmentControl (metric type switching) › switches to Sales index metric and PA rows remain visible",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 514,
+      "retries": 0
+    },
+    {
+      "title": "switches to Qty metric",
+      "suitePath": [
+        "ProductAreaSummaryList SegmentControl (metric type switching)"
+      ],
+      "fullTitle": "ProductAreaSummaryList SegmentControl (metric type switching) › switches to Qty metric",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 231,
+      "retries": 0
+    },
+    {
+      "title": "switches to Sales metric",
+      "suitePath": [
+        "ProductAreaSummaryList SegmentControl (metric type switching)"
+      ],
+      "fullTitle": "ProductAreaSummaryList SegmentControl (metric type switching) › switches to Sales metric",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 300,
+      "retries": 0
+    },
+    {
+      "title": "renders the section heading and item rows after data loads",
+      "suitePath": [
+        "NewsInHfbList component (HFB dashboard)"
+      ],
+      "fullTitle": "NewsInHfbList component (HFB dashboard) › renders the section heading and item rows after data loads",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 255,
+      "retries": 0
+    },
+    {
+      "title": "shows all four SegmentControl metric options and defaults to Qty index",
+      "suitePath": [
+        "NewsInHfbList component (HFB dashboard)"
+      ],
+      "fullTitle": "NewsInHfbList component (HFB dashboard) › shows all four SegmentControl metric options and defaults to Qty index",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 233,
+      "retries": 0
+    },
+    {
+      "title": "switches metric type via SegmentControl and list remains visible",
+      "suitePath": [
+        "NewsInHfbList component (HFB dashboard)"
+      ],
+      "fullTitle": "NewsInHfbList component (HFB dashboard) › switches metric type via SegmentControl and list remains visible",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 272,
+      "retries": 0
+    },
+    {
+      "title": "shows error message when item range data fails",
+      "suitePath": [
+        "NewsInHfbList component (HFB dashboard)"
+      ],
+      "fullTitle": "NewsInHfbList component (HFB dashboard) › shows error message when item range data fails",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 7662,
+      "retries": 0
+    },
+    {
+      "title": "HfbList shows empty state when no HFBs are returned",
+      "suitePath": [
+        "Empty states"
+      ],
+      "fullTitle": "Empty states › HfbList shows empty state when no HFBs are returned",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 263,
+      "retries": 0
+    },
+    {
+      "title": "ProductAreaSummaryList shows empty state when no PAs are returned",
+      "suitePath": [
+        "Empty states"
+      ],
+      "fullTitle": "Empty states › ProductAreaSummaryList shows empty state when no PAs are returned",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 283,
+      "retries": 0
+    },
+    {
+      "title": "HFB list section subtitle reads \"By gap to goal (worst first)\"",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-637 — HFB list page"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-637 — HFB list page › HFB list section subtitle reads \"By gap to goal (worst first)\"",
+      "jiraTickets": [
+        "SSPLAN-637"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 993,
+      "retries": 0
+    },
+    {
+      "title": "HFB list renders all 16 HFBs as clickable cards",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-637 — HFB list page"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-637 — HFB list page › HFB list renders all 16 HFBs as clickable cards",
+      "jiraTickets": [
+        "SSPLAN-637"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 962,
+      "retries": 0
+    },
+    {
+      "title": "HFB list heading reads \"HFB performance\"",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-637 — HFB list page"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-637 — HFB list page › HFB list heading reads \"HFB performance\"",
+      "jiraTickets": [
+        "SSPLAN-637"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 971,
+      "retries": 0
+    },
+    {
+      "title": "NavigationBar shows \"Welcome {givenName}\" at country level",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-628 — Personalized greeting"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-628 — Personalized greeting › NavigationBar shows \"Welcome {givenName}\" at country level",
+      "jiraTickets": [
+        "SSPLAN-628"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 257,
+      "retries": 0
+    },
+    {
+      "title": "Greeting is replaced by breadcrumbs (not welcome text) on HFB level",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-628 — Personalized greeting"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-628 — Personalized greeting › Greeting is replaced by breadcrumbs (not welcome text) on HFB level",
+      "jiraTickets": [
+        "SSPLAN-628"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 195,
+      "retries": 0
+    },
+    {
+      "title": "Greeting is replaced by breadcrumbs (not welcome text) on PA level",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-628 — Personalized greeting"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-628 — Personalized greeting › Greeting is replaced by breadcrumbs (not welcome text) on PA level",
+      "jiraTickets": [
+        "SSPLAN-628"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 184,
+      "retries": 0
+    },
+    {
+      "title": "SegmentControl with all 4 options appears in SalesByWeek on the country dashboard",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-691 — Segmented Control on all levels"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-691 — Segmented Control on all levels › SegmentControl with all 4 options appears in SalesByWeek on the country dashboard",
+      "jiraTickets": [
+        "SSPLAN-691"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 199,
+      "retries": 0
+    },
+    {
+      "title": "SegmentControl with all 4 options appears in SalesByWeek on the HFB dashboard",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-691 — Segmented Control on all levels"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-691 — Segmented Control on all levels › SegmentControl with all 4 options appears in SalesByWeek on the HFB dashboard",
+      "jiraTickets": [
+        "SSPLAN-691"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 194,
+      "retries": 0
+    },
+    {
+      "title": "SegmentControl with all 4 options appears in SalesByWeek on the PA dashboard",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-691 — Segmented Control on all levels"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-691 — Segmented Control on all levels › SegmentControl with all 4 options appears in SalesByWeek on the PA dashboard",
+      "jiraTickets": [
+        "SSPLAN-691"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 188,
+      "retries": 0
+    },
+    {
+      "title": "Selecting each metric option highlights only that button (aria-pressed=true)",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-691 — Segmented Control on all levels"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-691 — Segmented Control on all levels › Selecting each metric option highlights only that button (aria-pressed=true)",
+      "jiraTickets": [
+        "SSPLAN-691"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 402,
+      "retries": 0
+    },
+    {
+      "title": "\"last year sales\" legend item is always visible in all metric modes",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-623 — SalesByWeek legend conditional rendering"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-623 — SalesByWeek legend conditional rendering › \"last year sales\" legend item is always visible in all metric modes",
+      "jiraTickets": [
+        "SSPLAN-623"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 652,
+      "retries": 0
+    },
+    {
+      "title": "\"latest forecast\" legend item is always visible in all metric modes",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-623 — SalesByWeek legend conditional rendering"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-623 — SalesByWeek legend conditional rendering › \"latest forecast\" legend item is always visible in all metric modes",
+      "jiraTickets": [
+        "SSPLAN-623"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 625,
+      "retries": 0
+    },
+    {
+      "title": "\"actual sales\" legend shows in Sales mode (Pieces)",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-623 — SalesByWeek legend conditional rendering"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-623 — SalesByWeek legend conditional rendering › \"actual sales\" legend shows in Sales mode (Pieces)",
+      "jiraTickets": [
+        "SSPLAN-623"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 552,
+      "retries": 0
+    },
+    {
+      "title": "\"actual sales\" legend shows in Qty mode (Pieces)",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-623 — SalesByWeek legend conditional rendering"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-623 — SalesByWeek legend conditional rendering › \"actual sales\" legend shows in Qty mode (Pieces)",
+      "jiraTickets": [
+        "SSPLAN-623"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 581,
+      "retries": 0
+    },
+    {
+      "title": "\"actual sales\" legend is HIDDEN in Sales index mode (not a Pieces view)",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-623 — SalesByWeek legend conditional rendering"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-623 — SalesByWeek legend conditional rendering › \"actual sales\" legend is HIDDEN in Sales index mode (not a Pieces view)",
+      "jiraTickets": [
+        "SSPLAN-623"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 258,
+      "retries": 0
+    },
+    {
+      "title": "\"actual sales\" legend is HIDDEN in Qty index mode (not a Pieces view)",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-623 — SalesByWeek legend conditional rendering"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-623 — SalesByWeek legend conditional rendering › \"actual sales\" legend is HIDDEN in Qty index mode (not a Pieces view)",
+      "jiraTickets": [
+        "SSPLAN-623"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 229,
+      "retries": 0
+    },
+    {
+      "title": "\"actual sales\" hidden in Sales index mode on HFB page",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-646 — SalesByWeek legend behaviour at HFB and PA level"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-646 — SalesByWeek legend behaviour at HFB and PA level › \"actual sales\" hidden in Sales index mode on HFB page",
+      "jiraTickets": [
+        "SSPLAN-646"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 262,
+      "retries": 0
+    },
+    {
+      "title": "\"actual sales\" hidden in Qty index mode on HFB page",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-646 — SalesByWeek legend behaviour at HFB and PA level"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-646 — SalesByWeek legend behaviour at HFB and PA level › \"actual sales\" hidden in Qty index mode on HFB page",
+      "jiraTickets": [
+        "SSPLAN-646"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 237,
+      "retries": 0
+    },
+    {
+      "title": "\"actual sales\" visible in Sales (Pieces) mode on HFB page",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-646 — SalesByWeek legend behaviour at HFB and PA level"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-646 — SalesByWeek legend behaviour at HFB and PA level › \"actual sales\" visible in Sales (Pieces) mode on HFB page",
+      "jiraTickets": [
+        "SSPLAN-646"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 540,
+      "retries": 0
+    },
+    {
+      "title": "\"actual sales\" hidden in Sales index mode on PA page",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-646 — SalesByWeek legend behaviour at HFB and PA level"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-646 — SalesByWeek legend behaviour at HFB and PA level › \"actual sales\" hidden in Sales index mode on PA page",
+      "jiraTickets": [
+        "SSPLAN-646"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 224,
+      "retries": 0
+    },
+    {
+      "title": "\"actual sales\" visible in Qty (Pieces) mode on PA page",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-646 — SalesByWeek legend behaviour at HFB and PA level"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-646 — SalesByWeek legend behaviour at HFB and PA level › \"actual sales\" visible in Qty (Pieces) mode on PA page",
+      "jiraTickets": [
+        "SSPLAN-646"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 581,
+      "retries": 0
+    },
+    {
+      "title": "SalesByWeek chart renders and tooltip appears on hover over a data bar",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-736 — Chart tooltips"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-736 — Chart tooltips › SalesByWeek chart renders and tooltip appears on hover over a data bar",
+      "jiraTickets": [
+        "SSPLAN-736"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 617,
+      "retries": 0
+    },
+    {
+      "title": "SalesIndexTrend chart renders its SVG on the region dashboard",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-736 — Chart tooltips"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-736 — Chart tooltips › SalesIndexTrend chart renders its SVG on the region dashboard",
+      "jiraTickets": [
+        "SSPLAN-736"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 486,
+      "retries": 0
+    },
+    {
+      "title": "Country dashboard KpiSummaryCard shows \"FY26 sales index\" title",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-701 & SSPLAN-692 — KpiSummaryCard metric labels"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-701 & SSPLAN-692 — KpiSummaryCard metric labels › Country dashboard KpiSummaryCard shows \"FY26 sales index\" title",
+      "jiraTickets": [
+        "SSPLAN-701",
+        "SSPLAN-692"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1004,
+      "retries": 0
+    },
+    {
+      "title": "HFB dashboard KpiSummaryCard shows \"YTD sales index\" title",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-701 & SSPLAN-692 — KpiSummaryCard metric labels"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-701 & SSPLAN-692 — KpiSummaryCard metric labels › HFB dashboard KpiSummaryCard shows \"YTD sales index\" title",
+      "jiraTickets": [
+        "SSPLAN-701",
+        "SSPLAN-692"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 495,
+      "retries": 0
+    },
+    {
+      "title": "PA dashboard KpiSummaryCard shows \"YTD sales index\" title",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-701 & SSPLAN-692 — KpiSummaryCard metric labels"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-701 & SSPLAN-692 — KpiSummaryCard metric labels › PA dashboard KpiSummaryCard shows \"YTD sales index\" title",
+      "jiraTickets": [
+        "SSPLAN-701",
+        "SSPLAN-692"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1021,
+      "retries": 0
+    },
+    {
+      "title": "KpiSummaryCard shows all four metric row cell labels on the country dashboard",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-701 & SSPLAN-692 — KpiSummaryCard metric labels"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-701 & SSPLAN-692 — KpiSummaryCard metric labels › KpiSummaryCard shows all four metric row cell labels on the country dashboard",
+      "jiraTickets": [
+        "SSPLAN-701",
+        "SSPLAN-692"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1023,
+      "retries": 0
+    },
+    {
+      "title": "KpiSummaryCard shows all four metric row cell labels on the HFB dashboard",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-701 & SSPLAN-692 — KpiSummaryCard metric labels"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-701 & SSPLAN-692 — KpiSummaryCard metric labels › KpiSummaryCard shows all four metric row cell labels on the HFB dashboard",
+      "jiraTickets": [
+        "SSPLAN-701",
+        "SSPLAN-692"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 552,
+      "retries": 0
+    },
+    {
+      "title": "Each HFB card in the HFB list shows its own KpiSummaryCard title",
+      "suitePath": [
+        "Acceptance criteria from Jira stories",
+        "SSPLAN-701 & SSPLAN-692 — KpiSummaryCard metric labels"
+      ],
+      "fullTitle": "Acceptance criteria from Jira stories › SSPLAN-701 & SSPLAN-692 — KpiSummaryCard metric labels › Each HFB card in the HFB list shows its own KpiSummaryCard title",
+      "jiraTickets": [
+        "SSPLAN-701",
+        "SSPLAN-692"
+      ],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 989,
+      "retries": 0
+    },
+    {
+      "title": "renders SE country dashboard with h1 = SE Sales",
+      "suitePath": [
+        "Multi-region coverage",
+        "SE region (/region-dashboard/se/)"
+      ],
+      "fullTitle": "Multi-region coverage › SE region (/region-dashboard/se/) › renders SE country dashboard with h1 = SE Sales",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 208,
+      "retries": 0
+    },
+    {
+      "title": "SE HFB dashboard shows SE in breadcrumb",
+      "suitePath": [
+        "Multi-region coverage",
+        "SE region (/region-dashboard/se/)"
+      ],
+      "fullTitle": "Multi-region coverage › SE region (/region-dashboard/se/) › SE HFB dashboard shows SE in breadcrumb",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 206,
+      "retries": 0
+    },
+    {
+      "title": "renders US country dashboard with h1 = US Sales",
+      "suitePath": [
+        "Multi-region coverage",
+        "US region (/region-dashboard/us/)"
+      ],
+      "fullTitle": "Multi-region coverage › US region (/region-dashboard/us/) › renders US country dashboard with h1 = US Sales",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 204,
+      "retries": 0
+    },
+    {
+      "title": "US HFB list renders 16 cards just like SE",
+      "suitePath": [
+        "Multi-region coverage",
+        "US region (/region-dashboard/us/)"
+      ],
+      "fullTitle": "Multi-region coverage › US region (/region-dashboard/us/) › US HFB list renders 16 cards just like SE",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 989,
+      "retries": 0
+    },
+    {
+      "title": "navigating to US HFB 01 shows HFB 01 with US in breadcrumb",
+      "suitePath": [
+        "Multi-region coverage",
+        "US region (/region-dashboard/us/)"
+      ],
+      "fullTitle": "Multi-region coverage › US region (/region-dashboard/us/) › navigating to US HFB 01 shows HFB 01 with US in breadcrumb",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 248,
+      "retries": 0
+    },
+    {
+      "title": "navigating to US HFB 01 PA 001 shows PA 001 with US and HFB 01 in breadcrumb",
+      "suitePath": [
+        "Multi-region coverage",
+        "US region (/region-dashboard/us/)"
+      ],
+      "fullTitle": "Multi-region coverage › US region (/region-dashboard/us/) › navigating to US HFB 01 PA 001 shows PA 001 with US and HFB 01 in breadcrumb",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 219,
+      "retries": 0
+    },
+    {
+      "title": "US and SE dashboards are independent — h1 differs between the two",
+      "suitePath": [
+        "Multi-region coverage",
+        "US region (/region-dashboard/us/)"
+      ],
+      "fullTitle": "Multi-region coverage › US region (/region-dashboard/us/) › US and SE dashboards are independent — h1 differs between the two",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 309,
+      "retries": 0
+    },
+    {
+      "title": "renders XX country dashboard with h1 = XX Sales (route accepts any 2-char code)",
+      "suitePath": [
+        "Multi-region coverage",
+        "XX — nonexistent region (valid 2-char code, no real data)"
+      ],
+      "fullTitle": "Multi-region coverage › XX — nonexistent region (valid 2-char code, no real data) › renders XX country dashboard with h1 = XX Sales (route accepts any 2-char code)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 203,
+      "retries": 0
+    },
+    {
+      "title": "XX HFB list renders the same mock HFB data (mock is not region-gated)",
+      "suitePath": [
+        "Multi-region coverage",
+        "XX — nonexistent region (valid 2-char code, no real data)"
+      ],
+      "fullTitle": "Multi-region coverage › XX — nonexistent region (valid 2-char code, no real data) › XX HFB list renders the same mock HFB data (mock is not region-gated)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 992,
+      "retries": 0
+    },
+    {
+      "title": "XX HFB 01 renders correctly with XX in breadcrumb",
+      "suitePath": [
+        "Multi-region coverage",
+        "XX — nonexistent region (valid 2-char code, no real data)"
+      ],
+      "fullTitle": "Multi-region coverage › XX — nonexistent region (valid 2-char code, no real data) › XX HFB 01 renders correctly with XX in breadcrumb",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 206,
+      "retries": 0
+    },
+    {
+      "title": "navigating from XX dashboard to HFB and back shows XX throughout",
+      "suitePath": [
+        "Multi-region coverage",
+        "XX — nonexistent region (valid 2-char code, no real data)"
+      ],
+      "fullTitle": "Multi-region coverage › XX — nonexistent region (valid 2-char code, no real data) › navigating from XX dashboard to HFB and back shows XX throughout",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1171,
+      "retries": 0
+    },
+    {
+      "title": "/region-dashboard/SE/ (uppercase) normalises to lowercase and renders SE Sales",
+      "suitePath": [
+        "Multi-region coverage",
+        "Region URL case-insensitivity"
+      ],
+      "fullTitle": "Multi-region coverage › Region URL case-insensitivity › /region-dashboard/SE/ (uppercase) normalises to lowercase and renders SE Sales",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 205,
+      "retries": 0
+    },
+    {
+      "title": "/region-dashboard/US/ (uppercase) normalises to lowercase and renders US Sales",
+      "suitePath": [
+        "Multi-region coverage",
+        "Region URL case-insensitivity"
+      ],
+      "fullTitle": "Multi-region coverage › Region URL case-insensitivity › /region-dashboard/US/ (uppercase) normalises to lowercase and renders US Sales",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 192,
+      "retries": 0
+    },
+    {
+      "title": "authenticated region dashboard has title \"Sales planning tool\"",
+      "suitePath": [
+        "Edge cases",
+        "Page <title>"
+      ],
+      "fullTitle": "Edge cases › Page <title> › authenticated region dashboard has title \"Sales planning tool\"",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 149,
+      "retries": 0
+    },
+    {
+      "title": "authenticated HFB dashboard has title \"Sales planning tool\"",
+      "suitePath": [
+        "Edge cases",
+        "Page <title>"
+      ],
+      "fullTitle": "Edge cases › Page <title> › authenticated HFB dashboard has title \"Sales planning tool\"",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 151,
+      "retries": 0
+    },
+    {
+      "title": "authenticated PA dashboard has title \"Sales planning tool\"",
+      "suitePath": [
+        "Edge cases",
+        "Page <title>"
+      ],
+      "fullTitle": "Edge cases › Page <title> › authenticated PA dashboard has title \"Sales planning tool\"",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 173,
+      "retries": 0
+    },
+    {
+      "title": "unknown URL /unknown-page redirects away (catch-all $ route calls redirect to /)",
+      "suitePath": [
+        "Edge cases",
+        "Unknown / catch-all route"
+      ],
+      "fullTitle": "Edge cases › Unknown / catch-all route › unknown URL /unknown-page redirects away (catch-all $ route calls redirect to /)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 157,
+      "retries": 0
+    },
+    {
+      "title": "deeply nested unknown URL /some/unknown/path also redirects away",
+      "suitePath": [
+        "Edge cases",
+        "Unknown / catch-all route"
+      ],
+      "fullTitle": "Edge cases › Unknown / catch-all route › deeply nested unknown URL /some/unknown/path also redirects away",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 134,
+      "retries": 0
+    },
+    {
+      "title": "\"· Forecast G\" visible on country (SE) dashboard",
+      "suitePath": [
+        "Edge cases",
+        "\"· Forecast G\" appears on all dashboard levels"
+      ],
+      "fullTitle": "Edge cases › \"· Forecast G\" appears on all dashboard levels › \"· Forecast G\" visible on country (SE) dashboard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 216,
+      "retries": 0
+    },
+    {
+      "title": "\"· Forecast G\" visible on HFB dashboard",
+      "suitePath": [
+        "Edge cases",
+        "\"· Forecast G\" appears on all dashboard levels"
+      ],
+      "fullTitle": "Edge cases › \"· Forecast G\" appears on all dashboard levels › \"· Forecast G\" visible on HFB dashboard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 251,
+      "retries": 0
+    },
+    {
+      "title": "\"· Forecast G\" visible on PA dashboard",
+      "suitePath": [
+        "Edge cases",
+        "\"· Forecast G\" appears on all dashboard levels"
+      ],
+      "fullTitle": "Edge cases › \"· Forecast G\" appears on all dashboard levels › \"· Forecast G\" visible on PA dashboard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 221,
+      "retries": 0
+    },
+    {
+      "title": "KpiSummaryCard shows \"Gap to close:\" label with formatted quantity and sales gap",
+      "suitePath": [
+        "Edge cases",
+        "GapToClose component"
+      ],
+      "fullTitle": "Edge cases › GapToClose component › KpiSummaryCard shows \"Gap to close:\" label with formatted quantity and sales gap",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1015,
+      "retries": 0
+    },
+    {
+      "title": "\"Gap to close:\" visible on HFB dashboard KpiSummaryCard",
+      "suitePath": [
+        "Edge cases",
+        "GapToClose component"
+      ],
+      "fullTitle": "Edge cases › GapToClose component › \"Gap to close:\" visible on HFB dashboard KpiSummaryCard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1064,
+      "retries": 0
+    },
+    {
+      "title": "\"Gap to close:\" visible on PA dashboard KpiSummaryCard",
+      "suitePath": [
+        "Edge cases",
+        "GapToClose component"
+      ],
+      "fullTitle": "Edge cases › GapToClose component › \"Gap to close:\" visible on PA dashboard KpiSummaryCard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 533,
+      "retries": 0
+    },
+    {
+      "title": "PaFamilyListRow shows \"Gap:\" label (GapToClose small variant) for each PA row",
+      "suitePath": [
+        "Edge cases",
+        "GapToClose component"
+      ],
+      "fullTitle": "Edge cases › GapToClose component › PaFamilyListRow shows \"Gap:\" label (GapToClose small variant) for each PA row",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 998,
+      "retries": 0
+    },
+    {
+      "title": "\"Gap to close:\" is NOT shown when quantityGap >= 0 (large variant hides when goal met)",
+      "suitePath": [
+        "Edge cases",
+        "GapToClose component"
+      ],
+      "fullTitle": "Edge cases › GapToClose component › \"Gap to close:\" is NOT shown when quantityGap >= 0 (large variant hides when goal met)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1010,
+      "retries": 0
+    },
+    {
+      "title": "PA list section shows subtitle \"By gap to goal (worst first)\"",
+      "suitePath": [
+        "Edge cases",
+        "ProductAreaSummaryList subtitle"
+      ],
+      "fullTitle": "Edge cases › ProductAreaSummaryList subtitle › PA list section shows subtitle \"By gap to goal (worst first)\"",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 224,
+      "retries": 0
+    },
+    {
+      "title": "PA list section shows heading \"PA performance\"",
+      "suitePath": [
+        "Edge cases",
+        "ProductAreaSummaryList subtitle"
+      ],
+      "fullTitle": "Edge cases › ProductAreaSummaryList subtitle › PA list section shows heading \"PA performance\"",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 269,
+      "retries": 0
+    },
+    {
+      "title": "\"View more\" button behaviour: appears when items > 5, reveals remaining rows when clicked",
+      "suitePath": [
+        "Edge cases",
+        "NewsInHfbList \"View more\" button"
+      ],
+      "fullTitle": "Edge cases › NewsInHfbList \"View more\" button › \"View more\" button behaviour: appears when items > 5, reveals remaining rows when clicked",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 331,
+      "retries": 0
+    },
+    {
+      "title": "[Click] HFB 15 card navigates to the HFB 15 page",
+      "suitePath": [
+        "Edge cases",
+        "HFB boundary values (15 and 16)"
+      ],
+      "fullTitle": "Edge cases › HFB boundary values (15 and 16) › [Click] HFB 15 card navigates to the HFB 15 page",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1074,
+      "retries": 0
+    },
+    {
+      "title": "[Click] HFB 16 card navigates to the HFB 16 page",
+      "suitePath": [
+        "Edge cases",
+        "HFB boundary values (15 and 16)"
+      ],
+      "fullTitle": "Edge cases › HFB boundary values (15 and 16) › [Click] HFB 16 card navigates to the HFB 16 page",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1116,
+      "retries": 0
+    },
+    {
+      "title": "[Direct URL] /hfb/15 renders HFB 15 with correct breadcrumb",
+      "suitePath": [
+        "Edge cases",
+        "HFB boundary values (15 and 16)"
+      ],
+      "fullTitle": "Edge cases › HFB boundary values (15 and 16) › [Direct URL] /hfb/15 renders HFB 15 with correct breadcrumb",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 229,
+      "retries": 0
+    },
+    {
+      "title": "[Direct URL] /hfb/16 renders HFB 16 — not HFB 15 or any other",
+      "suitePath": [
+        "Edge cases",
+        "HFB boundary values (15 and 16)"
+      ],
+      "fullTitle": "Edge cases › HFB boundary values (15 and 16) › [Direct URL] /hfb/16 renders HFB 16 — not HFB 15 or any other",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 286,
+      "retries": 0
+    },
+    {
+      "title": "SalesByWeek shows Loading trend data... while metrics are fetching on HFB page",
+      "suitePath": [
+        "Edge cases",
+        "SalesByWeek loading state on HFB and PA pages"
+      ],
+      "fullTitle": "Edge cases › SalesByWeek loading state on HFB and PA pages › SalesByWeek shows Loading trend data... while metrics are fetching on HFB page",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 231,
+      "retries": 0
+    },
+    {
+      "title": "SalesByWeek shows Loading trend data... while metrics are fetching on PA page",
+      "suitePath": [
+        "Edge cases",
+        "SalesByWeek loading state on HFB and PA pages"
+      ],
+      "fullTitle": "Edge cases › SalesByWeek loading state on HFB and PA pages › SalesByWeek shows Loading trend data... while metrics are fetching on PA page",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 220,
+      "retries": 0
+    },
+    {
+      "title": "browser back after region→HFB navigation returns to region dashboard",
+      "suitePath": [
+        "Edge cases",
+        "Browser back/forward navigation"
+      ],
+      "fullTitle": "Edge cases › Browser back/forward navigation › browser back after region→HFB navigation returns to region dashboard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1123,
+      "retries": 0
+    },
+    {
+      "title": "browser forward after back restores the HFB page",
+      "suitePath": [
+        "Edge cases",
+        "Browser back/forward navigation"
+      ],
+      "fullTitle": "Edge cases › Browser back/forward navigation › browser forward after back restores the HFB page",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1223,
+      "retries": 0
+    },
+    {
+      "title": "browser back after HFB→PA navigation returns to HFB page",
+      "suitePath": [
+        "Edge cases",
+        "Browser back/forward navigation"
+      ],
+      "fullTitle": "Edge cases › Browser back/forward navigation › browser back after HFB→PA navigation returns to HFB page",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1159,
+      "retries": 0
+    },
+    {
+      "title": "three-level back: PA → HFB → Region via browser back button",
+      "suitePath": [
+        "Edge cases",
+        "Browser back/forward navigation"
+      ],
+      "fullTitle": "Edge cases › Browser back/forward navigation › three-level back: PA → HFB → Region via browser back button",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1522,
+      "retries": 0
+    },
+    {
+      "title": "region dashboard — h1, section landmarks, and live regions",
+      "suitePath": [
+        "Accessibility basics"
+      ],
+      "fullTitle": "Accessibility basics › region dashboard — h1, section landmarks, and live regions",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 203,
+      "retries": 0
+    },
+    {
+      "title": "HFB dashboard — breadcrumb nav and PA list landmark",
+      "suitePath": [
+        "Accessibility basics"
+      ],
+      "fullTitle": "Accessibility basics › HFB dashboard — breadcrumb nav and PA list landmark",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 246,
+      "retries": 0
+    },
+    {
+      "title": "PA dashboard — h1 and breadcrumb navigation",
+      "suitePath": [
+        "Accessibility basics"
+      ],
+      "fullTitle": "Accessibility basics › PA dashboard — h1 and breadcrumb navigation",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 238,
+      "retries": 0
+    },
+    {
+      "title": "shows the rounded index value (94) in the country-level KpiSummaryCard",
+      "suitePath": [
+        "HeroMetric component"
+      ],
+      "fullTitle": "HeroMetric component › shows the rounded index value (94) in the country-level KpiSummaryCard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 981,
+      "retries": 0
+    },
+    {
+      "title": "shows \"vs goal\" label in the hero metric",
+      "suitePath": [
+        "HeroMetric component"
+      ],
+      "fullTitle": "HeroMetric component › shows \"vs goal\" label in the hero metric",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 538,
+      "retries": 0
+    },
+    {
+      "title": "shows a performance badge with \"pt\" suffix (points relative to goal)",
+      "suitePath": [
+        "HeroMetric component"
+      ],
+      "fullTitle": "HeroMetric component › shows a performance badge with \"pt\" suffix (points relative to goal)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1011,
+      "retries": 0
+    },
+    {
+      "title": "country KpiSummaryCard shows specific numeric metric values (vsLatestForecast=98, toGo=106)",
+      "suitePath": [
+        "MetricRowCell numeric values"
+      ],
+      "fullTitle": "MetricRowCell numeric values › country KpiSummaryCard shows specific numeric metric values (vsLatestForecast=98, toGo=106)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1081,
+      "retries": 0
+    },
+    {
+      "title": "PaFamilyListRow shows numeric values alongside metric labels",
+      "suitePath": [
+        "MetricRowCell numeric values"
+      ],
+      "fullTitle": "MetricRowCell numeric values › PaFamilyListRow shows numeric values alongside metric labels",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1030,
+      "retries": 0
+    },
+    {
+      "title": "ChecksRow shows \"Has demand plan\" label in article rows",
+      "suitePath": [
+        "NewsArticle sub-components"
+      ],
+      "fullTitle": "NewsArticle sub-components › ChecksRow shows \"Has demand plan\" label in article rows",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 242,
+      "retries": 0
+    },
+    {
+      "title": "ChecksRow shows \"Has price\" label in article rows",
+      "suitePath": [
+        "NewsArticle sub-components"
+      ],
+      "fullTitle": "NewsArticle sub-components › ChecksRow shows \"Has price\" label in article rows",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 237,
+      "retries": 0
+    },
+    {
+      "title": "SalesStatusRow shows \"Sales start date:\" in article rows",
+      "suitePath": [
+        "NewsArticle sub-components"
+      ],
+      "fullTitle": "NewsArticle sub-components › SalesStatusRow shows \"Sales start date:\" in article rows",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 254,
+      "retries": 0
+    },
+    {
+      "title": "SalesStatusRow shows \"Ready to sell\" or \"Not ready to sell\" status",
+      "suitePath": [
+        "NewsArticle sub-components"
+      ],
+      "fullTitle": "NewsArticle sub-components › SalesStatusRow shows \"Ready to sell\" or \"Not ready to sell\" status",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 308,
+      "retries": 0
+    },
+    {
+      "title": "header renders either a placeholder avatar (role=img) or a user photo img",
+      "suitePath": [
+        "PlaceholderAvatar / user avatar"
+      ],
+      "fullTitle": "PlaceholderAvatar / user avatar › header renders either a placeholder avatar (role=img) or a user photo img",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 293,
+      "retries": 0
+    },
+    {
+      "title": "placeholder avatar has aria-label containing the user display name",
+      "suitePath": [
+        "PlaceholderAvatar / user avatar"
+      ],
+      "fullTitle": "PlaceholderAvatar / user avatar › placeholder avatar has aria-label containing the user display name",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 337,
+      "retries": 0
+    },
+    {
+      "title": "\"Sales by week\" h3 heading renders on the country dashboard",
+      "suitePath": [
+        "SalesByWeek h3 title on all dashboard levels"
+      ],
+      "fullTitle": "SalesByWeek h3 title on all dashboard levels › \"Sales by week\" h3 heading renders on the country dashboard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 212,
+      "retries": 0
+    },
+    {
+      "title": "\"Sales by week\" h3 heading renders on the HFB dashboard",
+      "suitePath": [
+        "SalesByWeek h3 title on all dashboard levels"
+      ],
+      "fullTitle": "SalesByWeek h3 title on all dashboard levels › \"Sales by week\" h3 heading renders on the HFB dashboard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 237,
+      "retries": 0
+    },
+    {
+      "title": "\"Sales by week\" h3 heading renders on the PA dashboard",
+      "suitePath": [
+        "SalesByWeek h3 title on all dashboard levels"
+      ],
+      "fullTitle": "SalesByWeek h3 title on all dashboard levels › \"Sales by week\" h3 heading renders on the PA dashboard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 209,
+      "retries": 0
+    },
+    {
+      "title": "SalesIndexTrend shows Loading trend data... on HFB page",
+      "suitePath": [
+        "SalesIndexTrend loading state at HFB and PA level"
+      ],
+      "fullTitle": "SalesIndexTrend loading state at HFB and PA level › SalesIndexTrend shows Loading trend data... on HFB page",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 228,
+      "retries": 0
+    },
+    {
+      "title": "SalesIndexTrend shows Loading trend data... on PA page",
+      "suitePath": [
+        "SalesIndexTrend loading state at HFB and PA level"
+      ],
+      "fullTitle": "SalesIndexTrend loading state at HFB and PA level › SalesIndexTrend shows Loading trend data... on PA page",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 256,
+      "retries": 0
+    },
+    {
+      "title": "SalesByWeek shows error on HFB page when /metrics returns 500",
+      "suitePath": [
+        "SalesByWeek and SalesIndexTrend error states at HFB and PA level"
+      ],
+      "fullTitle": "SalesByWeek and SalesIndexTrend error states at HFB and PA level › SalesByWeek shows error on HFB page when /metrics returns 500",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 7526,
+      "retries": 0
+    },
+    {
+      "title": "SalesByWeek shows error on PA page when /metrics returns 500",
+      "suitePath": [
+        "SalesByWeek and SalesIndexTrend error states at HFB and PA level"
+      ],
+      "fullTitle": "SalesByWeek and SalesIndexTrend error states at HFB and PA level › SalesByWeek shows error on PA page when /metrics returns 500",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 7518,
+      "retries": 0
+    },
+    {
+      "title": "SalesIndexTrend shows error on HFB page when /metrics returns 500",
+      "suitePath": [
+        "SalesByWeek and SalesIndexTrend error states at HFB and PA level"
+      ],
+      "fullTitle": "SalesByWeek and SalesIndexTrend error states at HFB and PA level › SalesIndexTrend shows error on HFB page when /metrics returns 500",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 7505,
+      "retries": 0
+    },
+    {
+      "title": "SalesIndexTrend shows error on PA page when /metrics returns 500",
+      "suitePath": [
+        "SalesByWeek and SalesIndexTrend error states at HFB and PA level"
+      ],
+      "fullTitle": "SalesByWeek and SalesIndexTrend error states at HFB and PA level › SalesIndexTrend shows error on PA page when /metrics returns 500",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 7524,
+      "retries": 0
+    },
+    {
+      "title": "HFB list loading div: aria-live=polite, aria-busy=true",
+      "suitePath": [
+        "aria-live and aria-busy attributes on loading spinners"
+      ],
+      "fullTitle": "aria-live and aria-busy attributes on loading spinners › HFB list loading div: aria-live=polite, aria-busy=true",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 257,
+      "retries": 0
+    },
+    {
+      "title": "SalesByWeek loading div: aria-live=polite, aria-busy=true",
+      "suitePath": [
+        "aria-live and aria-busy attributes on loading spinners"
+      ],
+      "fullTitle": "aria-live and aria-busy attributes on loading spinners › SalesByWeek loading div: aria-live=polite, aria-busy=true",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 226,
+      "retries": 0
+    },
+    {
+      "title": "SalesIndexTrend loading div: aria-live=polite, aria-busy=true",
+      "suitePath": [
+        "aria-live and aria-busy attributes on loading spinners"
+      ],
+      "fullTitle": "aria-live and aria-busy attributes on loading spinners › SalesIndexTrend loading div: aria-live=polite, aria-busy=true",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 255,
+      "retries": 0
+    },
+    {
+      "title": "Tab key can reach a \"View HFB plan\" button on the region dashboard",
+      "suitePath": [
+        "Keyboard navigation"
+      ],
+      "fullTitle": "Keyboard navigation › Tab key can reach a \"View HFB plan\" button on the region dashboard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1058,
+      "retries": 0
+    },
+    {
+      "title": "Enter key on a focused \"View HFB plan\" button navigates to the HFB page",
+      "suitePath": [
+        "Keyboard navigation"
+      ],
+      "fullTitle": "Keyboard navigation › Enter key on a focused \"View HFB plan\" button navigates to the HFB page",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1089,
+      "retries": 0
+    },
+    {
+      "title": "\"Go back\" button on HFB page is reachable via Tab",
+      "suitePath": [
+        "Keyboard navigation"
+      ],
+      "fullTitle": "Keyboard navigation › \"Go back\" button on HFB page is reachable via Tab",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 293,
+      "retries": 0
+    },
+    {
+      "title": "Escape closes the user flyout modal (keyboard accessibility)",
+      "suitePath": [
+        "Keyboard navigation"
+      ],
+      "fullTitle": "Keyboard navigation › Escape closes the user flyout modal (keyboard accessibility)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 491,
+      "retries": 0
+    },
+    {
+      "title": "Sales Planning header link is keyboard focusable and Enter navigates home",
+      "suitePath": [
+        "Keyboard navigation"
+      ],
+      "fullTitle": "Keyboard navigation › Sales Planning header link is keyboard focusable and Enter navigates home",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 234,
+      "retries": 0
+    },
+    {
+      "title": "PA rows show all four MetricRowCell labels: vs goal, vs demand plan, vs last year, To-go",
+      "suitePath": [
+        "PaFamilyListRow MetricRowCell content"
+      ],
+      "fullTitle": "PaFamilyListRow MetricRowCell content › PA rows show all four MetricRowCell labels: vs goal, vs demand plan, vs last year, To-go",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1000,
+      "retries": 0
+    },
+    {
+      "title": "PA rows show numeric values alongside the metric labels",
+      "suitePath": [
+        "PaFamilyListRow MetricRowCell content"
+      ],
+      "fullTitle": "PaFamilyListRow MetricRowCell content › PA rows show numeric values alongside the metric labels",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1020,
+      "retries": 0
+    },
+    {
+      "title": "displayName from Graph API (Test User) renders in the welcome message",
+      "suitePath": [
+        "API data → UI binding",
+        "Graph user profile fields render in the user flyout"
+      ],
+      "fullTitle": "API data → UI binding › Graph user profile fields render in the user flyout › displayName from Graph API (Test User) renders in the welcome message",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 164,
+      "retries": 0
+    },
+    {
+      "title": "displayName from Graph API renders inside the user flyout",
+      "suitePath": [
+        "API data → UI binding",
+        "Graph user profile fields render in the user flyout"
+      ],
+      "fullTitle": "API data → UI binding › Graph user profile fields render in the user flyout › displayName from Graph API renders inside the user flyout",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 246,
+      "retries": 0
+    },
+    {
+      "title": "jobTitle from Graph API renders inside the user flyout",
+      "suitePath": [
+        "API data → UI binding",
+        "Graph user profile fields render in the user flyout"
+      ],
+      "fullTitle": "API data → UI binding › Graph user profile fields render in the user flyout › jobTitle from Graph API renders inside the user flyout",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 260,
+      "retries": 0
+    },
+    {
+      "title": "email (mail) from Graph API renders inside the user flyout",
+      "suitePath": [
+        "API data → UI binding",
+        "Graph user profile fields render in the user flyout"
+      ],
+      "fullTitle": "API data → UI binding › Graph user profile fields render in the user flyout › email (mail) from Graph API renders inside the user flyout",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 248,
+      "retries": 0
+    },
+    {
+      "title": "PA names from hierarchy response appear as PA row buttons on the HFB page",
+      "suitePath": [
+        "API data → UI binding",
+        "Hierarchy API data → PA list rows"
+      ],
+      "fullTitle": "API data → UI binding › Hierarchy API data → PA list rows › PA names from hierarchy response appear as PA row buttons on the HFB page",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 507,
+      "retries": 0
+    },
+    {
+      "title": "PA numbers from hierarchy response appear in PA row buttons",
+      "suitePath": [
+        "API data → UI binding",
+        "Hierarchy API data → PA list rows"
+      ],
+      "fullTitle": "API data → UI binding › Hierarchy API data → PA list rows › PA numbers from hierarchy response appear in PA row buttons",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 515,
+      "retries": 0
+    },
+    {
+      "title": "only the PAs from the hierarchy response are shown — no extras",
+      "suitePath": [
+        "API data → UI binding",
+        "Hierarchy API data → PA list rows"
+      ],
+      "fullTitle": "API data → UI binding › Hierarchy API data → PA list rows › only the PAs from the hierarchy response are shown — no extras",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 973,
+      "retries": 0
+    },
+    {
+      "title": "clicking a PA row navigates to the URL built from the hierarchy paNo",
+      "suitePath": [
+        "API data → UI binding",
+        "Hierarchy API data → PA list rows"
+      ],
+      "fullTitle": "API data → UI binding › Hierarchy API data → PA list rows › clicking a PA row navigates to the URL built from the hierarchy paNo",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 547,
+      "retries": 0
+    },
+    {
+      "title": "PA page heading uses the paNo from the hierarchy response, not a hard-coded value",
+      "suitePath": [
+        "API data → UI binding",
+        "Hierarchy API data → PA list rows"
+      ],
+      "fullTitle": "API data → UI binding › Hierarchy API data → PA list rows › PA page heading uses the paNo from the hierarchy response, not a hard-coded value",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 214,
+      "retries": 0
+    },
+    {
+      "title": "SalesByWeek section is visible and not in an error state when metrics API returns data",
+      "suitePath": [
+        "API data → UI binding",
+        "Weekly metrics API data → Sales by week chart"
+      ],
+      "fullTitle": "API data → UI binding › Weekly metrics API data → Sales by week chart › SalesByWeek section is visible and not in an error state when metrics API returns data",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 194,
+      "retries": 0
+    },
+    {
+      "title": "SalesByWeek section renders on the HFB page when metrics API returns data",
+      "suitePath": [
+        "API data → UI binding",
+        "Weekly metrics API data → Sales by week chart"
+      ],
+      "fullTitle": "API data → UI binding › Weekly metrics API data → Sales by week chart › SalesByWeek section renders on the HFB page when metrics API returns data",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 200,
+      "retries": 0
+    },
+    {
+      "title": "SalesByWeek section renders on the PA page when metrics API returns data",
+      "suitePath": [
+        "API data → UI binding",
+        "Weekly metrics API data → Sales by week chart"
+      ],
+      "fullTitle": "API data → UI binding › Weekly metrics API data → Sales by week chart › SalesByWeek section renders on the PA page when metrics API returns data",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 214,
+      "retries": 0
+    },
+    {
+      "title": "SalesByWeek does NOT show the error message when /metrics returns 200",
+      "suitePath": [
+        "API data → UI binding",
+        "Weekly metrics API data → Sales by week chart"
+      ],
+      "fullTitle": "API data → UI binding › Weekly metrics API data → Sales by week chart › SalesByWeek does NOT show the error message when /metrics returns 200",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 185,
+      "retries": 0
+    },
+    {
+      "title": "switching to \"Sales\" segment reflects that the section is still populated (no error)",
+      "suitePath": [
+        "API data → UI binding",
+        "Weekly metrics API data → Sales by week chart"
+      ],
+      "fullTitle": "API data → UI binding › Weekly metrics API data → Sales by week chart › switching to \"Sales\" segment reflects that the section is still populated (no error)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 248,
+      "retries": 0
+    },
+    {
+      "title": "switching to \"Qty\" segment does not produce an error when metrics data is available",
+      "suitePath": [
+        "API data → UI binding",
+        "Weekly metrics API data → Sales by week chart"
+      ],
+      "fullTitle": "API data → UI binding › Weekly metrics API data → Sales by week chart › switching to \"Qty\" segment does not produce an error when metrics data is available",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 251,
+      "retries": 0
+    },
+    {
+      "title": "SalesIndexTrend section is visible on the country dashboard when rolling trend API returns data",
+      "suitePath": [
+        "API data → UI binding",
+        "Rolling trend API data → SalesIndexTrend section"
+      ],
+      "fullTitle": "API data → UI binding › Rolling trend API data → SalesIndexTrend section › SalesIndexTrend section is visible on the country dashboard when rolling trend API returns data",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 216,
+      "retries": 0
+    },
+    {
+      "title": "SalesIndexTrend section is visible on the HFB dashboard when rolling trend API returns data",
+      "suitePath": [
+        "API data → UI binding",
+        "Rolling trend API data → SalesIndexTrend section"
+      ],
+      "fullTitle": "API data → UI binding › Rolling trend API data → SalesIndexTrend section › SalesIndexTrend section is visible on the HFB dashboard when rolling trend API returns data",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 215,
+      "retries": 0
+    },
+    {
+      "title": "SalesIndexTrend section is visible on the PA dashboard when rolling trend API returns data",
+      "suitePath": [
+        "API data → UI binding",
+        "Rolling trend API data → SalesIndexTrend section"
+      ],
+      "fullTitle": "API data → UI binding › Rolling trend API data → SalesIndexTrend section › SalesIndexTrend section is visible on the PA dashboard when rolling trend API returns data",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 213,
+      "retries": 0
+    },
+    {
+      "title": "SalesIndexTrend does NOT show error text when /metrics returns 200",
+      "suitePath": [
+        "API data → UI binding",
+        "Rolling trend API data → SalesIndexTrend section"
+      ],
+      "fullTitle": "API data → UI binding › Rolling trend API data → SalesIndexTrend section › SalesIndexTrend does NOT show error text when /metrics returns 200",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 187,
+      "retries": 0
+    },
+    {
+      "title": "SalesIndexTrend on HFB page does NOT show error text when /metrics returns 200",
+      "suitePath": [
+        "API data → UI binding",
+        "Rolling trend API data → SalesIndexTrend section"
+      ],
+      "fullTitle": "API data → UI binding › Rolling trend API data → SalesIndexTrend section › SalesIndexTrend on HFB page does NOT show error text when /metrics returns 200",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 178,
+      "retries": 0
+    },
+    {
+      "title": "country dashboard KpiSummaryCard shows vsLatestForecast value from mock (98)",
+      "suitePath": [
+        "API data → UI binding",
+        "KpiSummaryCard metric values are sourced from the API response"
+      ],
+      "fullTitle": "API data → UI binding › KpiSummaryCard metric values are sourced from the API response › country dashboard KpiSummaryCard shows vsLatestForecast value from mock (98)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 991,
+      "retries": 0
+    },
+    {
+      "title": "country dashboard KpiSummaryCard shows toGo value from mock (106)",
+      "suitePath": [
+        "API data → UI binding",
+        "KpiSummaryCard metric values are sourced from the API response"
+      ],
+      "fullTitle": "API data → UI binding › KpiSummaryCard metric values are sourced from the API response › country dashboard KpiSummaryCard shows toGo value from mock (106)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1004,
+      "retries": 0
+    },
+    {
+      "title": "country dashboard KpiSummaryCard shows the hero index value from mock (94)",
+      "suitePath": [
+        "API data → UI binding",
+        "KpiSummaryCard metric values are sourced from the API response"
+      ],
+      "fullTitle": "API data → UI binding › KpiSummaryCard metric values are sourced from the API response › country dashboard KpiSummaryCard shows the hero index value from mock (94)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 984,
+      "retries": 0
+    },
+    {
+      "title": "KpiSummaryCard on HFB page shows metric values (not empty / zero)",
+      "suitePath": [
+        "API data → UI binding",
+        "KpiSummaryCard metric values are sourced from the API response"
+      ],
+      "fullTitle": "API data → UI binding › KpiSummaryCard metric values are sourced from the API response › KpiSummaryCard on HFB page shows metric values (not empty / zero)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 495,
+      "retries": 0
+    },
+    {
+      "title": "KpiSummaryCard on PA page shows metric values (not empty / zero)",
+      "suitePath": [
+        "API data → UI binding",
+        "KpiSummaryCard metric values are sourced from the API response"
+      ],
+      "fullTitle": "API data → UI binding › KpiSummaryCard metric values are sourced from the API response › KpiSummaryCard on PA page shows metric values (not empty / zero)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 476,
+      "retries": 0
+    },
+    {
+      "title": "when /metrics returns 500 on the country page, error text replaces the SalesByWeek chart",
+      "suitePath": [
+        "API data → UI binding",
+        "API error responses produce UI error messages (not blank/stale data)"
+      ],
+      "fullTitle": "API data → UI binding › API error responses produce UI error messages (not blank/stale data) › when /metrics returns 500 on the country page, error text replaces the SalesByWeek chart",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 7502,
+      "retries": 0
+    },
+    {
+      "title": "when /metrics returns 500 on the HFB page, error text replaces the SalesByWeek chart",
+      "suitePath": [
+        "API data → UI binding",
+        "API error responses produce UI error messages (not blank/stale data)"
+      ],
+      "fullTitle": "API data → UI binding › API error responses produce UI error messages (not blank/stale data) › when /metrics returns 500 on the HFB page, error text replaces the SalesByWeek chart",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 7515,
+      "retries": 0
+    },
+    {
+      "title": "when /metrics returns 500 on the PA page, error text replaces the SalesByWeek chart",
+      "suitePath": [
+        "API data → UI binding",
+        "API error responses produce UI error messages (not blank/stale data)"
+      ],
+      "fullTitle": "API data → UI binding › API error responses produce UI error messages (not blank/stale data) › when /metrics returns 500 on the PA page, error text replaces the SalesByWeek chart",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 7476,
+      "retries": 0
+    },
+    {
+      "title": "when /metrics returns 500, SalesIndexTrend also shows the error message",
+      "suitePath": [
+        "API data → UI binding",
+        "API error responses produce UI error messages (not blank/stale data)"
+      ],
+      "fullTitle": "API data → UI binding › API error responses produce UI error messages (not blank/stale data) › when /metrics returns 500, SalesIndexTrend also shows the error message",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 7510,
+      "retries": 0
+    },
+    {
+      "title": "when /metrics/hierarchy returns 404, no PA buttons are shown",
+      "suitePath": [
+        "API data → UI binding",
+        "API error responses produce UI error messages (not blank/stale data)"
+      ],
+      "fullTitle": "API data → UI binding › API error responses produce UI error messages (not blank/stale data) › when /metrics/hierarchy returns 404, no PA buttons are shown",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 152,
+      "retries": 0
+    },
+    {
+      "title": "API error on country page does not affect the page heading (h1 still renders)",
+      "suitePath": [
+        "API data → UI binding",
+        "API error responses produce UI error messages (not blank/stale data)"
+      ],
+      "fullTitle": "API data → UI binding › API error responses produce UI error messages (not blank/stale data) › API error on country page does not affect the page heading (h1 still renders)",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 211,
+      "retries": 0
+    },
+    {
+      "title": "API error on HFB page does not affect breadcrumbs",
+      "suitePath": [
+        "API data → UI binding",
+        "API error responses produce UI error messages (not blank/stale data)"
+      ],
+      "fullTitle": "API data → UI binding › API error responses produce UI error messages (not blank/stale data) › API error on HFB page does not affect breadcrumbs",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 204,
+      "retries": 0
+    },
+    {
+      "title": "SE and US pages both render without error when metrics API responds",
+      "suitePath": [
+        "API data → UI binding",
+        "Different API responses per region produce different UI output"
+      ],
+      "fullTitle": "API data → UI binding › Different API responses per region produce different UI output › SE and US pages both render without error when metrics API responds",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 314,
+      "retries": 0
+    },
+    {
+      "title": "SE and US KpiSummaryCards both show metric data from the API",
+      "suitePath": [
+        "API data → UI binding",
+        "Different API responses per region produce different UI output"
+      ],
+      "fullTitle": "API data → UI binding › Different API responses per region produce different UI output › SE and US KpiSummaryCards both show metric data from the API",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 1408,
+      "retries": 0
+    },
+    {
+      "title": "XX region (nonexistent) still gets the mock API data and renders the KpiSummaryCard",
+      "suitePath": [
+        "API data → UI binding",
+        "Different API responses per region produce different UI output"
+      ],
+      "fullTitle": "API data → UI binding › Different API responses per region produce different UI output › XX region (nonexistent) still gets the mock API data and renders the KpiSummaryCard",
+      "jiraTickets": [],
+      "file": "salesplanning-frontend.spec.js",
+      "project": "chromium",
+      "status": "passed",
+      "durationMs": 498,
+      "retries": 0
+    }
+  ],
+  "susanHandoff": [
+    {
+      "specTitle": "redirects to Microsoft login when no MSAL account exists",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "redirects protected routes through / then on to Microsoft login",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "renders the Welcome component for an authenticated user",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "shows the header link and authenticated welcome text",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "renders the country dashboard shell and shows loading states",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "renders HFB cards and graph sections after data loads",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "HfbList shows Qty/Sales index SegmentedControl and switches metric",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "clicking \"View HFB plan\" navigates to the HFB dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "invalid region (>2 chars) shows the InvalidRegion component",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "header \"Sales Planning\" link is visible on the region dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "renders the HFB title, breadcrumbs, and back button",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "back button navigates to the region dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "PA list shows loading state then loaded PA rows",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "clicking a PA row navigates to the PA dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "renders HFB-level sales graphs (YTD sales index, Sales by week)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "NewsInHfbList section renders with title and item list",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "NewsInHfbList shows loading state while item range data is fetching",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "renders the PA title, full breadcrumb trail, and back button",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "back button navigates to the HFB dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "renders PA-level sales graphs (no PA list)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "loads without crashing and renders the header",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "does not render error text",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"Sales Planning\" header link navigates home from the region dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "HFB breadcrumb \"SE\" link navigates back to the region dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "PA breadcrumb \"HFB 01\" link navigates back to the HFB dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "clicking the HFB 01 card navigates to the HFB 01 page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "clicking the HFB 02 card navigates to the HFB 02 page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "clicking the HFB 05 card navigates to the HFB 05 page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "clicking the HFB 10 card navigates to the HFB 10 page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "each HFB card leads to its own independent page (01 and 02 show different h1s)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "clicking PA 001 (Sofas) navigates to the PA 001 page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "clicking PA 002 (Armchairs) navigates to the PA 002 page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "PA 001 and PA 002 are independently navigable and show different pages",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "PA 001 breadcrumb shows HFB 01, PA 002 breadcrumb also shows HFB 01",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "direct URL /hfb/01 renders HFB 01 with correct title and breadcrumb",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "direct URL /hfb/02 renders HFB 02 with correct title and breadcrumb",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "direct URL /hfb/05 renders HFB 05 — not HFB 01 or HFB 02",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "direct URL /hfb/01/pa/001 renders PA 001 under HFB 01",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "direct URL /hfb/01/pa/002 renders PA 002 — not PA 001",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "direct URL /hfb/02/pa/001 renders PA 001 under HFB 02 (different parent breadcrumb)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "Region → HFB 01 (click) → back → HFB 02 (click) → back → Region",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "Region → HFB 01 (click) → PA 001 (click) → back to HFB 01 → PA 002 (click)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "Full breadcrumb round-trip: Region → HFB 01 → PA 001 → breadcrumb HFB 01 → breadcrumb SE → Region",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "Each HFB page shows only its own data in the SalesIndexTrend title",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "Each PA page shows only its own data in the SalesIndexTrend title",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "HfbList shows error message when HFB performance data fails",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "PA list shows error message when PA performance data fails",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesByWeek shows error message when metrics API returns 500",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "loads without crashing (MSAL redirect callback page)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "renders the user avatar button in the header",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "opens the flyout modal showing the user display name, job title and country",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "closes the flyout when Escape is pressed",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"Sign out\" button is present in the modal and triggers sign-out navigation",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "renders the current IKEA week number in the NavigationBar",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "IKEA week is also visible on the HFB dashboard NavigationBar",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "IKEA week is also visible on the PA dashboard NavigationBar",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "renders on the region dashboard with the country-level title",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "renders on the HFB dashboard with the HFB-scoped title",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "renders on the PA dashboard with the PA-scoped title",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "shows loading state while trend data is fetching",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "shows error message when the metrics API returns 500",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "defaults to Sales and shows all four metric options",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "switches to Qty metric",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "switches to Sales index metric",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "switches to Qty index metric",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "defaults to Qty index and shows all four metric options",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "switches to Sales index metric and PA rows remain visible",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "switches to Qty metric",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "switches to Sales metric",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "renders the section heading and item rows after data loads",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "shows all four SegmentControl metric options and defaults to Qty index",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "switches metric type via SegmentControl and list remains visible",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "shows error message when item range data fails",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "HfbList shows empty state when no HFBs are returned",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "ProductAreaSummaryList shows empty state when no PAs are returned",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "HFB list section subtitle reads \"By gap to goal (worst first)\"",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "HFB list renders all 16 HFBs as clickable cards",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "HFB list heading reads \"HFB performance\"",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "NavigationBar shows \"Welcome {givenName}\" at country level",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "Greeting is replaced by breadcrumbs (not welcome text) on HFB level",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "Greeting is replaced by breadcrumbs (not welcome text) on PA level",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SegmentControl with all 4 options appears in SalesByWeek on the country dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SegmentControl with all 4 options appears in SalesByWeek on the HFB dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SegmentControl with all 4 options appears in SalesByWeek on the PA dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "Selecting each metric option highlights only that button (aria-pressed=true)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"last year sales\" legend item is always visible in all metric modes",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"latest forecast\" legend item is always visible in all metric modes",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"actual sales\" legend shows in Sales mode (Pieces)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"actual sales\" legend shows in Qty mode (Pieces)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"actual sales\" legend is HIDDEN in Sales index mode (not a Pieces view)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"actual sales\" legend is HIDDEN in Qty index mode (not a Pieces view)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"actual sales\" hidden in Sales index mode on HFB page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"actual sales\" hidden in Qty index mode on HFB page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"actual sales\" visible in Sales (Pieces) mode on HFB page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"actual sales\" hidden in Sales index mode on PA page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"actual sales\" visible in Qty (Pieces) mode on PA page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesByWeek chart renders and tooltip appears on hover over a data bar",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesIndexTrend chart renders its SVG on the region dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "Country dashboard KpiSummaryCard shows \"FY26 sales index\" title",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "HFB dashboard KpiSummaryCard shows \"YTD sales index\" title",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "PA dashboard KpiSummaryCard shows \"YTD sales index\" title",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "KpiSummaryCard shows all four metric row cell labels on the country dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "KpiSummaryCard shows all four metric row cell labels on the HFB dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "Each HFB card in the HFB list shows its own KpiSummaryCard title",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "renders SE country dashboard with h1 = SE Sales",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SE HFB dashboard shows SE in breadcrumb",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "renders US country dashboard with h1 = US Sales",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "US HFB list renders 16 cards just like SE",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "navigating to US HFB 01 shows HFB 01 with US in breadcrumb",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "navigating to US HFB 01 PA 001 shows PA 001 with US and HFB 01 in breadcrumb",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "US and SE dashboards are independent — h1 differs between the two",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "renders XX country dashboard with h1 = XX Sales (route accepts any 2-char code)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "XX HFB list renders the same mock HFB data (mock is not region-gated)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "XX HFB 01 renders correctly with XX in breadcrumb",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "navigating from XX dashboard to HFB and back shows XX throughout",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "/region-dashboard/SE/ (uppercase) normalises to lowercase and renders SE Sales",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "/region-dashboard/US/ (uppercase) normalises to lowercase and renders US Sales",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "authenticated region dashboard has title \"Sales planning tool\"",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "authenticated HFB dashboard has title \"Sales planning tool\"",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "authenticated PA dashboard has title \"Sales planning tool\"",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "unknown URL /unknown-page redirects away (catch-all $ route calls redirect to /)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "deeply nested unknown URL /some/unknown/path also redirects away",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"· Forecast G\" visible on country (SE) dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"· Forecast G\" visible on HFB dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"· Forecast G\" visible on PA dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "KpiSummaryCard shows \"Gap to close:\" label with formatted quantity and sales gap",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"Gap to close:\" visible on HFB dashboard KpiSummaryCard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"Gap to close:\" visible on PA dashboard KpiSummaryCard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "PaFamilyListRow shows \"Gap:\" label (GapToClose small variant) for each PA row",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"Gap to close:\" is NOT shown when quantityGap >= 0 (large variant hides when goal met)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "PA list section shows subtitle \"By gap to goal (worst first)\"",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "PA list section shows heading \"PA performance\"",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"View more\" button behaviour: appears when items > 5, reveals remaining rows when clicked",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "[Click] HFB 15 card navigates to the HFB 15 page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "[Click] HFB 16 card navigates to the HFB 16 page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "[Direct URL] /hfb/15 renders HFB 15 with correct breadcrumb",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "[Direct URL] /hfb/16 renders HFB 16 — not HFB 15 or any other",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesByWeek shows Loading trend data... while metrics are fetching on HFB page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesByWeek shows Loading trend data... while metrics are fetching on PA page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "browser back after region→HFB navigation returns to region dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "browser forward after back restores the HFB page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "browser back after HFB→PA navigation returns to HFB page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "three-level back: PA → HFB → Region via browser back button",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "region dashboard — h1, section landmarks, and live regions",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "HFB dashboard — breadcrumb nav and PA list landmark",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "PA dashboard — h1 and breadcrumb navigation",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "shows the rounded index value (94) in the country-level KpiSummaryCard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "shows \"vs goal\" label in the hero metric",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "shows a performance badge with \"pt\" suffix (points relative to goal)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "country KpiSummaryCard shows specific numeric metric values (vsLatestForecast=98, toGo=106)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "PaFamilyListRow shows numeric values alongside metric labels",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "ChecksRow shows \"Has demand plan\" label in article rows",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "ChecksRow shows \"Has price\" label in article rows",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesStatusRow shows \"Sales start date:\" in article rows",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesStatusRow shows \"Ready to sell\" or \"Not ready to sell\" status",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "header renders either a placeholder avatar (role=img) or a user photo img",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "placeholder avatar has aria-label containing the user display name",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"Sales by week\" h3 heading renders on the country dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"Sales by week\" h3 heading renders on the HFB dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"Sales by week\" h3 heading renders on the PA dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesIndexTrend shows Loading trend data... on HFB page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesIndexTrend shows Loading trend data... on PA page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesByWeek shows error on HFB page when /metrics returns 500",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesByWeek shows error on PA page when /metrics returns 500",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesIndexTrend shows error on HFB page when /metrics returns 500",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesIndexTrend shows error on PA page when /metrics returns 500",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "HFB list loading div: aria-live=polite, aria-busy=true",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesByWeek loading div: aria-live=polite, aria-busy=true",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesIndexTrend loading div: aria-live=polite, aria-busy=true",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "Tab key can reach a \"View HFB plan\" button on the region dashboard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "Enter key on a focused \"View HFB plan\" button navigates to the HFB page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "\"Go back\" button on HFB page is reachable via Tab",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "Escape closes the user flyout modal (keyboard accessibility)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "Sales Planning header link is keyboard focusable and Enter navigates home",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "PA rows show all four MetricRowCell labels: vs goal, vs demand plan, vs last year, To-go",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "PA rows show numeric values alongside the metric labels",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "displayName from Graph API (Test User) renders in the welcome message",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "displayName from Graph API renders inside the user flyout",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "jobTitle from Graph API renders inside the user flyout",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "email (mail) from Graph API renders inside the user flyout",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "PA names from hierarchy response appear as PA row buttons on the HFB page",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "PA numbers from hierarchy response appear in PA row buttons",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "only the PAs from the hierarchy response are shown — no extras",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "clicking a PA row navigates to the URL built from the hierarchy paNo",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "PA page heading uses the paNo from the hierarchy response, not a hard-coded value",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesByWeek section is visible and not in an error state when metrics API returns data",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesByWeek section renders on the HFB page when metrics API returns data",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesByWeek section renders on the PA page when metrics API returns data",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesByWeek does NOT show the error message when /metrics returns 200",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "switching to \"Sales\" segment reflects that the section is still populated (no error)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "switching to \"Qty\" segment does not produce an error when metrics data is available",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesIndexTrend section is visible on the country dashboard when rolling trend API returns data",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesIndexTrend section is visible on the HFB dashboard when rolling trend API returns data",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesIndexTrend section is visible on the PA dashboard when rolling trend API returns data",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesIndexTrend does NOT show error text when /metrics returns 200",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SalesIndexTrend on HFB page does NOT show error text when /metrics returns 200",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "country dashboard KpiSummaryCard shows vsLatestForecast value from mock (98)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "country dashboard KpiSummaryCard shows toGo value from mock (106)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "country dashboard KpiSummaryCard shows the hero index value from mock (94)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "KpiSummaryCard on HFB page shows metric values (not empty / zero)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "KpiSummaryCard on PA page shows metric values (not empty / zero)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "when /metrics returns 500 on the country page, error text replaces the SalesByWeek chart",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "when /metrics returns 500 on the HFB page, error text replaces the SalesByWeek chart",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "when /metrics returns 500 on the PA page, error text replaces the SalesByWeek chart",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "when /metrics returns 500, SalesIndexTrend also shows the error message",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "when /metrics/hierarchy returns 404, no PA buttons are shown",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "API error on country page does not affect the page heading (h1 still renders)",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "API error on HFB page does not affect breadcrumbs",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SE and US pages both render without error when metrics API responds",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "SE and US KpiSummaryCards both show metric data from the API",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    },
+    {
+      "specTitle": "XX region (nonexistent) still gets the mock API data and renders the KpiSummaryCard",
+      "result": "PASS",
+      "venue": "REAL FE",
+      "evidence": ""
+    }
+  ],
+  "findings": []
+}

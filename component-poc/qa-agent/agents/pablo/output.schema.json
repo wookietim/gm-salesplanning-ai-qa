@@ -85,6 +85,7 @@
     "bob": {
       "type": "object",
       "required": ["checked", "regenerated", "reused"],
+      "properties": {
         "checked": { "type": "number" },
         "regenerated": { "type": "number" },
         "reused": { "type": "number" },
@@ -103,6 +104,22 @@
         "tests": { "type": "number" },
         "passed": { "type": "number" },
         "failed": { "type": "number" }
+      },
+      "additionalProperties": true
+    },
+    "e2e": {
+      "type": "object",
+      "description": "Populated when the E2E agent executed the project's Playwright suite.",
+      "properties": {
+        "status": { "type": "string", "enum": ["pass", "fail", "blocked", "skipped"] },
+        "commandRun": { "type": "string" },
+        "browsers": { "type": "array", "items": { "type": "string" } },
+        "total": { "type": "number" },
+        "passed": { "type": "number" },
+        "failed": { "type": "number" },
+        "flaky": { "type": "number" },
+        "skipped": { "type": "number" },
+        "blockedReason": { "type": "string" }
       },
       "additionalProperties": true
     },

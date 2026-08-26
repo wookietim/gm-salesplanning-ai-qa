@@ -81,10 +81,18 @@ When `apiContracts` is provided:
 - Invoke with Storybook URL and `snapshotDir`.
 - Pixel diff result maps 1:1 to test result.
 
+**E2E agent** (when `e2eRoot` or `e2eCommand` is available):
+- Invoke with `e2eBrowsers` and `e2eSpecMappings` when supplied.
+- Runs the project's real Playwright suite — this is what makes `REAL FE` tests executable instead of MANUAL-ONLY.
+- Map results: `passed` → PASS, `failed`/`timedOut` → FAIL, `flaky` → PARTIAL, `skipped` → MANUAL-ONLY.
+- Carry the Playwright error message and trace path into evidence for every non-PASS.
+- If E2E returns `blocked`, record affected tests as MANUAL-ONLY with the `blockedReason` as evidence — never PASS.
+
 ### Phase 5 — REAL FE tests
-For tests that require a live app:
-- If `apiBaseUrl` or a live URL is available, execute the test and record the result.
-- If not available, mark MANUAL-ONLY and provide:
+For tests that require a live app, in this order:
+- **If the E2E agent executed a Playwright spec covering this test, adopt that result.** This is the preferred path — a real browser result always beats a manual placeholder.
+- Otherwise, if `apiBaseUrl` or a live URL is available, execute the test and record the result.
+- If neither is available, mark MANUAL-ONLY and provide:
   - The exact URL to navigate to
   - The exact steps to execute
   - The exact assertion to check
@@ -117,7 +125,8 @@ Reason:    [for FAIL: exactly what is wrong and where]
 11. For Regression: a previously-passing check that now fails = FAIL severity high, regardless of other results.
 12. For Accessibility: WCAG Level A violations = FAIL critical. AA violations = FAIL high.
 13. For Visual Diff: any diff above threshold = FAIL with diff % and changed region description.
-14. After a clean run (no critical/high failures): notify Regression to write a new baseline.
+14. For E2E: a real Playwright result always supersedes a MANUAL-ONLY placeholder. A flaky test (passed only on retry) is PARTIAL, never PASS. A blocked suite never yields PASS.
+15. After a clean run (no critical/high failures): notify Regression to write a new baseline.
 
 ---
 
@@ -134,7 +143,8 @@ Every run report must contain:
    - Checks validated from source (test ID + file:line evidence)
    - Partial checks (test ID + what was validated + what remains + why)
    - Manual-only checks (test ID + exact steps/commands to complete)
-5. **Specialist agent results**: Regression, Accessibility, API Contract, Visual Diff, **Security-QA** findings
+5. **Specialist agent results**: Regression, Accessibility, API Contract, Visual Diff, **E2E**, **Security-QA** findings
+   - For E2E: command run, browsers exercised, totals (passed/failed/flaky/skipped), per-spec failures with trace paths, and any specs that executed but mapped to no Bob test case
 6. **Security validation checks** (when `securityValidationSteps` provided):
    - For each step: file checked, check performed, result (PASS/FAIL), evidence
 7. **Totals**: components, tests, passed, failed, partial, manual-only

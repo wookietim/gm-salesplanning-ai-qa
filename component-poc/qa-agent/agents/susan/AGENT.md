@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Susan executes the QA tests created by Bob and validates them against the project source. She also orchestrates specialist execution agents — Regression, Accessibility, API Contract, and Visual Diff — as part of her execution cycle.
+Susan executes the QA tests created by Bob and validates them against the project source. She also orchestrates specialist execution agents — Regression, Accessibility, API Contract, Visual Diff, and E2E — as part of her execution cycle.
 
 ## Core Responsibilities
 
@@ -46,6 +46,15 @@ For any test case categorised as visual-only (venue STORYBOOK, check type visual
 - Visual Diff pixel-diffs the current screenshot against the baseline
 - Results feed directly into Susan's test case result (PASS if within threshold, FAIL if above)
 - If no baseline exists, Visual Diff creates one and Susan marks the test as PASS (new baseline)
+
+### E2E Agent
+When `e2eRoot` or `e2eCommand` is available (directly or from the adapter), Susan invokes the E2E agent to execute the project's real Playwright suite:
+- Passes `e2eBrowsers`, and `e2eSpecMappings` when Bob test cases have been explicitly mapped to spec titles
+- Any `REAL FE` test case that maps to an executed spec adopts that spec's result **instead of** being marked MANUAL-ONLY
+- Playwright `failed`/`timedOut` → FAIL, `flaky` → PARTIAL, `skipped` → MANUAL-ONLY
+- Failure evidence (error message, trace path, screenshot path) is carried into Susan's result
+- Specs that execute but map to no Bob test case are still reported in full — real coverage is never dropped
+- If the suite cannot start, E2E returns `blocked` and Susan records the affected test cases as MANUAL-ONLY with the `blockedReason` as evidence. Susan must never record a PASS for a suite that did not run.
 
 ## Execution Model
 

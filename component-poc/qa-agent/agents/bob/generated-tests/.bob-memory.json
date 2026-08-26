@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-08-18T13:46:45.921Z",
+  "generatedAt": "2026-08-25T12:11:11.244Z",
   "targetRoot": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-frontend/src",
   "components": {
     "../gm-salesplanning-frontend/src/components/AcceptLogin/accept-login.tsx": {
@@ -265,10 +265,10 @@
     },
     "../gm-salesplanning-frontend/src/components/User/user.tsx": {
       "componentName": "user",
-      "outputFile": "component-poc/qa-agent/agents/bob/generated-tests/SSPLAN-719__..__gm-salesplanning-frontend__src__components__User__user.qa.md",
+      "outputFile": "component-poc/qa-agent/agents/bob/generated-tests/SSPLAN-722__..__gm-salesplanning-frontend__src__components__User__user.qa.md",
       "sourceMtimeMs": 1785415175688.0361,
-      "generatedAt": "2026-08-18T13:46:45.921Z",
-      "jiraTicketKey": "SSPLAN-719",
+      "generatedAt": "2026-08-25T12:11:11.244Z",
+      "jiraTicketKey": "SSPLAN-722",
       "jiraStoryUpdatedAt": null,
       "suppressedTestIds": [],
       "status": "written"

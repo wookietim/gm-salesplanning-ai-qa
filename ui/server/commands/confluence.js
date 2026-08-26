@@ -400,7 +400,65 @@ async function upsertTicketRow({ env, ticketKey, ticketSummary, tests, markAsPas
   };
 }
 
+/**
+ * Upsert a free-form HTML section on the page, identified by a sentinel comment.
+ * If a section with the same sectionId already exists it is replaced; otherwise
+ * it is appended at the end of the page body.
+ *
+ * The block is wrapped in:
+ *   <!-- section:sectionId -->  …html…  <!-- /section:sectionId -->
+ */
+async function upsertRawSection({ env, sectionId, html }) {
+  if (!sectionId) throw new Error('sectionId is required');
+  if (!html) throw new Error('html is required');
+
+  const page = await getPage(env);
+  let storage = page.body?.storage?.value || '';
+
+  const open = `<!-- section:${sectionId} -->`;
+  const close = `<!-- /section:${sectionId} -->`;
+  const wrapped = `${open}${html}${close}`;
+
+  const pattern = new RegExp(`${escapeRegex(open)}[\\s\\S]*?${escapeRegex(close)}`, 'i');
+  if (pattern.test(storage)) {
+    storage = storage.replace(pattern, wrapped);
+  } else {
+    storage += wrapped;
+  }
+
+  const updatedPage = await updatePage(env, page, storage);
+  return { pageVersion: updatedPage.version?.number };
+}
+
+/**
+ * Remove a managed ticket row (summary + detail pair) from the AI QA Summary
+ * table by ticket key.  Useful for cleaning up synthetic rows like E2E-RUN.
+ */
+async function removeTicketRow({ env, ticketKey }) {
+  if (!ticketKey) throw new Error('ticketKey is required');
+
+  const normalizedKey = String(ticketKey).toUpperCase();
+  const page = await getPage(env);
+  let storage = page.body?.storage?.value || '';
+
+  const escapedKey = escapeRegex(normalizedKey);
+  const singleRow = `(?:(?!<\\/tr>)[\\s\\S])*?`;
+  const pattern = new RegExp(
+    `<tr[^>]*>${singleRow}${escapedKey}${singleRow}<\\/tr>\\s*<tr[^>]*>${singleRow}<\\/tr>`,
+    'i'
+  );
+
+  if (!pattern.test(storage)) {
+    return { removed: false };
+  }
+
+  const updatedPage = await updatePage(env, page, storage.replace(pattern, ''));
+  return { removed: true, pageVersion: updatedPage.version?.number };
+}
+
 module.exports = {
   getConfluenceTicketList,
   upsertTicketRow,
+  upsertRawSection,
+  removeTicketRow,
 };

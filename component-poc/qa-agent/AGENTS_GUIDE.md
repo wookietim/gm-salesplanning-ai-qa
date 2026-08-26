@@ -1,6 +1,6 @@
 # QA Agent System — Complete User Guide
 
-> **Last updated:** 2026-08-12
+> **Last updated:** 2026-08-26
 > **Location:** `component-poc/qa-agent/agents/`
 
 ---

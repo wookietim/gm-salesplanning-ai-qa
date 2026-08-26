@@ -1,0 +1,240 @@
+{
+  "runId": "pablo-20260819-164747",
+  "agentId": "pablo",
+  "startedAt": "2026-08-19T16:47:47.033Z",
+  "endedAt": "2026-08-19T16:47:47.682Z",
+  "mode": "components",
+  "targetComponents": [
+    "../gm-salesplanning-frontend/src/routes/_authenticated/region-dashboard/$region/index.tsx",
+    "../gm-salesplanning-frontend/src/routes/index.tsx"
+  ],
+  "bob": {
+    "checked": 2,
+    "regenerated": 2,
+    "reused": 0,
+    "regeneratedComponents": [
+      "../gm-salesplanning-frontend/src/routes/_authenticated/region-dashboard/$region/index.tsx",
+      "../gm-salesplanning-frontend/src/routes/index.tsx"
+    ],
+    "stdout": "[Bob] Starting test generation run.\n[Bob] Scanning components under: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-frontend/src\n[Bob] Discovered 38 component candidates; targeting 2 component(s).\n[Bob] Reusing existing QA plan for Route.\n[Bob] Reusing existing QA plan for Route.\n[Bob] Generation complete.\n[Bob] Target root: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-frontend/src\n[Bob] Output dir: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests\n[Bob] Components discovered: 38\n[Bob] Components targeted: 2\n[Bob] Created: 0, Updated: 0, Skipped: 2\n[Bob] State file: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests/.bob-memory.json\n[Bob] Index: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests/INDEX.md\n"
+  },
+  "susan": {
+    "overallStatus": "pass",
+    "components": 2,
+    "tests": 8,
+    "passed": 8,
+    "failed": 0,
+    "stdout": "[Susan] Starting QA execution run.\n[Susan] Reading Bob plans from: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests\n[Susan] Found 2 plan file(s) to evaluate before scope filtering.\n[Susan] Running tests for index (../gm-salesplanning-frontend/src/routes/_authenticated/region-dashboard/$region/index.tsx).\n[Susan] Running tests for index (../gm-salesplanning-frontend/src/routes/index.tsx).\n[Susan] Execution complete.\n[Susan] Bob plans directory: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/bob/generated-tests\n[Susan] Components checked: 2\n[Susan] Tests executed: 8\n[Susan] Passed: 8, Failed: 0\n[Susan] Overall: pass\n[Susan] JSON result: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/susan/results/susan-result-20260819-164747.json\n[Susan] Markdown result: /Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/susan/results/susan-result-20260819-164747.md\n",
+    "componentResults": [
+      {
+        "component": "index",
+        "source": "../gm-salesplanning-frontend/src/routes/_authenticated/region-dashboard/$region/index.tsx",
+        "status": "pass",
+        "tests": [
+          {
+            "testId": "BOB-HP-ROUTE-001",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "BOB-HP-ROUTE-002",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "BOB-SP-ROUTE-001",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "BOB-SP-ROUTE-002",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          }
+        ]
+      },
+      {
+        "component": "index",
+        "source": "../gm-salesplanning-frontend/src/routes/index.tsx",
+        "status": "pass",
+        "tests": [
+          {
+            "testId": "BOB-HP-ROUTE-001",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "BOB-HP-ROUTE-002",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "BOB-SP-ROUTE-001",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          },
+          {
+            "testId": "BOB-SP-ROUTE-002",
+            "status": "pass",
+            "checks": [
+              {
+                "name": "source-file-exists",
+                "status": "pass",
+                "details": "Source component file found"
+              },
+              {
+                "name": "source-shape-valid",
+                "status": "pass",
+                "details": "Source appears to contain component export or JSX structure"
+              },
+              {
+                "name": "jira-issue-key-coverage",
+                "status": "pass",
+                "details": "Plan includes requested Jira issue keys"
+              }
+            ],
+            "reasons": []
+          }
+        ]
+      }
+    ]
+  },
+  "jira": {
+    "project": "SSPLAN",
+    "issueKeys": [
+      "SSPLAN-739"
+    ],
+    "source": "jira-api",
+    "warnings": [],
+    "issues": [
+      {
+        "key": "SSPLAN-739",
+        "summary": "Update RollingSalesTrend datasets",
+        "updatedAt": "2026-08-11T17:34:39.804+0000",
+        "hasAcceptanceCriteria": true
+      }
+    ],
+    "acFilePath": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/component-poc/qa-agent/agents/pablo/results/.pablo-jira-ac-20260819-164747.txt"
+  },
+  "overallStatus": "pass",
+  "failureReasons": []
+}

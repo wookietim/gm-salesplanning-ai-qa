@@ -406,6 +406,94 @@ function buildAuthInitScript(options = {}) {
  *   hfbError?: boolean,
  * }} options
  */
+// ─── Static asset cache ──────────────────────────────────────────────────────
+// Playwright gives every test a fresh BrowserContext, so the browser HTTP cache
+// starts empty and the entire JS/CSS bundle (~1MB across chunks) is re-fetched
+// for all 211 tests. Against a shared deployed target that is ~211x the traffic
+// and it triggers HTTP 429 rate limiting (observed 2026-08-26: 182/211 blocked).
+//
+// Fetch each asset once per worker process and replay it from memory thereafter.
+// This is registered FIRST so the API route handlers below — which are
+// registered later and therefore take precedence in Playwright's last-wins
+// stack — are completely unaffected.
+const CACHEABLE_ORIGIN = new URL(
+    process.env.E2E_BASE_URL || 'https://dev.salesplanning.ingka.com',
+).origin;
+
+const assetCache = new Map();
+let assetMisses = 0;
+let assetHits = 0;
+
+async function installAssetCache(page) {
+    const ASSET_RE = /\.(?:js|css|mjs|woff2?|ttf|eot|png|jpe?g|gif|svg|ico|webp)(?:[?#]|$)/;
+
+    // Catch-all registered FIRST, so every handler added later still wins.
+    await page.route('**/*', async (route) => {
+        const request = route.request();
+        const url = request.url();
+        const isDocument = request.resourceType() === 'document';
+        const isAsset = ASSET_RE.test(url);
+
+        // Cache the SPA shell as well as static assets. The app serves the same
+        // index.html for every client-side route, so without this each of the
+        // 211 tests makes its own document request — which on its own is enough
+        // to trip the dev host's rate limit.
+        if (!isAsset && !(isDocument && url.startsWith(CACHEABLE_ORIGIN))) {
+            await route.fallback();
+            return;
+        }
+
+        const cacheKey = isDocument ? `${CACHEABLE_ORIGIN}::document` : url;
+
+        const cached = assetCache.get(cacheKey);
+        if (cached) {
+            assetHits += 1;
+            await route.fulfill({
+                status: cached.status,
+                headers: cached.headers,
+                body: Buffer.from(cached.body, 'base64'),
+            });
+            return;
+        }
+
+        assetMisses += 1;
+        if (process.env.E2E_ASSET_DEBUG) {
+            console.log(`[asset-cache MISS #${assetMisses}] ${url}`);
+        }
+
+        let response;
+        let body;
+        try {
+            response = await route.fetch();
+            body = await response.body();
+        } catch {
+            // The page can navigate away mid-flight (e.g. a back-button test),
+            // which disposes the response. Never let a caching optimisation
+            // turn that into a test failure — just release the request.
+            await route.fallback().catch(() => {});
+            return;
+        }
+
+        // route.fetch() returns a decoded body, so replaying the original
+        // content-encoding/length headers would corrupt it.
+        const headers = { ...response.headers() };
+        delete headers['content-encoding'];
+        delete headers['content-length'];
+
+        // Only cache successful responses. Caching a 429/5xx would pin a
+        // transient failure into every subsequent test in this worker.
+        if (response.status() >= 200 && response.status() < 300) {
+            assetCache.set(cacheKey, {
+                status: response.status(),
+                headers,
+                body: body.toString('base64'),
+            });
+        }
+
+        await route.fulfill({ status: response.status(), headers, body }).catch(() => {});
+    });
+}
+
 async function gotoAuthenticated(page, url, options = {}) {
     const {
         graphDelayMs = 0,
@@ -416,6 +504,8 @@ async function gotoAuthenticated(page, url, options = {}) {
     } = options;
 
     await page.addInitScript({ content: buildAuthInitScript(options) });
+
+    await installAssetCache(page);
 
     // Block / stub Microsoft login
     await page.route('https://login.microsoftonline.com/**', async (route) => {
@@ -2179,6 +2269,8 @@ async function gotoAndCapture(page, url, captureUrlPattern, mockBody, options = 
     const { graphDelayMs = 0, hierarchyDelayMs = 0, metricsDelayMs = 0 } = options;
 
     await page.addInitScript({ content: buildAuthInitScript(options) });
+
+    await installAssetCache(page);
 
     // Standard auth mocks
     await page.route('https://login.microsoftonline.com/**', async (route) => {

@@ -4,15 +4,20 @@ const { defineConfig, devices } = require('@playwright/test');
 /**
  * Playwright config for E2E testing of gm-salesplanning-frontend.
  *
- * Default target is the deployed dev environment, so runs exercise the
- * actually-deployed bundle and are immune to a stale local `dist/`.
+ * TARGET: local build on :4173 by default.
  *
- * Override to test a local build instead:
- *   E2E_BASE_URL=http://localhost:4173 npm test
- * (a local target must already be serving a fresh `npm run build` output)
+ * Do NOT point the full suite at https://dev.salesplanning.ingka.com — it was
+ * tried on 2026-08-26 and the host rate-limited us: 182/211 failed, 181 of them
+ * with HTTP 429 Too Many Requests. The throttle is per-client and persisted for
+ * minutes afterwards, blocking normal browser access to the dev site too.
+ * 211 tests x full-bundle navigations is simply too much traffic for a shared
+ * deployed environment.
  *
- * Note: network calls are still intercepted by page.route(), so this exercises
- * the deployed bundle against mock data — it does not hit the real backend.
+ * Use the deployed dev site for interactive/live-UI verification instead (a
+ * handful of page loads), not for the automated suite.
+ *
+ * Override the target when needed:
+ *   E2E_BASE_URL=http://localhost:5173 npm test
  */
 module.exports = defineConfig({
     testDir: '.',
@@ -23,7 +28,9 @@ module.exports = defineConfig({
     workers: process.env.CI ? 1 : undefined,
     reporter: 'html',
     use: {
-        baseURL: process.env.E2E_BASE_URL || 'https://dev.salesplanning.ingka.com',
+        // NOTE: defaults to a LOCAL build. Targeting the deployed dev host for
+        // the full 211-test suite triggers HTTP 429 rate limiting (see header).
+        baseURL: process.env.E2E_BASE_URL || 'http://localhost:4173',
         trace: 'on-first-retry',
     },
     projects: [

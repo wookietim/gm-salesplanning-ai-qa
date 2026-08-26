@@ -2100,9 +2100,16 @@ test.describe('Keyboard navigation', () => {
     test('Escape closes the user flyout modal (keyboard accessibility)', async ({ page }) => {
         await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
         await page.getByRole('button', { name: 'Open user menu' }).click();
-        await expect(page.getByRole('dialog', { name: 'User menu' })).toBeVisible();
+        const dialog = page.getByRole('dialog', { name: 'User menu' });
+        await expect(dialog).toBeVisible();
+        // toBeVisible resolves while the sheet is still mid enter-animation, and an
+        // Escape sent during that transition is ignored. Under full-suite parallel
+        // load the animation lags enough to make this flaky, so wait for it to settle.
+        await dialog.evaluate((el) =>
+            Promise.all(el.getAnimations({ subtree: true }).map((animation) => animation.finished)),
+        );
         await page.keyboard.press('Escape');
-        await expect(page.getByRole('dialog', { name: 'User menu' })).not.toBeVisible();
+        await expect(dialog).not.toBeVisible();
     });
 
     test('Sales Planning header link is keyboard focusable and Enter navigates home', async ({ page }) => {

@@ -364,40 +364,190 @@ function buildBody() {
     )
   );
 
+  /* -- asking the agent -- */
+  out.push(h(2, 'How to ask for tests to be run'));
+  out.push(
+    p(
+      'There are two ways in: ask the agent in plain English, or invoke the runners directly. ' +
+        'Most people want the first. Suites 2 and 3 can <em>only</em> be driven by an agent, for ' +
+        'reasons explained under "The emit model" below.'
+    )
+  );
+
+  out.push(h(3, 'Plain-English requests'));
+  out.push(
+    table(
+      ['Say this', 'What happens'],
+      [
+        [
+          'Run the e2e tests',
+          'All three suites: the 211 Playwright tests, the 25 API probes, and the 36 UI-API integration checks. Results are published to QA Summary.',
+        ],
+        [
+          'Run the e2e tests against the live environment',
+          'Same, but suite 1 is pointed at the live URL instead of a local build (see --base-url below).',
+        ],
+        [
+          'Just run the Playwright suite',
+          'Suite 1 only. No sign-in needed. Say this when nobody is available to authenticate.',
+        ],
+        [
+          'Run the API probes',
+          'Suite 2 only. Requires a signed-in browser session.',
+        ],
+        [
+          'Run the integration checks for HFB 08',
+          'Suite 3, scoped to one home furnishing business.',
+        ],
+        [
+          'Run QA on the components I changed',
+          'Pablo in changed mode - Bob writes plans for changed components, Susan executes them.',
+        ],
+        [
+          'Run QA for SSPLAN-623',
+          'Pablo scoped to a Jira ticket; acceptance criteria are pulled into the test plans.',
+        ],
+        [
+          'Publish the last run to Confluence',
+          'Re-publishes existing results without re-running anything.',
+        ],
+        [
+          'Re-run just the failures',
+          'Narrows the Playwright run with --grep to the failing test names.',
+        ],
+      ]
+    )
+  );
+  out.push(
+    panel(
+      'info',
+      'Two things worth saying explicitly when you ask',
+      p(
+        '<strong>Which environment.</strong> "Live" means the deployed dev environment; the default ' +
+          'for suite 1 is currently a local build. They can disagree.'
+      ) +
+        p(
+          '<strong>Whether you can sign in.</strong> Suites 2 and 3 stop dead without an authenticated ' +
+            'session. If you cannot sign in right now, say so and ask for suite 1 only - that is a ' +
+            'legitimate partial run, but it should be reported as a partial run, not as a clean pass.'
+        )
+    )
+  );
+
   /* -- running -- */
-  out.push(h(2, 'Running the suites'));
+  out.push(h(2, 'Direct invocation'));
+  out.push(h(3, 'Suite 1 and the orchestrator'));
   out.push(
     code(
       [
-        '# Suite 1 - Playwright functional (mocked API)',
+        '# Playwright functional suite, as the adapter configures it',
+        'node component-poc/qa-agent/scripts/run-e2e.js --adapter=gm-salesplanning-frontend',
+        '',
+        '# ...pointed at the live environment instead of a local build',
+        'node component-poc/qa-agent/scripts/run-e2e.js \\',
+        '  --adapter=gm-salesplanning-frontend \\',
+        '  --base-url=https://dev.salesplanning.ingka.com',
+        '',
+        '# ...only tests whose name matches a pattern',
+        'node component-poc/qa-agent/scripts/run-e2e.js \\',
+        '  --adapter=gm-salesplanning-frontend --grep="gap to close"',
+        '',
+        '# Or run Playwright straight from the e2e project',
         'cd e2e && npm test',
         '',
-        '# Suite 2 - real API probes',
-        'node component-poc/qa-agent/scripts/api-probes.js',
+        '# --- Pablo, the orchestrator ---',
         '',
-        '# Suite 3 - UI <-> API integration',
-        'node component-poc/qa-agent/scripts/ui-api-integration.js',
+        '# Default: only components changed in the working tree',
+        'node component-poc/qa-agent/scripts/run-pablo.js --adapter=gm-salesplanning-frontend',
         '',
-        '# Orchestrated run via Pablo',
-        'node component-poc/qa-agent/scripts/run-pablo.js --mode=changed',
+        '# Everything',
+        'node component-poc/qa-agent/scripts/run-pablo.js \\',
+        '  --adapter=gm-salesplanning-frontend --mode=full',
         '',
-        '# Publish results to Confluence',
+        '# A named component list',
+        'node component-poc/qa-agent/scripts/run-pablo.js \\',
+        '  --adapter=gm-salesplanning-frontend --mode=components \\',
+        '  --components=src/components/User/user.tsx',
+        '',
+        '# Scoped to Jira tickets',
+        'node component-poc/qa-agent/scripts/run-pablo.js \\',
+        '  --adapter=gm-salesplanning-frontend --jira-issues=SSPLAN-623,SSPLAN-708',
+        '',
+        '# Skip stages',
+        'node component-poc/qa-agent/scripts/run-pablo.js --skip-bob=true   # reuse existing plans',
+        'node component-poc/qa-agent/scripts/run-pablo.js --skip-e2e=true   # unit/component only',
+        '',
+        '# --- Bob and Susan directly ---',
+        'node component-poc/qa-agent/scripts/run-bob.js   --components=<paths> --output=QA-Tests',
+        'node component-poc/qa-agent/scripts/run-susan.js --plan-file=QA-Tests/<plan>.qa.md',
+        '',
+        '# --- Publish to Confluence ---',
         'node component-poc/qa-agent/scripts/publish-e2e-confluence.js         --results=<json> --env=.env',
         'node component-poc/qa-agent/scripts/publish-api-confluence.js         --results=<json> --env=.env',
         'node component-poc/qa-agent/scripts/publish-integration-confluence.js --results=<json> --env=.env',
+        'node component-poc/qa-agent/scripts/publish-architecture-confluence.js --env=.env   # this page',
+      ].join('\n'),
+      'bash'
+    )
+  );
+  out.push(
+    p(
+      'Pablo modes are <code>changed</code> (default), <code>full</code> and <code>components</code>. ' +
+        'Every flag above was read out of the runner sources, not from the guide.'
+    )
+  );
+
+  out.push(h(3, 'The emit model - suites 2 and 3'));
+  out.push(
+    panel(
+      'warning',
+      'These scripts do not run tests',
+      p(
+        'Running <code>node api-probes.js --emit=probe</code> prints roughly 15KB of JavaScript to ' +
+          'stdout. It does not execute a single probe. The script is <strong>generated</strong> to be ' +
+          'evaluated inside an already-authenticated browser page.'
+      ) +
+        p(
+          'This is deliberate. The bearer token is never extracted: the emitted harness lifts the ' +
+            '<code>Authorization</code> header off a genuine in-flight request into a page-scoped ' +
+            'variable, uses it inside the page, and returns only status codes and short response ' +
+            'previews. No secret ever crosses back into the agent transcript.'
+        )
+    )
+  );
+  out.push(
+    code(
+      [
+        '# Suite 2 - API probes. Each step is evaluated in the signed-in page.',
+        'node component-poc/qa-agent/scripts/api-probes.js --emit=capture   # install the fetch hook',
+        '#   ...then navigate so the app issues a real, uncached request',
+        'node component-poc/qa-agent/scripts/api-probes.js --emit=probe     # run 25 probes, return JSON',
+        'node component-poc/qa-agent/scripts/api-probes.js --emit=cleanup   # ALWAYS - restore fetch',
+        '',
+        '# Suite 3 - UI <-> API integration. Emitters run in order.',
+        'node component-poc/qa-agent/scripts/ui-api-integration.js --emit=capture',
+        'node component-poc/qa-agent/scripts/ui-api-integration.js --emit=country   --ru=US',
+        'node component-poc/qa-agent/scripts/ui-api-integration.js --emit=toggle',
+        'node component-poc/qa-agent/scripts/ui-api-integration.js --emit=hfb       --ru=US --hfb=05',
+        'node component-poc/qa-agent/scripts/ui-api-integration.js --emit=drilldown --ru=US --hfb=05',
+        'node component-poc/qa-agent/scripts/ui-api-integration.js --emit=charts    --ru=US --hfb=05',
+        'node component-poc/qa-agent/scripts/ui-api-integration.js --emit=stale     --ru=US',
+        'node component-poc/qa-agent/scripts/ui-api-integration.js --emit=leaf      --ru=US',
+        'node component-poc/qa-agent/scripts/ui-api-integration.js --emit=cleanup   # ALWAYS',
       ].join('\n'),
       'bash'
     )
   );
   out.push(
     panel(
-      'warning',
-      'Suites 2 and 3 need an authenticated session',
+      'note',
+      'Always run cleanup',
       p(
-        'Both drive the real API and capture a bearer token from a signed-in browser session. They ' +
-          'cannot run unattended in CI as currently written, and they cannot be run on your behalf ' +
-          'unless someone is signed in. If only suite 1 is run, that must be stated explicitly rather ' +
-          'than reported as a full pass.'
+        'Both suites monkey-patch <code>window.fetch</code>. The <code>cleanup</code> emitter restores ' +
+          'the native function and deletes the captured header. Skipping it leaves a hooked page and a ' +
+          'token in page scope. Note also that a <strong>full page reload destroys the captured ' +
+          'token</strong> - navigate with in-app clicks or history, never by setting ' +
+          '<code>location.href</code>.'
       )
     )
   );
@@ -476,7 +626,7 @@ function buildBody() {
         ],
         [
           'Suites 2 and 3 cannot run unattended',
-          'Both require a signed-in session to capture a bearer token.',
+          'Neither is a self-contained runner. Both emit a browser script that must be evaluated inside a signed-in page to capture a bearer token, so they cannot run in CI as written.',
         ],
         [
           'Integration coverage is US only',

@@ -235,6 +235,43 @@ Every Pablo run report must contain ALL of the following:
 
 ---
 
+## E2E test runs
+
+When the user asks you to **run E2E tests** (or anything equivalent like "run the
+Playwright suite", "run the end-to-end tests", "run the frontend tests"):
+
+**Step 1 — Ask which repo to test against before doing anything else:**
+
+> "Which repo should I run the E2E suite against?"
+> 1. **gm-salesplanning-frontend** (default — suite already written at `e2e/salesplanning-frontend.spec.js`)
+> 2. **A different repo** — provide the repo name/path and I'll check if a suite exists or needs to be written
+
+Do not proceed until the user confirms the target.
+
+**Step 2 — Review the test file for completeness:**
+Before running, open the spec file and verify:
+- Every page/route in the target app has at least one test
+- Every component rendered on those pages is exercised
+- All navigation paths between pages are covered
+- No obvious gaps (e.g. new routes added since the suite was last updated)
+
+If gaps are found, report them and ask whether to fill them before running.
+
+**Step 3 — Confirm the app is running**, then execute:
+```bash
+# Start the target app if not already running
+cd <repo> && npm run dev -- --port 4173 --strictPort
+
+# Run the suite
+cd gm-salesplanning-ai-qa/e2e && npm test
+```
+
+**Step 4 — Report results** using the standard Pablo run report format,
+including pass/fail counts, any failures with root cause, and the list of
+skipped (`fixme`) tests with their unblock conditions.
+
+---
+
 ## Reporting quality bar
 
 - Never write "overall PASS" without confirming zero FAILs across all test IDs

@@ -1,0 +1,29 @@
+Issue SSPLAN-722: View More - Component
+Acceptance Criteria (derived from description):
+*User Story:* As an HFB leader when there are more than 10 articles, I need to be able to see more.
+
+*Description:* This ticket covers the development of a list footer component that handles progressive expansion when an article list contains more than 10 items.
+
+*Background:*
+  Given I am an HFB leader logged into the Sales Planning monitoring tool
+  And I am viewing an article list within a Product Area (PA)
+
+*Scenario:* Hide footer when list has 10 or fewer articles
+  Given the Product Area contains 10 or fewer articles
+  When the list renders
+  Then the "View More" footer component should not be visible
+
+*Scenario:* Display "View More" when list has more than 10 articles
+  Given the Product Area contains 11 or more articles
+  When the list renders
+  Then the list should initially display only 10 articles
+  And the footer should display "View More"
+
+*Scenario:* Expand list on click
+  Given the list is displaying 10 of 25 articles
+  When I click the "View More" button
+  Then the list should expand to show the next set of articles
+
+*Design:* [Figma|https://www.figma.com/design/HdtKcUKqPyPfxr3Er8sStc/Sales-Planning---Spec?node-id=3708-2533&t=lqmBUFqwSKjFFRJ3-4]
+
+!image-2026-07-31-13-38-42-976.png!

@@ -141,6 +141,25 @@ function buildSection(payload, today) {
       'product, and are reported separately so they are never mistaken for bugs.</p>'
     : '';
 
+  // Collapsed by default, matching the E2E row. Counts live in the title so the
+  // section still reads correctly while shut, and a failure is prefixed with a
+  // warning so a bad run cannot hide behind a closed drawer.
+  const titleParts = [`${counts.passed || 0} passed`];
+  if (counts.failed) titleParts.push(`${counts.failed} failed`);
+  if (counts.harness) titleParts.push(`${counts.harness} harness`);
+  if (counts.observed) titleParts.push(`${counts.observed} observed`);
+  const expandTitle =
+    `${counts.failed ? '⚠️ ' : ''}Show all ${results.length} checks ` +
+    `(${titleParts.join(' · ')})`;
+
+  const detailTable =
+    '<ac:structured-macro ac:name="expand" ac:schema-version="1">' +
+    `<ac:parameter ac:name="title">${escapeXml(expandTitle)}</ac:parameter>` +
+    '<ac:rich-text-body>' +
+    `<table><tbody>${header}${body}</tbody></table>` +
+    '</ac:rich-text-body>' +
+    '</ac:structured-macro>';
+
   return (
     `<h2>${HEADING} — ${escapeXml(today)}</h2>` +
     '<p>These checks drive the <strong>real UI</strong> in an authenticated browser and, ' +
@@ -159,7 +178,7 @@ function buildSection(payload, today) {
     `(retail unit <code>${escapeXml(payload.retailUnit || 'n/a')}</code>).</p>` +
     harnessNote +
     observedNote +
-    `<table><tbody>${header}${body}</tbody></table>` +
+    detailTable +
     (payload.note ? `<p><em>${escapeXml(payload.note)}</em></p>` : '') +
     '<ac:structured-macro ac:name="expand" ac:schema-version="1">' +
     '<ac:parameter ac:name="title">Run metadata</ac:parameter>' +
@@ -173,8 +192,17 @@ function buildSection(payload, today) {
   );
 }
 
+/**
+ * Bounds the managed section from its heading to the start of the next <h2>,
+ * or the end of the page.
+ *
+ * This deliberately does NOT end at </ac:structured-macro>. The section now
+ * contains two macros - the collapsible detail table and the run metadata -
+ * and a lazy match would stop at the first, leaving the metadata block behind
+ * to be duplicated on every subsequent publish.
+ */
 function sectionPattern() {
-  return new RegExp(`<h2>${HEADING}[^<]*</h2>[\\s\\S]*?</ac:structured-macro>`, 'i');
+  return new RegExp(`<h2>${HEADING}[^<]*</h2>[\\s\\S]*?(?=<h2>|$)`, 'i');
 }
 
 function upsertSection(storageValue, section) {

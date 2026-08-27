@@ -1,0 +1,637 @@
+{
+  "target": "https://api.dev.salesplanning.ingka.com",
+  "ranAt": "2026-08-27T16:45:33.069Z",
+  "note": "Expanded API probe suite. Adds authorisation depth (signature, payload, alg=none, expiry, truncation), metric/level coverage including PRA and GB, filter handling, payload limits, content negotiation, information disclosure, method handling, plus in-script response-contract, arithmetic-consistency, determinism and concurrency phases. Security response headers cannot be inspected from inside the browser because CORS exposes only four headers to scripts; that check is recorded as a harness gap for curl/CI.",
+  "results": [
+    {
+      "group": "Metrics — happy path",
+      "name": "KPI_SUMMARY at country level returns data",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 313
+    },
+    {
+      "group": "Metrics — happy path",
+      "name": "KPI_SUMMARY at HFB level returns data",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 43
+    },
+    {
+      "group": "Metrics — happy path",
+      "name": "KPI_SUMMARY at PA level returns data",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 549
+    },
+    {
+      "group": "Metrics — happy path",
+      "name": "Country KPI_SUMMARY carries HFB children (source of the HFB performance table)",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 42
+    },
+    {
+      "group": "Metrics — happy path",
+      "name": "HFB KPI_SUMMARY carries PA children (source of the PA performance table)",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 46
+    },
+    {
+      "group": "Metrics — happy path",
+      "name": "WEEKLY_SALES_TREND at country level returns data",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 44
+    },
+    {
+      "group": "Metrics — happy path",
+      "name": "ROLLING_SALES_TREND at country level returns data",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 37
+    },
+    {
+      "group": "Metrics — happy path",
+      "name": "Client-side-only metric names are not backend metrics",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 33
+    },
+    {
+      "group": "Input validation",
+      "name": "Unknown metric name is rejected",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 44
+    },
+    {
+      "group": "Input validation",
+      "name": "Unsupported level is rejected and lists valid values",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 38
+    },
+    {
+      "group": "Input validation",
+      "name": "Missing 'filters' is rejected",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 42
+    },
+    {
+      "group": "Input validation",
+      "name": "Missing 'metric' is rejected",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 41
+    },
+    {
+      "group": "Input validation",
+      "name": "Empty JSON body is rejected",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 35
+    },
+    {
+      "group": "Input validation",
+      "name": "Malformed JSON is rejected (not a 500)",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 41
+    },
+    {
+      "group": "Input validation",
+      "name": "Wrong type for filters (string instead of object) is rejected",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 40
+    },
+    {
+      "group": "Input validation",
+      "name": "HFB level without hfbNo does not 500",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 41
+    },
+    {
+      "group": "Authentication",
+      "name": "Request without Authorization header is refused",
+      "outcome": "passed",
+      "status": 403,
+      "reasons": [],
+      "note": null,
+      "ms": 36
+    },
+    {
+      "group": "Authentication",
+      "name": "Malformed bearer token is refused",
+      "outcome": "passed",
+      "status": 401,
+      "reasons": [],
+      "note": null,
+      "ms": 34
+    },
+    {
+      "group": "Authentication",
+      "name": "Empty bearer token is refused",
+      "outcome": "passed",
+      "status": 403,
+      "reasons": [],
+      "note": null,
+      "ms": 36
+    },
+    {
+      "group": "Authentication",
+      "name": "Token in the wrong scheme (Basic) is refused",
+      "outcome": "passed",
+      "status": 403,
+      "reasons": [],
+      "note": null,
+      "ms": 39
+    },
+    {
+      "group": "Authorisation",
+      "name": "A token with an altered signature is refused",
+      "outcome": "passed",
+      "status": 401,
+      "reasons": [],
+      "note": null,
+      "ms": 32
+    },
+    {
+      "group": "Authorisation",
+      "name": "A token with an altered payload is refused",
+      "outcome": "passed",
+      "status": 401,
+      "reasons": [],
+      "note": null,
+      "ms": 34
+    },
+    {
+      "group": "Authorisation",
+      "name": "An alg=none token is refused",
+      "outcome": "passed",
+      "status": 401,
+      "reasons": [],
+      "note": null,
+      "ms": 37
+    },
+    {
+      "group": "Authorisation",
+      "name": "An expired token is refused with 401, not a 500",
+      "outcome": "passed",
+      "status": 401,
+      "reasons": [],
+      "note": null,
+      "ms": 38
+    },
+    {
+      "group": "Authorisation",
+      "name": "A truncated token is refused",
+      "outcome": "passed",
+      "status": 401,
+      "reasons": [],
+      "note": null,
+      "ms": 34
+    },
+    {
+      "group": "Unknown identifiers",
+      "name": "Nonexistent region returns an empty result rather than an error",
+      "outcome": "observed",
+      "status": 200,
+      "reasons": [],
+      "note": "Returns 200 with empty arrays and is markedly slower than a real region, which suggests the query runs before finding nothing. Confirm whether 200-empty (rather than 404) is the intended contract.",
+      "ms": 40
+    },
+    {
+      "group": "Unknown identifiers",
+      "name": "Nonexistent HFB number returns an empty result rather than an error",
+      "outcome": "observed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 43
+    },
+    {
+      "group": "Injection-shaped input",
+      "name": "SQL-ish retailUnitCode is handled safely",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 46
+    },
+    {
+      "group": "Injection-shaped input",
+      "name": "Very long retailUnitCode is handled safely",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 184
+    },
+    {
+      "group": "Method handling",
+      "name": "GET on /metrics is rejected cleanly",
+      "outcome": "passed",
+      "status": 405,
+      "reasons": [],
+      "note": null,
+      "ms": 39
+    },
+    {
+      "group": "Method handling",
+      "name": "PUT on /metrics is rejected cleanly",
+      "outcome": "passed",
+      "status": 405,
+      "reasons": [],
+      "note": null,
+      "ms": 73
+    },
+    {
+      "group": "Method handling",
+      "name": "PATCH on /metrics is rejected cleanly",
+      "outcome": "passed",
+      "status": 405,
+      "reasons": [],
+      "note": null,
+      "ms": 74
+    },
+    {
+      "group": "Method handling",
+      "name": "DELETE on /metrics is rejected cleanly",
+      "outcome": "passed",
+      "status": 405,
+      "reasons": [],
+      "note": null,
+      "ms": 77
+    },
+    {
+      "group": "Metrics — coverage",
+      "name": "PRA level is accepted, not a 500",
+      "outcome": "observed",
+      "status": 400,
+      "reasons": [],
+      "note": "Answered clearly: 400 with \"KPI_SUMMARY metric does not support PRA level - no mart exists at that grain.\" So `pra` is a valid level name but only for metrics that have a mart at that grain. Worth confirming which metric, if any, is meant to use it.",
+      "ms": 82
+    },
+    {
+      "group": "Metrics — coverage",
+      "name": "WEEKLY_SALES_TREND at HFB level returns data",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 41
+    },
+    {
+      "group": "Metrics — coverage",
+      "name": "WEEKLY_SALES_TREND at PA level returns data",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 50
+    },
+    {
+      "group": "Metrics — coverage",
+      "name": "ROLLING_SALES_TREND at HFB level returns data",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 37
+    },
+    {
+      "group": "Metrics — coverage",
+      "name": "KPI_SUMMARY for a second market (GB) returns data",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 43
+    },
+    {
+      "group": "Metrics — coverage",
+      "name": "A GB request returns GB rows, not the previous market",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 47
+    },
+    {
+      "group": "Metrics — coverage",
+      "name": "KPI_SUMMARY at GB HFB level returns GB rows",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 42
+    },
+    {
+      "group": "Filter handling",
+      "name": "Unknown filter keys do not cause a 500",
+      "outcome": "observed",
+      "status": 200,
+      "reasons": [],
+      "note": "Silently ignoring unknown filters means a typo in a filter name returns unfiltered data rather than an error. Worth confirming which behaviour is intended.",
+      "ms": 46
+    },
+    {
+      "group": "Filter handling",
+      "name": "Numeric hfbNo (5) is handled like the string \"05\"",
+      "outcome": "observed",
+      "status": 200,
+      "reasons": [],
+      "note": "Returns 200 with zero rows rather than HFB 05 or an error. A client that forgets to zero-pad gets an empty dashboard and no indication that it asked the wrong question.",
+      "ms": 49
+    },
+    {
+      "group": "Filter handling",
+      "name": "Lowercase retailUnitCode is handled consistently",
+      "outcome": "observed",
+      "status": 200,
+      "reasons": [],
+      "note": "Market codes are case-sensitive: lowercase \"us\" returns 200 with zero rows and echoes retailUnitCode back as \"us\". Note this is the opposite of `level`, which is case-insensitive.",
+      "ms": 39
+    },
+    {
+      "group": "Filter handling",
+      "name": "Uppercase level name is handled, not 500",
+      "outcome": "observed",
+      "status": 200,
+      "reasons": [],
+      "note": "Accepted: uppercase `level` returns full data. Combined with the case-sensitive retailUnitCode above, the two fields follow opposite rules - worth making consistent.",
+      "ms": 40
+    },
+    {
+      "group": "Filter handling",
+      "name": "A paNo that does not belong to the given hfbNo does not 500",
+      "outcome": "observed",
+      "status": 200,
+      "reasons": [],
+      "note": "Returns 200 with zero rows. The contradiction is neither rejected nor resolved in favour of one filter - the caller just gets nothing back.",
+      "ms": 510
+    },
+    {
+      "group": "Filter handling",
+      "name": "null filters is rejected cleanly",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 39
+    },
+    {
+      "group": "Filter handling",
+      "name": "An array body instead of an object is rejected cleanly",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 38
+    },
+    {
+      "group": "Payload limits",
+      "name": "A deeply nested filters object does not 500",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 62
+    },
+    {
+      "group": "Payload limits",
+      "name": "A very large body is rejected or handled, not a 500",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 178
+    },
+    {
+      "group": "Content negotiation",
+      "name": "A text/plain body is rejected cleanly",
+      "outcome": "passed",
+      "status": 415,
+      "reasons": [],
+      "note": null,
+      "ms": 207
+    },
+    {
+      "group": "Content negotiation",
+      "name": "Accept: text/html still yields JSON or a clean refusal",
+      "outcome": "passed",
+      "status": 406,
+      "reasons": [],
+      "note": null,
+      "ms": 47
+    },
+    {
+      "group": "Information disclosure",
+      "name": "A malformed request does not leak a stack trace",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 51
+    },
+    {
+      "group": "Cross-level consistency",
+      "name": "HFBs listed as country children resolve at hfb level",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null
+    },
+    {
+      "group": "Cross-level consistency",
+      "name": "HFB 01 requested directly matches the same HFB inside the country response",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null
+    },
+    {
+      "group": "Cross-level consistency",
+      "name": "HFB 02 requested directly matches the same HFB inside the country response",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null
+    },
+    {
+      "group": "Cross-level consistency",
+      "name": "HFB 03 requested directly matches the same HFB inside the country response",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null
+    },
+    {
+      "group": "Response contract",
+      "name": "Every documented field is present",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null
+    },
+    {
+      "group": "Response contract",
+      "name": "Fields the API reports as unavailable",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null
+    },
+    {
+      "group": "Response contract",
+      "name": "Every populated numeric field parses as a finite number",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null
+    },
+    {
+      "group": "Response contract",
+      "name": "currentIkeaWeek is a plausible YYYYWW value",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null
+    },
+    {
+      "group": "Arithmetic consistency",
+      "name": "Every index equals actual divided by its basis, times 100",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null
+    },
+    {
+      "group": "Arithmetic consistency",
+      "name": "Gap equals the full-year goal minus actual",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null
+    },
+    {
+      "group": "Arithmetic consistency",
+      "name": "The \"to go vs goal\" percentage matches its own gap",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null
+    },
+    {
+      "group": "Arithmetic consistency",
+      "name": "Relationship between the YTD goal and the full-year goal",
+      "outcome": "observed",
+      "status": 200,
+      "reasons": [],
+      "note": "The year-to-date goal is larger than the full-year goal. That may be intended phasing, but it means \"gap to close\" is measured against a smaller number than the goal already used for the year-to-date index. Worth a product answer."
+    },
+    {
+      "group": "Response contract",
+      "name": "Country children contain no duplicate HFB numbers",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null
+    },
+    {
+      "group": "Response contract",
+      "name": "Every HFB child carries a display name",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null
+    },
+    {
+      "group": "Response contract",
+      "name": "Child rows reporting an unavailable metric",
+      "outcome": "observed",
+      "status": 200,
+      "reasons": [],
+      "note": "Where the forecast is null the matching \"vs latest forecast\" index is null too, so the response is internally consistent - it is reporting an absent figure, not a broken one. The question for the UI is whether that renders as a blank rather than as a zero or a dash that looks like real data."
+    },
+    {
+      "group": "Response contract",
+      "name": "Every populated child metric is numerically well formed",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null
+    },
+    {
+      "group": "Determinism",
+      "name": "Two identical requests return identical data",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null
+    },
+    {
+      "group": "Concurrency",
+      "name": "5 simultaneous requests all succeed",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null
+    },
+    {
+      "group": "Concurrency",
+      "name": "A burst does not trigger rate limiting",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null
+    },
+    {
+      "group": "Transport security",
+      "name": "Security headers cannot be inspected from inside the page",
+      "outcome": "harness",
+      "status": 200,
+      "reasons": [
+        "CORS exposes only 4 header(s) to scripts: [cache-control, content-type, expires, pragma]"
+      ],
+      "note": "Checking for strict-transport-security, x-content-type-options and similar needs a request made outside the browser - curl or a CI step - where the full response head is readable. Flagged so this is a known gap rather than an unnoticed one."
+    }
+  ]
+}

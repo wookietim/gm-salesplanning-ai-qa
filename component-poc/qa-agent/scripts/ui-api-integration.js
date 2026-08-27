@@ -425,38 +425,171 @@ if (weekly.__error) {
 } else {
     const rows = (weekly.data && weekly.data.data) || [];
     const weekChart = wraps.find((w) => /by week/i.test(norm(sectionFor(w) || w))) || wraps[0];
-    const bars = weekChart.querySelectorAll('.recharts-bar-rectangle').length;
 
-    record('Weekly chart', 'One bar per week returned by WEEKLY_SALES_TREND',
-        rows.length === 0 ? 'harness' : (bars === rows.length ? 'passed' : 'failed'),
-        bars === rows.length ? [] : ['API weeks ' + rows.length + ' vs bars ' + bars],
-        'API rows=' + rows.length + ', bars=' + bars);
+    // Recharts animates bars in, so an immediate read can catch a partly
+    // rendered series (39 bars read as 34). Wait for the count to hold steady
+    // across two consecutive samples before trusting it.
+    let bars = weekChart.querySelectorAll('.recharts-bar-rectangle').length;
+    for (let s = 0; s < 12; s++) {
+        await new Promise((r) => setTimeout(r, 250));
+        const next = weekChart.querySelectorAll('.recharts-bar-rectangle').length;
+        if (next === bars && next > 0) break;
+        bars = next;
+    }
+
+    const withSales = rows.filter((r) => Number(r.weeklyNetSalesCy) > 0).length;
+    const completed = currentWeek
+        ? rows.filter((r) => Number(r.weeklyNetSalesCy) > 0 && String(r.ikeaWeek) <= String(currentWeek)).length
+        : null;
+
+    // Bar count depends on the toggle. In value mode ("Sales"/"Qty") the chart
+    // draws a bar for every week the API returned, future weeks included (at
+    // zero height). In index mode ("Sales index"/"Qty index") there is no index
+    // for a week that has not happened, so only completed weeks get a bar.
+    // Verified live: 39 bars in Sales mode vs 34 in Qty index mode, against 39
+    // API weeks of which 34 were completed.
+    const indexMode = [...(sectionFor(weekChart) || weekChart)
+        .querySelectorAll('button[aria-pressed="true"]')]
+        .some((b) => /index/i.test((b.textContent || '').trim()));
+    const expectedBars = (indexMode && completed !== null) ? completed : rows.length;
+    record('Weekly chart', 'One bar per week the chart can plot in its current mode',
+        rows.length === 0 ? 'harness' : (bars === expectedBars ? 'passed' : 'failed'),
+        bars === expectedBars ? [] : [
+            'bars ' + bars + ', expected ' + expectedBars,
+            'chart is in ' + (indexMode ? 'index' : 'value') + ' mode',
+            'API returned ' + rows.length + ' week(s), ' + completed + ' of them completed (current week ' + currentWeek + ')',
+        ],
+        'mode=' + (indexMode ? 'index' : 'value') + ', API rows=' + rows.length +
+            ', completed=' + completed + ', bars=' + bars);
 
     // Point counts per plotted line. The current-year line legitimately stops
     // at the last week with sales; last year runs the full span.
     const counts = [...weekChart.querySelectorAll('.recharts-line-curve')]
         .map((p) => ((p.getAttribute('d') || '').match(/[ML]/g) || []).length)
         .sort((a, b) => a - b);
-    const withSales = rows.filter((r) => Number(r.weeklyNetSalesCy) > 0).length;
-    const completed = currentWeek
-        ? rows.filter((r) => Number(r.weeklyNetSalesCy) > 0 && String(r.ikeaWeek) <= String(currentWeek)).length
-        : null;
 
     record('Weekly chart', 'Last-year series spans every week the API returned',
         counts.length === 0 ? 'harness' : (counts.indexOf(rows.length) !== -1 ? 'passed' : 'failed'),
         counts.indexOf(rows.length) !== -1 ? [] : ['line point counts ' + JSON.stringify(counts) + ', expected one of them to be ' + rows.length],
         'point counts ' + JSON.stringify(counts));
 
-    const cyOk = counts.indexOf(withSales) !== -1 ||
-        (completed !== null && counts.indexOf(completed) !== -1);
-    record('Weekly chart', 'Current-year series covers weeks up to the current one, and no further',
-        counts.length === 0 ? 'harness' : (cyOk ? 'passed' : 'failed'),
-        cyOk ? [] : [
-            'line point counts ' + JSON.stringify(counts),
-            'weeks with sales ' + withSales + ', completed weeks ' + completed +
-                ' (current week ' + currentWeek + ')',
-        ],
-        'completed=' + completed + ', with sales=' + withSales + ', current week=' + currentWeek);
+    // How the series handles weeks that have not happened yet. Recharts plots
+    // every category in the dataset, so the point count alone is always
+    // rows.length and proves nothing. What matters is the VALUE plotted for
+    // future weeks: dropping to the zero baseline reads visually as "sales
+    // fell to nothing" rather than "no data yet".
+    const futureWeeks = currentWeek
+        ? rows.filter((r) => String(r.ikeaWeek) > String(currentWeek)).length
+        : 0;
+
+    if (!currentWeek) {
+        record('Weekly chart', 'Weeks after the current one are not plotted as real values',
+            'harness', ['current week unavailable from KPI_SUMMARY']);
+    } else if (futureWeeks === 0) {
+        record('Weekly chart', 'Weeks after the current one are not plotted as real values',
+            'passed', [], 'API returned no weeks beyond ' + currentWeek);
+    } else {
+        const curves = [...weekChart.querySelectorAll('.recharts-line-curve')]
+            .map((p) => (p.getAttribute('d') || '')
+                .split(/[ML]/).slice(1)
+                .map((s) => Number(s.split(',')[1])))
+            .filter((ys) => ys.length === rows.length);
+        const atBaseline = curves.length > 0 && curves.every((ys) => {
+            const base = Math.max.apply(null, ys);
+            return ys.slice(rows.length - futureWeeks).every((y) => Math.abs(y - base) < 0.5);
+        });
+        record('Weekly chart', 'Weeks after the current one are not plotted as real values',
+            curves.length === 0 ? 'harness' : (atBaseline ? 'observed' : 'passed'),
+            atBaseline ? [
+                'the last ' + futureWeeks + ' week(s) sit beyond the current week (' + currentWeek + ')',
+                'both series are drawn down to the zero baseline across those weeks rather than stopping',
+                'worth confirming a flat line at zero is the intended way to show "not yet happened"',
+            ] : [],
+            futureWeeks + ' future week(s), curves=' + curves.length);
+    }
+
+    // --- Bar VALUES, not just bar count ---------------------------------
+    //
+    // Counting bars proves the series is the right LENGTH. It says nothing
+    // about what each bar plots: every bar could carry week 1's figure, or
+    // the weeks could be reversed, and all three checks above still pass.
+    //
+    // Recharts does not write the datum anywhere readable, so the value is
+    // recovered from the bar's pixel height. Absolute heights depend on the
+    // axis scale, so each bar is normalised against the tallest bar and
+    // compared with the API value normalised against the largest API value.
+    // Ratios cancel the scale factor out.
+    //
+    // The bars plot LAST YEAR, not the current year - established by
+    // correlating every numeric field in the response against the rendered
+    // heights, where weeklyNetSalesLy matched with zero deviation across all
+    // 39 weeks and the runner-up was out by 0.0992.
+    const BAR_FIELDS = { Sales: 'weeklyNetSalesLy', Qty: 'weeklyNetQuantityLy' };
+    const chartToggle = (() => {
+        const sec = sectionFor(weekChart) || weekChart;
+        const on = [...sec.querySelectorAll('button[aria-pressed="true"]')]
+            .map((b) => (b.textContent || '').trim());
+        return on.find((t) => BAR_FIELDS[t]) || null;
+    })();
+
+    if (!chartToggle) {
+        // "Qty index" / "Sales index" put the chart into index mode, where the
+        // bars no longer plot a raw weekly value. Not a failure - the check
+        // simply does not apply, and claiming otherwise would be a false pass.
+        record('Weekly chart', 'Bar heights match the API week by week', 'harness',
+            ['chart is in index mode, or the toggle could not be read - bar values not comparable'],
+            'value check skipped');
+    } else {
+        const barField = BAR_FIELDS[chartToggle];
+        const geom = [...weekChart.querySelectorAll('.recharts-bar-rectangle')]
+            .map((b) => {
+                const p = b.querySelector('path,rect');
+                return p ? { x: Number(p.getAttribute('x')), h: Number(p.getAttribute('height')) } : null;
+            })
+            .filter((b) => b && isFinite(b.x) && isFinite(b.h))
+            .sort((a, b) => a.x - b.x);
+
+        const apiVals = rows.map((r) => Math.abs(Number(r[barField])));
+        const maxH = Math.max.apply(null, geom.map((g) => g.h));
+        const maxV = Math.max.apply(null, apiVals);
+        const spread = new Set(apiVals.map((v) => Math.round(v))).size;
+
+        if (geom.length !== rows.length || !isFinite(maxH) || maxH <= 0 || !isFinite(maxV) || maxV <= 0) {
+            record('Weekly chart', 'Bar heights match the API week by week', 'harness',
+                ['read ' + geom.length + ' bar geometries for ' + rows.length + ' API weeks'],
+                'could not measure bars');
+        } else if (spread < 2) {
+            // Every week identical: normalising makes any ordering look right,
+            // so a pass here would be meaningless.
+            record('Weekly chart', 'Bar heights match the API week by week', 'harness',
+                ['every API value for ' + barField + ' is identical - normalised comparison cannot discriminate'],
+                'no spread in API data');
+        } else {
+            // Tolerance is 1% of the tallest bar. Observed worst deviation on a
+            // healthy run is 0, so this is loose enough for sub-pixel rounding
+            // and far tighter than any real mis-plot.
+            const TOL = 0.01;
+            const bad = [];
+            let worst = 0;
+            for (let i = 0; i < rows.length; i++) {
+                const expected = apiVals[i] / maxV;
+                const actual = geom[i].h / maxH;
+                const delta = Math.abs(expected - actual);
+                if (delta > worst) worst = delta;
+                if (delta > TOL) {
+                    bad.push('week ' + rows[i].ikeaWeek + ': plotted ' + actual.toFixed(3) +
+                        ' of full height, API implies ' + expected.toFixed(3));
+                }
+            }
+            record('Weekly chart',
+                'Bar heights match the API week by week',
+                bad.length ? 'failed' : 'passed',
+                bad.slice(0, 6),
+                'compared ' + rows.length + ' weeks against ' + barField +
+                    ' (toggle: ' + chartToggle + '), worst deviation ' + worst.toFixed(4) +
+                    ' of full height, tolerance ' + TOL);
+        }
+    }
 }
 
 // --- Trends - rolling indices -------------------------------------------
@@ -861,7 +994,14 @@ record('HFB → PA list',
     missing.slice(0, 6).map((m) => 'not rendered: ' + m),
     'checked ' + kids.length + ' names');
 
-const toggle = activeToggle(null);
+// The toggle must be read from the PA section itself. The weekly chart has its
+// own identical-looking control, and reading from document scope returns
+// whichever appears first in the DOM - which is the chart's. That silently
+// compares Qty-rendered rows against netSales* fields and manufactures a full
+// set of false failures.
+const paSection = paButtons.length ? sectionFor(paButtons[0].el) : null;
+const toggleScope = paSection || document;
+const toggle = activeToggle(paSection) || activeToggle(null);
 const field = TOGGLE_FIELDS[toggle];
 if (field && parsed.length) {
     const checks = parsed.map((p) => {
@@ -882,6 +1022,99 @@ if (field && parsed.length) {
         checkRowMetrics(parsed, kids, (k) => k.paNo, prefix, 'HFB → PA list', 'toggle: ' + toggle);
     }
     checkRowGaps(parsed, kids, (k) => k.paNo, 'HFB → PA list');
+}
+
+// PA ordering. The country list asserts its card order; the PA list below an
+// HFB never did, so a level that sorted correctly at the top and wrongly one
+// level down would pass the suite. The heading states "By gap to goal (worst
+// first)", which is the same ascending sort the country cards use.
+//
+// Reported as an observation rather than a failure: ordering is presentation,
+// and ties in the sort key have no defined order, so a strict sequence
+// comparison can differ from the API for entirely legitimate reasons.
+if (field && parsed.length > 1) {
+    const domOrder = parsed.map((p) => p.no);
+    const apiOrder = kids.slice()
+        .sort((a, b) => Number(a[field]) - Number(b[field]))
+        .map((k) => k.paNo);
+    const same = JSON.stringify(domOrder) === JSON.stringify(apiOrder);
+
+    // A tie means two PAs share the sort key, so either sequence is correct.
+    const values = kids.map((k) => Number(k[field]));
+    const ties = values.length - new Set(values).size;
+
+    record('HFB → PA list',
+        'PA order matches API sorted by ' + field + ' ascending (worst first)',
+        same ? 'passed' : 'observed',
+        same ? [] : [
+            'UI order: ' + domOrder.slice(0, 8).join(', '),
+            'API order: ' + apiOrder.slice(0, 8).join(', '),
+            ties ? ties + ' PA(s) share a sort value, so their relative order is undefined' :
+                'no ties in the sort key',
+        ],
+        'compared ' + domOrder.length + ' PAs (toggle: ' + toggle + ')' +
+            (same ? '' : ' - ordering is presentation, raised as a question not a defect'));
+}
+
+// The same rows, read again under the OTHER metric. Everything above runs on
+// whichever toggle happened to be active, which in practice is always "Qty
+// index". A field miswired only on the sales side - netSales* rendered where
+// netQuantity* was meant, or vice versa - is invisible until the toggle is
+// flipped, which is exactly the class of bug this suite exists to catch.
+if (parsed.length) {
+    const other = Object.keys(TOGGLE_FIELDS).find((t) => t !== toggle);
+    const btn = other
+        ? [...toggleScope.querySelectorAll('button')].find((b) => (b.textContent || '').trim() === other)
+        : null;
+
+    if (!btn) {
+        record('HFB → PA list', 'PA rows re-checked under the other metric', 'harness',
+            ['could not find a "' + other + '" toggle button on the HFB page'], '');
+    } else {
+        const previous = toggle;
+        btn.click();
+        await new Promise((r) => setTimeout(r, 1200));
+
+        const nowToggle = activeToggle(paSection) || activeToggle(null);
+        const nowField = TOGGLE_FIELDS[nowToggle];
+
+        if (nowToggle !== other || !nowField) {
+            record('HFB → PA list', 'PA rows re-checked under the other metric', 'harness',
+                ['clicked "' + other + '" but the active toggle reads "' + nowToggle + '"'], '');
+        } else {
+            const reparsed = [...document.querySelectorAll('button')]
+                .map((b) => norm(b))
+                .filter((t) => /-\\s*\\d{4}\\b/.test(t))
+                .map((t) => ({
+                    no: (t.match(/-\\s*(\\d{4})\\b/) || [])[1],
+                    idx: (t.match(/(\\d+)\\s*vs goal/) || [])[1],
+                    text: t,
+                }))
+                .filter((p) => p.no);
+
+            const checks = reparsed.map((p) => {
+                const k = kids.find((x) => x.paNo === p.no);
+                if (!k) return { id: p.no, rendered: p.idx, expected: null, match: false };
+                return { id: p.no, rendered: p.idx, expected: round(k[nowField]), match: p.idx === round(k[nowField]) };
+            });
+            const c = classify(checks, 'PA rows under ' + nowToggle);
+            record('HFB → PA list',
+                'Displayed PA index matches API ' + nowField + ' (toggle: ' + nowToggle + ')',
+                c.outcome, c.reasons, 'compared ' + checks.length + ' rows after switching metric');
+
+            const prefix2 = METRIC_PREFIX[nowToggle];
+            if (prefix2 && reparsed.length) {
+                checkRowMetrics(reparsed, kids, (k) => k.paNo, prefix2, 'HFB → PA list', 'toggle: ' + nowToggle);
+            }
+        }
+
+        // Always put the control back, so later scripts see the page as they
+        // expect it. Leaving it flipped would silently change what the
+        // drill-down and chart emitters compare against.
+        const back = [...toggleScope.querySelectorAll('button')]
+            .find((b) => (b.textContent || '').trim() === previous);
+        if (back) { back.click(); await new Promise((r) => setTimeout(r, 800)); }
+    }
 }
 
 // The HFB's own headline number, from the hfb-level response.
@@ -975,6 +1208,265 @@ return JSON.stringify({ level: 'drilldown', ru: RU, hfb: HFB, ranAt: new Date().
 `.trim();
 }
 
+/**
+ * Do the children add up to the parent?
+ *
+ * Every other check in this suite compares ONE number against ONE field. This
+ * compares a number against the sum of its parts, which is the only assertion
+ * here capable of catching a dropped or double-counted row: if one HFB went
+ * missing from the aggregate, every individual HFB check would still pass.
+ *
+ * Deliberately reported as an observation, never a failure. The country total
+ * and the per-HFB rows are served from independently refreshed caches - the
+ * skew was measured at 28.4h and confirmed as intended on 2026-08-27 - so a
+ * small discrepancy is expected. A failure here would just recreate the noise
+ * that decision removed. What it is really watching for is a gross error: a
+ * whole HFB absent from the sum shows up as a percentage, not a rounding tail.
+ */
+function buildAggregationScript(retailUnitCode) {
+    return `
+${SHARED}
+if (!window.__auth) return JSON.stringify({ error: 'no auth captured' });
+
+const RU = ${JSON.stringify(retailUnitCode)};
+
+const country = await post({ metric: 'KPI_SUMMARY', level: 'country', filters: { retailUnitCode: RU } });
+if (country.__error) return JSON.stringify({ error: 'API returned ' + country.__error });
+
+const parent = country.data && country.data.data && country.data.data[0];
+const kids = (country.data && country.data.children) || [];
+
+if (!parent || kids.length === 0) {
+    record('Aggregation', 'Country total reconciles with the sum of its HFBs', 'harness',
+        ['no parent row or no children in the country response'], '');
+} else {
+    // Only additive quantities can be summed. Indices are ratios and averaging
+    // them would be arithmetically meaningless, so they are excluded outright
+    // rather than compared with a wide tolerance.
+    const ADDITIVE = [
+        'netSales', 'netQuantity',
+        'netSalesGoal', 'netQuantityGoal',
+        'netSalesGap', 'netQuantityGap',
+    ];
+
+    const fields = ADDITIVE.filter((f) =>
+        parent[f] !== undefined && parent[f] !== null && !isNaN(Number(parent[f])) &&
+        kids.every((k) => k[f] !== undefined && k[f] !== null && !isNaN(Number(k[f]))));
+
+    if (!fields.length) {
+        record('Aggregation', 'Country total reconciles with the sum of its HFBs', 'harness',
+            ['none of the additive fields are present on both the parent and every child'],
+            'looked for ' + ADDITIVE.join(', '));
+    } else {
+        // 1% absorbs cache skew and rounding. A missing HFB out of 19 moves the
+        // total by roughly 5%, so this still catches the failure that matters.
+        const TOL_PCT = 1;
+        const drifted = [];
+        const summary = [];
+
+        fields.forEach((f) => {
+            const total = Number(parent[f]);
+            const sum = kids.reduce((a, k) => a + Number(k[f]), 0);
+            if (total === 0) return;
+            const pct = Math.abs((sum - total) / total) * 100;
+            summary.push(f + ' off by ' + pct.toFixed(3) + '%');
+            if (pct > TOL_PCT) {
+                drifted.push(f + ': ' + kids.length + ' HFBs sum to ' + Math.round(sum) +
+                    ', country reports ' + Math.round(total) + ' (' + pct.toFixed(2) + '%)');
+            }
+        });
+
+        record('Aggregation',
+            'Country total reconciles with the sum of its ' + kids.length + ' HFBs',
+            drifted.length ? 'observed' : 'passed',
+            drifted.slice(0, 6),
+            'checked ' + fields.join(', ') + '; ' + summary.join('; ') +
+                (drifted.length
+                    ? ' - levels refresh independently, so drift is expected; raised as a question'
+                    : ''));
+    }
+}
+
+return JSON.stringify({ level: 'aggregation', ru: RU, ranAt: new Date().toISOString(), results });
+`.trim();
+}
+
+/**
+ * What does the UI do when the API fails?
+ *
+ * Every other check in this suite assumes the happy path and asserts that a
+ * value is correct. This one breaks the API on purpose and asks whether the
+ * screen tells the truth about it. That is a different and arguably more
+ * important question: a wrong number is visible, whereas a screen that quietly
+ * keeps showing yesterday's figures during an outage looks perfectly healthy.
+ *
+ * SAFETY. This runs against a live shared browser tab, so the override is
+ * installed and removed inside a try/finally with an independent watchdog
+ * timer as a second line of defence. The stub is scoped to /metrics calls only
+ * - authentication and static assets are passed straight through - and the
+ * function verifies the restore before reporting anything. If the restore
+ * cannot be confirmed the run reports a harness error rather than a result.
+ */
+function buildResilienceScript(retailUnitCode, hfbNo) {
+    return `
+${SHARED}
+if (!window.__auth) return JSON.stringify({ error: 'no auth captured' });
+
+const RU = ${JSON.stringify(retailUnitCode)};
+const HFB = ${JSON.stringify(hfbNo)};
+
+const before = norm(document.body);
+const realFetch = window.fetch;
+let restored = false;
+const restore = () => { if (!restored) { window.fetch = realFetch; restored = true; } };
+const watchdog = setTimeout(restore, 25000);
+
+let blocked = 0;
+let after = '';
+let navigated = false;
+
+try {
+    window.fetch = async function (...args) {
+        const req = args[0];
+        const url = String(typeof req === 'string' ? req : (req && req.url));
+        if (url.indexOf('api.dev.salesplanning') !== -1) {
+            blocked++;
+            return new Response('{"error":"forced by QA resilience check"}',
+                { status: 500, headers: { 'Content-Type': 'application/json' } });
+        }
+        return realFetch.apply(this, args);
+    };
+
+    // Navigate to an HFB that has NOT been visited in this session. A cached
+    // entity would render from react-query's store and prove nothing about
+    // error handling.
+    const card = [...document.querySelectorAll('div[class*="_card_"]')]
+        .find((d) => new RegExp('^' + HFB + ' - ').test(norm(d)));
+    const btn = card && card.querySelector('button');
+    if (btn) {
+        navigated = true;
+        btn.click();
+        await new Promise((r) => setTimeout(r, 7000));
+        after = norm(document.body);
+    }
+} finally {
+    clearTimeout(watchdog);
+    restore();
+}
+
+if (window.fetch !== realFetch) {
+    record('Resilience', 'API failure handling', 'harness',
+        ['fetch override could not be restored - aborting without a verdict'], '');
+} else if (!navigated) {
+    record('Resilience', 'API failure handling', 'harness',
+        ['no card for HFB ' + HFB + ' on this page, so no uncached request was made'], '');
+} else if (blocked === 0) {
+    record('Resilience', 'API failure handling', 'harness',
+        ['no API call was intercepted - the view was served entirely from cache'], '');
+} else {
+    const stuckLoading = /Loading /i.test(after);
+    const saysError = /(error|failed|unavailable|try again|retry|something went wrong)/i.test(after);
+    const hasNumbers = /sales index\\s+\\d/i.test(after);
+
+    // Does the page admit that something went wrong?
+    record('Resilience',
+        'A failed API call surfaces an error rather than an endless loading state',
+        saysError ? 'passed' : 'observed',
+        saysError ? [] : [
+            'with ' + blocked + ' API calls returning 500, the page shows ' +
+                (stuckLoading ? 'a persistent loading state' : 'neither data nor an error') +
+                ' and no error message or retry control',
+            'rendered: ' + after.slice(0, 160),
+        ],
+        'blocked ' + blocked + ' calls on an uncached entity' +
+            (saysError ? '' : ' - is an indefinite loading state the intended behaviour?'));
+
+    // The more dangerous variant: confidently displaying figures that could
+    // not have been refreshed, with nothing marking them as stale.
+    record('Resilience',
+        'A failed API call does not present unrefreshed figures as current',
+        hasNumbers ? 'observed' : 'passed',
+        hasNumbers ? [
+            'metrics are still rendered after ' + blocked + ' failed calls, with no staleness indicator',
+            'rendered: ' + after.slice(0, 160),
+        ] : [],
+        hasNumbers
+            ? 'serving cached data during an outage may be intended, but nothing tells the user the figures are not current'
+            : 'no metric values rendered while the API was failing');
+}
+
+return JSON.stringify({ level: 'resilience', ru: RU, hfb: HFB, ranAt: new Date().toISOString(), results });
+`.trim();
+}
+
+/**
+ * Loading a URL cold, rather than clicking into it.
+ *
+ * Every other check reaches its page by clicking, which runs the client-side
+ * route transition and often serves data react-query already holds. A user
+ * arriving from a bookmark or a shared link takes a different path entirely:
+ * full document load, fresh store, first fetch driven by the URL rather than
+ * by a click handler. A filter mis-parsed from the URL - or a level defaulting
+ * to the country instead of the requested HFB - is invisible to every other
+ * check in this suite.
+ *
+ * This one is destructive by nature: a full load wipes window.__auth and the
+ * helper block, so it must run LAST, and the caller has to re-capture the
+ * token afterwards.
+ */
+function buildDeepLinkScript(retailUnitCode, hfbNo) {
+    return `
+${SHARED}
+if (!window.__auth) return JSON.stringify({ error: 'no auth captured' });
+
+const RU = ${JSON.stringify(retailUnitCode)};
+const HFB = ${JSON.stringify(hfbNo)};
+
+const hfb = await post({ metric: 'KPI_SUMMARY', level: 'hfb', filters: { retailUnitCode: RU, hfbNo: HFB } });
+if (hfb.__error) return JSON.stringify({ error: 'API returned ' + hfb.__error });
+const row = hfb.data && hfb.data.data && hfb.data.data[0];
+const kids = (hfb.data && hfb.data.children) || [];
+
+const text = norm(document.body);
+const path = location.pathname;
+
+// The URL must actually have selected the requested entity.
+const onRightPage = new RegExp('/hfb/' + HFB + '(?:$|/)').test(path);
+record('Deep link',
+    'A cold load of /hfb/' + HFB + ' lands on that HFB',
+    onRightPage ? 'passed' : 'failed',
+    onRightPage ? [] : ['URL resolved to ' + path],
+    'path=' + path);
+
+// It must have fetched data for that entity, not silently fallen back to the
+// country view - which would still look like a working page.
+const hasTitle = new RegExp('HFB\\\\s*' + HFB + '\\\\b').test(text);
+record('Deep link',
+    'The page identifies itself as HFB ' + HFB,
+    hasTitle ? 'passed' : 'failed',
+    hasTitle ? [] : ['no "HFB ' + HFB + '" heading found: ' + text.slice(0, 140)],
+    'checked page heading after a full document load');
+
+// And the values must be the same ones a clicked navigation produces.
+if (row) {
+    checkHeroMetrics(row, 'Deep link');
+}
+
+// The child rows must be present too - a cold load that renders the hero but
+// no list is a partial failure that a heading check alone would pass.
+const rendered = [...document.querySelectorAll('button')]
+    .map((b) => norm(b))
+    .filter((t) => /-\\s*\\d{4}\\b/.test(t)).length;
+record('Deep link',
+    'A cold load renders the PA list, not just the header',
+    kids.length === 0 ? 'harness' : (rendered === kids.length ? 'passed' : 'failed'),
+    rendered === kids.length ? [] : ['API returned ' + kids.length + ' PAs, cold load rendered ' + rendered],
+    'API children=' + kids.length + ', DOM rows=' + rendered);
+
+return JSON.stringify({ level: 'deeplink', ru: RU, hfb: HFB, ranAt: new Date().toISOString(), results });
+`.trim();
+}
+
 function buildCleanupScript() {
     return `
 if (window.__origFetch) { window.fetch = window.__origFetch; }
@@ -1008,6 +1500,9 @@ const EMITTERS = {
         ),
     stale: (a) => buildStaleScript(a.ru || 'US', a.hfb || '05', a.hfbB || '08'),
     leaf: (a) => buildLeafScript(a.ru || 'US', a.hfb || '08', a.pa || '0811'),
+    aggregation: (a) => buildAggregationScript(a.ru || 'US'),
+    resilience: (a) => buildResilienceScript(a.ru || 'US', a.hfb || '12'),
+    deeplink: (a) => buildDeepLinkScript(a.ru || 'US', a.hfb || '05'),
     cleanup: () => buildCleanupScript(),
 };
 

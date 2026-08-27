@@ -1,0 +1,264 @@
+{
+  "target": "https://api.dev.salesplanning.ingka.com/metrics",
+  "ranAt": "2026-08-27T12:34:41Z",
+  "note": "Run against the live dev API using a real bearer token captured from an authenticated browser session (retail unit US, week 202634). Cross-level consistency sampled HFBs 01-03.",
+  "results": [
+    {
+      "group": "Metrics — happy path",
+      "name": "KPI_SUMMARY at country level returns data",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 51
+    },
+    {
+      "group": "Metrics — happy path",
+      "name": "KPI_SUMMARY at HFB level returns data",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 51
+    },
+    {
+      "group": "Metrics — happy path",
+      "name": "KPI_SUMMARY at PA level returns data",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 1264
+    },
+    {
+      "group": "Metrics — happy path",
+      "name": "Country KPI_SUMMARY carries HFB children (source of the HFB performance table)",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 53
+    },
+    {
+      "group": "Metrics — happy path",
+      "name": "HFB KPI_SUMMARY carries PA children (source of the PA performance table)",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 46
+    },
+    {
+      "group": "Metrics — happy path",
+      "name": "WEEKLY_SALES_TREND at country level returns data",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 49
+    },
+    {
+      "group": "Metrics — happy path",
+      "name": "ROLLING_SALES_TREND at country level returns data",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 42
+    },
+    {
+      "group": "Metrics — happy path",
+      "name": "Client-side-only metric names are not backend metrics",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 88
+    },
+    {
+      "group": "Input validation",
+      "name": "Unknown metric name is rejected",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 38
+    },
+    {
+      "group": "Input validation",
+      "name": "Unsupported level is rejected and lists valid values",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 38
+    },
+    {
+      "group": "Input validation",
+      "name": "Missing 'filters' is rejected",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 35
+    },
+    {
+      "group": "Input validation",
+      "name": "Missing 'metric' is rejected",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 36
+    },
+    {
+      "group": "Input validation",
+      "name": "Empty JSON body is rejected",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 38
+    },
+    {
+      "group": "Input validation",
+      "name": "Malformed JSON is rejected (not a 500)",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 43
+    },
+    {
+      "group": "Input validation",
+      "name": "Wrong type for filters (string instead of object) is rejected",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 37
+    },
+    {
+      "group": "Input validation",
+      "name": "HFB level without hfbNo does not 500",
+      "outcome": "passed",
+      "status": 400,
+      "reasons": [],
+      "note": null,
+      "ms": 40
+    },
+    {
+      "group": "Authentication",
+      "name": "Request without Authorization header is refused",
+      "outcome": "passed",
+      "status": 403,
+      "reasons": [],
+      "note": null,
+      "ms": 66
+    },
+    {
+      "group": "Authentication",
+      "name": "Malformed bearer token is refused",
+      "outcome": "passed",
+      "status": 403,
+      "reasons": [],
+      "note": null,
+      "ms": 33
+    },
+    {
+      "group": "Authentication",
+      "name": "Empty bearer token is refused",
+      "outcome": "passed",
+      "status": 403,
+      "reasons": [],
+      "note": null,
+      "ms": 35
+    },
+    {
+      "group": "Authentication",
+      "name": "Token in the wrong scheme (Basic) is refused",
+      "outcome": "passed",
+      "status": 403,
+      "reasons": [],
+      "note": null,
+      "ms": 34
+    },
+    {
+      "group": "Unknown identifiers",
+      "name": "Nonexistent region returns an empty result rather than an error",
+      "outcome": "observed",
+      "status": 200,
+      "reasons": [],
+      "note": "Returns 200 with empty arrays and is markedly slower than a real region, which suggests the query runs before finding nothing. Confirm whether 200-empty (rather than 404) is the intended contract.",
+      "ms": 38
+    },
+    {
+      "group": "Unknown identifiers",
+      "name": "Nonexistent HFB number returns an empty result rather than an error",
+      "outcome": "observed",
+      "status": 200,
+      "reasons": [],
+      "note": "Returns 200 with empty data and children arrays rather than a 404. Same open contract question as the region probe.",
+      "ms": 41
+    },
+    {
+      "group": "Injection-shaped input",
+      "name": "SQL-ish retailUnitCode is handled safely",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": "Value echoed back verbatim, empty result, no error leak",
+      "ms": 36
+    },
+    {
+      "group": "Injection-shaped input",
+      "name": "Very long retailUnitCode is handled safely",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": null,
+      "ms": 1414
+    },
+    {
+      "group": "Method handling",
+      "name": "GET on /metrics is rejected cleanly",
+      "outcome": "passed",
+      "status": 405,
+      "reasons": [],
+      "note": null,
+      "ms": 45
+    },
+    {
+      "group": "Cross-level consistency",
+      "name": "HFBs listed as country children resolve at hfb level",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": "children=19, sampled=3, unresolved=0"
+    },
+    {
+      "group": "Cross-level consistency",
+      "name": "HFB 01 requested directly matches the same HFB inside the country response",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": "compared 29 fields, 0 differed"
+    },
+    {
+      "group": "Cross-level consistency",
+      "name": "HFB 02 requested directly matches the same HFB inside the country response",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": "compared 29 fields, 0 differed"
+    },
+    {
+      "group": "Cross-level consistency",
+      "name": "HFB 03 requested directly matches the same HFB inside the country response",
+      "outcome": "passed",
+      "status": 200,
+      "reasons": [],
+      "note": "compared 29 fields, 0 differed"
+    }
+  ]
+}

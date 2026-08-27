@@ -1,0 +1,353 @@
+{
+  "env": "https://dev.salesplanning.ingka.com",
+  "retailUnit": "US",
+  "ranAt": "2026-08-27T12:43:34Z",
+  "note": "Live dev environment, retail unit US, IKEA week 202634. Each check drives the real UI in an authenticated browser session and compares what is rendered against the same call made directly to the metrics API with the session's own bearer token. Navigation is performed through the UI so no page reload discards the captured token.",
+  "results": [
+    {
+      "group": "Country → HFB list",
+      "name": "Every HFB the API returns is rendered as a card",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "API children=19, DOM cards=19"
+    },
+    {
+      "group": "Country → HFB list",
+      "name": "Every HFB name from the API appears on the page",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "checked 19 names"
+    },
+    {
+      "group": "Country → HFB list",
+      "name": "Displayed index matches API netQuantityIndexToGoal (toggle: Qty index)",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "compared 19 cards"
+    },
+    {
+      "group": "Country → HFB list",
+      "name": "Card order matches API sorted by netQuantityIndexToGoal ascending (worst first)",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "19 cards in exact API order"
+    },
+    {
+      "group": "Country → HFB list",
+      "name": "Row \"vs goal\" matches API netQuantityIndexToGoal (toggle: Qty index)",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "compared 19 rows"
+    },
+    {
+      "group": "Country → HFB list",
+      "name": "Row \"vs demand plan\" matches API netQuantityIndexVsDemandPlan (toggle: Qty index)",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "compared 19 rows"
+    },
+    {
+      "group": "Country → HFB list",
+      "name": "Row \"vs last year\" matches API netQuantityIndexVsLastYear (toggle: Qty index)",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "compared 19 rows"
+    },
+    {
+      "group": "Country → HFB list",
+      "name": "Row \"To-go\" matches API netQuantityToGoVsGoal (toggle: Qty index)",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "compared 18 rows (to-go is hidden on rows beating goal)"
+    },
+    {
+      "group": "Country → hero metric",
+      "name": "Hero \"sales index\" matches API netSalesIndexToGoal",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesIndexToGoal=94.37 -> 94"
+    },
+    {
+      "group": "Country → hero metric",
+      "name": "Hero \"vs goal\" matches API netSalesIndexToGoal",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesIndexToGoal=94.37 -> 94"
+    },
+    {
+      "group": "Country → hero metric",
+      "name": "Hero \"vs demand plan\" matches API netSalesIndexVsDemandPlan",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesIndexVsDemandPlan=287.57 -> 288"
+    },
+    {
+      "group": "Country → hero metric",
+      "name": "Hero \"vs last year\" matches API netSalesIndexVsLastYear",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesIndexVsLastYear=100.29 -> 100"
+    },
+    {
+      "group": "Country → hero metric",
+      "name": "Hero \"vs latest forecast\" matches API netSalesIndexVsLatestForecast",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesIndexVsLatestForecast=102.22 -> 102"
+    },
+    {
+      "group": "Country → hero metric",
+      "name": "Hero \"to-go vs goal\" matches API netSalesToGoVsGoal",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesToGoVsGoal=-30.16 -> -30"
+    },
+    {
+      "group": "Toggle consistency",
+      "name": "With \"Qty index\" active, cards show API netQuantityIndexToGoal",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "compared 19 cards"
+    },
+    {
+      "group": "Toggle consistency",
+      "name": "With \"Sales index\" active, cards show API netSalesIndexToGoal",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "compared 19 cards"
+    },
+    {
+      "group": "HFB → PA list",
+      "name": "Every PA the API returns is rendered",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "API children=8, DOM rows=8"
+    },
+    {
+      "group": "HFB → PA list",
+      "name": "Every PA name from the API appears on the page",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "checked 8 names"
+    },
+    {
+      "group": "HFB → PA list",
+      "name": "Displayed PA index matches API netQuantityIndexToGoal (toggle: Qty index)",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "compared 8 rows"
+    },
+    {
+      "group": "HFB → PA list",
+      "name": "Row \"vs goal\" matches API netQuantityIndexToGoal (toggle: Qty index)",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "compared 8 rows"
+    },
+    {
+      "group": "HFB → PA list",
+      "name": "Row \"vs demand plan\" matches API netQuantityIndexVsDemandPlan (toggle: Qty index)",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "compared 7 rows"
+    },
+    {
+      "group": "HFB → PA list",
+      "name": "Row \"vs last year\" matches API netQuantityIndexVsLastYear (toggle: Qty index)",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "compared 8 rows"
+    },
+    {
+      "group": "HFB → PA list",
+      "name": "Row \"To-go\" matches API netQuantityToGoVsGoal (toggle: Qty index)",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "compared 8 rows"
+    },
+    {
+      "group": "HFB → PA list",
+      "name": "Gap magnitudes match API netQuantityGap / netSalesGap",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "compared 8 rows"
+    },
+    {
+      "group": "HFB → PA list",
+      "name": "Gap sign convention differs from the API",
+      "outcome": "observed",
+      "reasons": [
+        "0512: UI -103 vs API 103",
+        "0523: UI -107K vs API 107073",
+        "0511: UI -193K vs API 193221",
+        "0522: UI -29K vs API 29287"
+      ],
+      "note": "UI appears to re-sign gap as \"amount to close\" — open product question, not treated as a defect"
+    },
+    {
+      "group": "HFB → hero metric",
+      "name": "Hero \"sales index\" matches API netSalesIndexToGoal",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesIndexToGoal=83.66 -> 84"
+    },
+    {
+      "group": "HFB → hero metric",
+      "name": "Hero \"vs goal\" matches API netSalesIndexToGoal",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesIndexToGoal=83.66 -> 84"
+    },
+    {
+      "group": "HFB → hero metric",
+      "name": "Hero \"vs demand plan\" matches API netSalesIndexVsDemandPlan",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesIndexVsDemandPlan=211.68 -> 212"
+    },
+    {
+      "group": "HFB → hero metric",
+      "name": "Hero \"vs last year\" matches API netSalesIndexVsLastYear",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesIndexVsLastYear=90.01 -> 90"
+    },
+    {
+      "group": "HFB → hero metric",
+      "name": "Hero \"vs latest forecast\" matches API netSalesIndexVsLatestForecast",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesIndexVsLatestForecast=103.29 -> 103"
+    },
+    {
+      "group": "HFB → hero metric",
+      "name": "Hero \"to-go vs goal\" matches API netSalesToGoVsGoal",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesToGoVsGoal=-13.02 -> -13"
+    },
+    {
+      "group": "Drill-down consistency",
+      "name": "HFB 05 values identical whether read from the country response or its own",
+      "outcome": "failed",
+      "reasons": [
+        "netSalesDemandPlanYtd: asChild=182518996.04 vs direct=182521441.04",
+        "netQuantityDemandPlanYtd: asChild=1008336 vs direct=1008341",
+        "Root cause: the two levels are served from snapshots 28.4h apart — country-child generatedAt 2026-08-25T13:06:24Z vs direct HFB 2026-08-26T17:28:02Z. Reproduced identically on 3 consecutive runs, so not a race. All 27 other fields, including every index shown in the UI, agree.",
+        "Scope: HFBs 01-03 sampled by the API suite showed 0 differing fields, so the skew is per-HFB cache age rather than systemic."
+      ],
+      "note": "compared 29 fields; only the two demand-plan YTD fields differ (0.0013% and 0.0005%)"
+    },
+    {
+      "group": "Drill-down consistency",
+      "name": "Hero \"sales index\" matches API netSalesIndexToGoal",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesIndexToGoal=83.66 -> 84"
+    },
+    {
+      "group": "Weekly chart",
+      "name": "One bar per week returned by WEEKLY_SALES_TREND",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "API rows=39, bars=39"
+    },
+    {
+      "group": "Weekly chart",
+      "name": "Last-year series spans every week the API returned",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "point counts [34,39]"
+    },
+    {
+      "group": "Weekly chart",
+      "name": "Current-year series covers weeks up to the current one, and no further",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "completed=34, with sales=35, current week=202634"
+    },
+    {
+      "group": "Trends chart",
+      "name": "Rolling series matches API ytd/r13/r8/r4/r1 NetSalesIndex",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "compared 5 points at full precision"
+    },
+    {
+      "group": "Trends chart",
+      "name": "Second series (labelled \"vs goal\") is the reciprocal of the first",
+      "outcome": "observed",
+      "reasons": [
+        "ytd: shown 111.1, 10000/90.01=111.1",
+        "r13: shown 109.5, 10000/91.32=109.5",
+        "r8: shown 109.7, 10000/91.16=109.7",
+        "r4: shown 109.1, 10000/91.68=109.1",
+        "r1: shown 106.8, 10000/93.64=106.8"
+      ],
+      "note": "API ytdNetSalesGoalIndex=83.66 is not what is plotted; awaiting product confirmation"
+    },
+    {
+      "group": "Staleness",
+      "name": "Switching HFB re-renders with the new values",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "HFB 05=84 -> HFB 08=89"
+    },
+    {
+      "group": "Hierarchy boundary",
+      "name": "PRA level is rejected by the API",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "HTTP 400"
+    },
+    {
+      "group": "Hierarchy boundary",
+      "name": "API reports PA as a leaf (no children)",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "children=0"
+    },
+    {
+      "group": "Hierarchy boundary",
+      "name": "PA page offers no drill-down the API cannot serve",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "drill-down rows=0"
+    },
+    {
+      "group": "PA detail page",
+      "name": "Hero \"vs goal\" matches API netSalesIndexToGoal",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesIndexToGoal=89.28 -> 89"
+    },
+    {
+      "group": "PA detail page",
+      "name": "Hero \"vs demand plan\" matches API netSalesIndexVsDemandPlan",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesIndexVsDemandPlan=261.16 -> 261"
+    },
+    {
+      "group": "PA detail page",
+      "name": "Hero \"vs last year\" matches API netSalesIndexVsLastYear",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesIndexVsLastYear=95.2 -> 95"
+    },
+    {
+      "group": "PA detail page",
+      "name": "Hero \"vs latest forecast\" matches API netSalesIndexVsLatestForecast",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesIndexVsLatestForecast=105.16 -> 105"
+    },
+    {
+      "group": "PA detail page",
+      "name": "Hero \"to-go vs goal\" matches API netSalesToGoVsGoal",
+      "outcome": "passed",
+      "reasons": [],
+      "note": "netSalesToGoVsGoal=-26.06 -> -26"
+    }
+  ]
+}

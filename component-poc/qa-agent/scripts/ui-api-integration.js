@@ -639,6 +639,16 @@ if (rolling.__error) {
                 allRecip
                     ? 'API ytdNetSalesGoalIndex=' + goalField + ' is not what is plotted; awaiting product confirmation'
                     : 'second series is not a reciprocal');
+        } else {
+            // Without this the check simply disappears from the run and the
+            // totals shift with nothing to explain why. Say so instead.
+            record('Trends chart',
+                'Second series (labelled "vs goal") is the reciprocal of the first',
+                'harness',
+                [!lists[1]
+                    ? 'chart rendered only one label row, so there is no second series to compare'
+                    : 'second label row has ' + lists[1].length + ' points, first has ' + shown.length],
+                '');
         }
     }
 }
@@ -869,6 +879,10 @@ if (field && parsed.length) {
         same ? 'passed' : 'failed',
         same ? [] : ['UI: ' + domOrder.join(',') + ' | API: ' + apiOrder.join(',')],
         '');
+} else if (field) {
+    record('Country → HFB list',
+        'Card order matches API sorted by ' + field + ' ascending (worst first)',
+        'harness', ['no HFB cards were parsed, so there is no order to compare'], '');
 }
 
 // 5. Every OTHER metric the card renders — vs demand plan, vs last year,
@@ -1003,6 +1017,15 @@ const paSection = paButtons.length ? sectionFor(paButtons[0].el) : null;
 const toggleScope = paSection || document;
 const toggle = activeToggle(paSection) || activeToggle(null);
 const field = TOGGLE_FIELDS[toggle];
+// Mirrors the country list's guard at the top of its own checks: if the toggle
+// or the rows are missing, every PA check below is skipped, so record why once
+// rather than letting them vanish from the run without explanation.
+if (!field || !parsed.length) {
+    record('HFB → PA list', 'PA row checks could not be run', 'harness',
+        [!field
+            ? 'could not determine the active toggle; found: ' + JSON.stringify(toggle)
+            : 'no PA rows were parsed from the page'], '');
+}
 if (field && parsed.length) {
     const checks = parsed.map((p) => {
         const k = kids.find((x) => x.paNo === p.no);
@@ -1054,6 +1077,10 @@ if (field && parsed.length > 1) {
         ],
         'compared ' + domOrder.length + ' PAs (toggle: ' + toggle + ')' +
             (same ? '' : ' - ordering is presentation, raised as a question not a defect'));
+} else if (field && parsed.length === 1) {
+    record('HFB → PA list',
+        'PA order matches API sorted by ' + field + ' ascending (worst first)',
+        'harness', ['only one PA row on the page, so there is no order to compare'], '');
 }
 
 // The same rows, read again under the OTHER metric. Everything above runs on

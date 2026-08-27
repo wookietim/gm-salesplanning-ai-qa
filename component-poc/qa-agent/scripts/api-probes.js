@@ -454,17 +454,39 @@ try {
             .filter((f) => String(directRow[f]) !== String(childRow[f]))
             .map((f) => f + ': direct=' + directRow[f] + ' vs child=' + childRow[f]);
 
+        // Country-level and HFB-level aggregates are cached independently and
+        // refresh on their own schedules, so the same HFB can be served from
+        // snapshots generated hours apart (confirmed intended, Tim 2026-08-27).
+        // Drift between two different snapshots is expected; drift between two
+        // rows stamped with the SAME instant is a genuine inconsistency.
+        const sameSnapshot = String(childRow.generatedAt) === String(directRow.generatedAt);
+        const skewHours = (childRow.generatedAt && directRow.generatedAt)
+            ? Math.abs(Number(directRow.generatedAt) - Number(childRow.generatedAt)) / 3600
+            : null;
+        const stampNote = sameSnapshot
+            ? 'same snapshot'
+            : 'snapshots ' + (skewHours === null ? 'differ' : skewHours.toFixed(1) + 'h apart');
+
         // Zero fields compared means the shapes diverged - that is a real signal,
         // not a pass.
         results.push({
             group: 'Cross-level consistency',
             name: label,
             status: 200,
-            outcome: fields.length === 0 ? 'failed' : diffs.length ? 'failed' : 'passed',
+            outcome: fields.length === 0
+                ? 'failed'
+                : diffs.length
+                    ? (sameSnapshot ? 'failed' : 'observed')
+                    : 'passed',
             reasons: fields.length === 0
                 ? ['no shared fields between the two rows - response shapes diverged']
                 : diffs,
-            preview: 'compared ' + fields.length + ' fields, ' + diffs.length + ' differed',
+            note: diffs.length && !sameSnapshot
+                ? 'The two levels were served from independently cached snapshots ' +
+                  stampNote + ', so this drift is expected refresh lag rather than a defect.'
+                : null,
+            preview: 'compared ' + fields.length + ' fields, ' + diffs.length +
+                ' differed, ' + stampNote,
         });
     }
 } catch (err) {

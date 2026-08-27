@@ -1482,6 +1482,199 @@ return JSON.stringify({
 `.trim();
 }
 
+/**
+ * Absent metrics.
+ *
+ * Live data genuinely contains nulls: at the time of writing HFB 70 "Home
+ * Appliances" carries null for its forecast fields and, coherently, null for
+ * the indices derived from them. It means "no forecast exists", not "the data
+ * is broken".
+ *
+ * The question this asks is not whether the API is right — it is whether the UI
+ * tells the truth about an absent number. Showing a dash is honest. Showing 0,
+ * or an empty cell that looks like a rendering glitch, is not: a planner reading
+ * "0" against a forecast will think the forecast is zero rather than missing,
+ * and that is a decision made on a number that does not exist.
+ *
+ * Run this on the page for the level being checked.
+ */
+function buildNullsScript(retailUnitCode, level, filters) {
+    return `
+${SHARED}
+if (!window.__auth) return JSON.stringify({ error: 'no auth captured - run capture and trigger a real request first' });
+
+const RU = ${JSON.stringify(retailUnitCode)};
+const LEVEL = ${JSON.stringify(level)};
+const FILTERS = ${JSON.stringify(filters)};
+
+const kpi = await post({ metric: 'KPI_SUMMARY', level: LEVEL, filters: FILTERS });
+if (kpi.__error) return JSON.stringify({ error: 'API returned ' + kpi.__error });
+
+const rows = ((kpi.data || {}).data) || [];
+const kids = ((kpi.data || {}).children) || [];
+const IDENTITY = ['retailUnitCode', 'hfbNo', 'hfbName', 'paNo', 'paName', 'generatedAt', 'mart', 'currentIkeaWeek'];
+
+const nullFieldsOf = (r) => Object.keys(r || {}).filter((k) => IDENTITY.indexOf(k) === -1 && r[k] === null);
+
+const ownNulls = rows.length ? nullFieldsOf(rows[0]) : [];
+const kidsWithNulls = kids.map((k) => ({ id: k.hfbNo || k.paNo, fields: nullFieldsOf(k) }))
+    .filter((k) => k.fields.length);
+
+// 1. Establish whether there is anything to check at all. If the API happens to
+//    return a complete row today, say so plainly rather than passing vacuously.
+const anyNulls = ownNulls.length + kidsWithNulls.length;
+if (!anyNulls) {
+    record('Absent metrics', 'Absent-metric rendering could not be exercised', 'harness',
+        ['no null metric fields were present in this response'],
+        'Nothing to assert: every metric had a value at ' + LEVEL + ' for ' + JSON.stringify(FILTERS) +
+        '. Re-run against a level that currently has an incomplete forecast.');
+    return JSON.stringify({ level: LEVEL, ru: RU, ranAt: new Date().toISOString(), results });
+}
+
+// 2. Internal coherence: if a source figure is missing, anything derived from
+//    it should be missing too. A null forecast with a non-null "vs forecast"
+//    index would mean a number was invented somewhere.
+if (rows.length) {
+    const r = rows[0];
+    const incoherent = [];
+    for (const f of Object.keys(r)) {
+        const m = f.match(/^(netSales|netQuantity)Index(VsLatestForecast|VsDemandPlan|VsLastYear)$/);
+        if (!m) continue;
+        const sourceMap = { VsLatestForecast: 'ForecastYtd', VsDemandPlan: 'DemandPlanYtd', VsLastYear: 'LastYearYtd' };
+        const source = m[1] + sourceMap[m[2]];
+        if (r[source] === null && r[f] !== null) {
+            incoherent.push(f + '=' + r[f] + ' but ' + source + ' is null');
+        }
+    }
+    record('Absent metrics', 'A derived index is absent whenever its source figure is absent',
+        incoherent.length ? 'failed' : 'passed', incoherent,
+        'checked the derived indices on the ' + LEVEL + ' row');
+}
+
+// 3. The real question: what does the screen actually show?
+const pageText = norm(document.body);
+const LIES = [
+    { pattern: /\\bNaN\\b/, label: 'NaN' },
+    { pattern: /\\bundefined\\b/, label: 'undefined' },
+    { pattern: /\\bnull\\b/, label: 'the literal word null' },
+    { pattern: /\\bInfinity\\b/, label: 'Infinity' },
+];
+const leaked = LIES.filter((l) => l.pattern.test(pageText)).map((l) => l.label);
+record('Absent metrics', 'No raw JavaScript non-value is printed on the page',
+    leaked.length ? 'failed' : 'passed',
+    leaked.map((l) => 'page displays ' + l),
+    'the API returned ' + anyNulls + ' row(s) carrying null metrics, so any unguarded formatting ' +
+    'would surface here');
+
+// 4. Absent values must not be dressed up as zero. Look at the cards for the
+//    specific children the API says are incomplete.
+if (kidsWithNulls.length) {
+    const cards = cardsMatching(/View HFB plan|vs goal/);
+    const suspect = [];
+    for (const k of kidsWithNulls) {
+        const card = cards.find((c) => new RegExp('^' + k.id + '\\\\s*-').test(norm(c)));
+        if (!card) continue;
+        const text = norm(card);
+        // A card whose forecast is unknown should not be claiming a flat zero.
+        if (/\\b0\\s*vs (goal|forecast)\\b/i.test(text)) {
+            suspect.push(k.id + ' has null ' + k.fields.slice(0, 2).join('/') + ' but renders "0 vs ..."');
+        }
+    }
+    record('Absent metrics', 'An absent figure is not rendered as zero',
+        suspect.length ? 'observed' : 'passed', suspect,
+        suspect.length
+            ? 'Zero and "not forecast" mean very different things to a planner. Raised as a question ' +
+              'because a genuine zero is also possible - worth confirming which this is.'
+            : 'checked ' + kidsWithNulls.length + ' child row(s) the API reports as incomplete');
+}
+
+// 5. An incomplete row should still render — a missing forecast must not take
+//    the whole card or row off the screen.
+if (kidsWithNulls.length) {
+    const missing = kidsWithNulls.filter((k) => pageText.indexOf(String(k.id)) === -1).map((k) => k.id);
+    record('Absent metrics', 'Rows with missing metrics are still displayed',
+        missing.length ? 'failed' : 'passed',
+        missing.map((m) => 'row ' + m + ' has null metrics and does not appear on the page'),
+        'a partial row should degrade to a dash, not vanish');
+}
+
+record('Absent metrics', 'Fields the API reported as absent', 'observed', [],
+    'Own row: ' + (ownNulls.length ? ownNulls.join(', ') : 'none') + '. ' +
+    'Children with absent metrics: ' +
+    (kidsWithNulls.length ? kidsWithNulls.map((k) => k.id + ' (' + k.fields.length + ')').join(', ') : 'none') +
+    '. Recorded so the data condition behind the checks above is visible.');
+
+return JSON.stringify({ level: LEVEL, ru: RU, ranAt: new Date().toISOString(), results });
+`.trim();
+}
+
+/**
+ * The IKEA week shown in the NavigationBar against the week the API reports.
+ *
+ * `currentIkeaWeek` travels on every KPI_SUMMARY row and the charts already use
+ * it to decide how many points to plot, but nothing has ever checked it against
+ * the week printed in the header. If those two disagree the whole dashboard is
+ * captioned with the wrong week, which is the kind of error nobody notices until
+ * a number is quoted in a meeting.
+ */
+function buildWeekScript(retailUnitCode) {
+    return `
+${SHARED}
+if (!window.__auth) return JSON.stringify({ error: 'no auth captured - run capture and trigger a real request first' });
+
+const RU = ${JSON.stringify(retailUnitCode)};
+const kpi = await post({ metric: 'KPI_SUMMARY', level: 'country', filters: { retailUnitCode: RU } });
+if (kpi.__error) return JSON.stringify({ error: 'API returned ' + kpi.__error });
+
+const row = (((kpi.data || {}).data) || [])[0] || {};
+const apiWeek = row.currentIkeaWeek == null ? null : String(row.currentIkeaWeek);
+
+if (!apiWeek) {
+    record('Current week', 'Week comparison could not be made', 'harness',
+        ['the API response carried no currentIkeaWeek'], '');
+    return JSON.stringify({ ru: RU, ranAt: new Date().toISOString(), results });
+}
+
+// The header prints something like "Week 34", but the word and the number sit in
+// separate text nodes, so this has to read rendered text off an element rather
+// than walking text nodes. The nav bar is a plain div with a hashed class name,
+// so match on the class prefix and fall back to the whole page.
+const navEl = document.querySelector('[class*="navigationBar"]')
+    || document.querySelector('nav, header')
+    || document.body;
+const shown = (norm(navEl).match(/[Ww]eek\\s*(\\d{1,3})/) || [])[1] || null;
+
+// currentIkeaWeek is a full fiscal week id such as 202634; the header shows the
+// week number alone.
+const apiWeekNo = apiWeek.length > 2 ? apiWeek.slice(-2).replace(/^0/, '') : apiWeek.replace(/^0/, '');
+const weekMatches = shown !== null && String(Number(shown)) === String(Number(apiWeekNo));
+
+// A difference here is not automatically wrong: the header may show the week the
+// business is currently trading in while the API reports the last week with
+// settled figures. Record it as an observation and let a human judge.
+record('Current week', 'The header week matches the week the API reports',
+    shown === null ? 'harness' : (weekMatches ? 'passed' : 'observed'),
+    shown === null ? ['no "Week NN" text found on the page'] : [],
+    shown === null
+        ? 'API currentIkeaWeek=' + apiWeek + ', header=(not found)'
+        : (weekMatches
+            ? 'API currentIkeaWeek=' + apiWeek + ', header shows week ' + shown + ' - they agree'
+            : 'API currentIkeaWeek=' + apiWeek + ' (week ' + apiWeekNo + ') but the header shows week ' + shown
+                + '. Worth confirming which one the page is meant to show - the header may be the week now in progress while the API reports the last week with complete figures.'));
+
+// The same value must not drift between levels within one page load.
+const hfb = await post({ metric: 'KPI_SUMMARY', level: 'hfb', filters: { retailUnitCode: RU, hfbNo: '05' } });
+const hfbWeek = hfb.__error ? null : ((((hfb.data || {}).data) || [])[0] || {}).currentIkeaWeek;
+record('Current week', 'The API reports the same current week at country and HFB level',
+    hfbWeek == null ? 'harness' : (String(hfbWeek) === apiWeek ? 'passed' : 'failed'),
+    hfbWeek == null ? ['HFB level returned no currentIkeaWeek'] :
+        (String(hfbWeek) === apiWeek ? [] : ['country says ' + apiWeek + ', hfb says ' + hfbWeek]),
+    'country=' + apiWeek + ', hfb=' + hfbWeek);
+
+return JSON.stringify({ ru: RU, ranAt: new Date().toISOString(), results });
+`.trim();
+}
+
 const EMITTERS = {
     capture: () => buildCaptureScript(),
     country: (a) => buildCountryScript(a.ru || 'US'),
@@ -1503,8 +1696,97 @@ const EMITTERS = {
     aggregation: (a) => buildAggregationScript(a.ru || 'US'),
     resilience: (a) => buildResilienceScript(a.ru || 'US', a.hfb || '12'),
     deeplink: (a) => buildDeepLinkScript(a.ru || 'US', a.hfb || '05'),
+    nulls: (a) =>
+        buildNullsScript(
+            a.ru || 'US',
+            a.hfb ? 'hfb' : 'country',
+            a.hfb
+                ? { retailUnitCode: a.ru || 'US', hfbNo: a.hfb }
+                : { retailUnitCode: a.ru || 'US' }
+        ),
+    week: (a) => buildWeekScript(a.ru || 'US'),
     cleanup: () => buildCleanupScript(),
 };
+
+/**
+ * Every emitted script begins with the same SHARED prelude and ends with its own
+ * `return JSON.stringify(...)`. Pushing twelve of them into the page one at a
+ * time costs dozens of round trips, so `--emit=all` inlines each body - minus
+ * its duplicate prelude - into a separate async closure over one shared
+ * `results` array. Each closure's own return value is discarded; what matters is
+ * that `record` has already appended to the array they all close over.
+ *
+ * Each group is wrapped in try/catch so one broken group cannot abort the rest.
+ *
+ * Navigation is the subtle part. Individually these scripts are run by a caller
+ * who navigates between them - each one simply checks whatever is on screen. Run
+ * back to back they inherit whatever page the previous group left behind, which
+ * silently produces false failures: the HFB-05 group scraping an HFB-08 page
+ * reports "0511 Mattresses not rendered" and looks exactly like a product bug.
+ * So every group declares the page it needs and the runner navigates there
+ * first, through the SPA router rather than a full reload, which would tear down
+ * the captured token.
+ */
+const ALL_STEPS = [
+    { name: 'country', path: (a) => `/region-dashboard/${(a.ru || 'US').toLowerCase()}` },
+    { name: 'week', path: (a) => `/region-dashboard/${(a.ru || 'US').toLowerCase()}` },
+    { name: 'nulls', path: (a) => `/region-dashboard/${(a.ru || 'US').toLowerCase()}` },
+    { name: 'aggregation', path: (a) => `/region-dashboard/${(a.ru || 'US').toLowerCase()}` },
+    { name: 'charts', path: (a) => `/region-dashboard/${(a.ru || 'US').toLowerCase()}` },
+    { name: 'stale', path: (a) => `/region-dashboard/${(a.ru || 'US').toLowerCase()}` },
+    { name: 'toggle', path: (a) => `/region-dashboard/${(a.ru || 'US').toLowerCase()}` },
+    // Needs the country page so it can click a card for an HFB it has not
+    // visited yet - a cached entity would never issue the request it blocks.
+    { name: 'resilience', path: (a) => `/region-dashboard/${(a.ru || 'US').toLowerCase()}` },
+    { name: 'hfb', path: (a) => `/region-dashboard/${(a.ru || 'US').toLowerCase()}/hfb/${a.hfb || '05'}` },
+    { name: 'drilldown', path: (a) => `/region-dashboard/${(a.ru || 'US').toLowerCase()}/hfb/${a.hfb || '05'}` },
+    { name: 'leaf', path: (a) => `/region-dashboard/${(a.ru || 'US').toLowerCase()}/hfb/${a.hfb || '08'}/pa/${a.pa || '0811'}` },
+    { name: 'deeplink', path: (a) => `/region-dashboard/${(a.ru || 'US').toLowerCase()}/hfb/${a.hfb || '05'}` },
+];
+
+function buildAllScript(args) {
+    const prelude = SHARED.trim();
+
+    const nav = `
+/**
+ * Move the SPA to a path without reloading the document. A real reload would
+ * drop window.__auth and the fetch hook, so the router is driven directly.
+ */
+const goto = async (path) => {
+    if (location.pathname === path) return;
+    history.pushState({}, '', path);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+    await new Promise((r) => setTimeout(r, 5000));
+};`;
+
+    const bodies = ALL_STEPS.map((step) => {
+        const stepArgs = step.name === 'leaf'
+            ? Object.assign({}, args, { hfb: args.hfb || '08', pa: args.pa || '0811' })
+            : args;
+        const emitted = EMITTERS[step.name](stepArgs).trim();
+        const body = emitted.startsWith(prelude) ? emitted.slice(prelude.length) : emitted;
+        return `
+// ---- ${step.name} ----
+try {
+    await goto(${JSON.stringify(step.path(stepArgs))});
+    await (async () => {
+${body}
+    })();
+} catch (e) {
+    record('${step.name}', 'The ${step.name} group ran to completion', 'harness',
+        ['the group threw before finishing: ' + (e && e.message ? e.message : String(e))], '');
+}`;
+    }).join('\n');
+
+    return `
+${prelude}
+${nav}
+${bodies}
+return JSON.stringify({ ru: ${JSON.stringify(args.ru || 'US')}, ranAt: new Date().toISOString(), results });
+`.trim();
+}
+
+EMITTERS.all = (a) => buildAllScript(a);
 
 if (require.main === module) {
     const args = {};

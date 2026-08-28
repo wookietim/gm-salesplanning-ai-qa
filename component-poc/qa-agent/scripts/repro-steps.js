@@ -457,6 +457,25 @@ function stepsFor(result, payload) {
       ]);
   }
 
+  if (/Gap is displayed exactly when/.test(name)) {
+    return openPage(ctx)
+      .concat([
+        `Go through every ${childNoun} and note which ones show a gap line ` +
+          '(labelled <code>Gap to close:</code> on cards, <code>Gap:</code> on list rows) ' +
+          'and which show none at all.',
+      ])
+      .concat(openApi(ctx))
+      .concat([
+        'For each entry in <code>data.children</code>, read <code>netQuantityGap</code>.',
+        'A <strong>positive</strong> value means actuals are still short of the goal, so a gap ' +
+          'line must be shown. A value of zero or below means the goal is already met, so no ' +
+          'line should appear.',
+        'Line up the two lists. On the live US country dashboard they are inverted: the only two ' +
+          'HFBs showing a gap (01 and 10) are the two whose gap is <em>negative</em>, and the ' +
+          '17 that are genuinely short show nothing. See SSPLAN-908.',
+      ]);
+  }
+
   if (/Gap magnitudes match/.test(name)) {
     return openPage(ctx)
       .concat([`Note the gap figure on any ${childNoun} row, ignoring its sign.`])
@@ -475,10 +494,10 @@ function stepsFor(result, payload) {
       .concat(openApi(ctx))
       .concat([
         'Read the same gap field for that entry in <code>data.children</code>.',
-        'The magnitudes agree but the signs are opposite: the UI shows a shortfall as ' +
-          'negative, the API reports the same shortfall as positive. That is a convention ' +
-          'difference and is recorded as an observation, not a defect — but it is worth ' +
-          'confirming the intended convention is written down somewhere.',
+        'The magnitudes agree but the signs are opposite: the UI renders the gap as its own ' +
+          'negation, so the API\'s positive "still short of goal" becomes a negative on screen.',
+        'This was recorded as an observation until SSPLAN-908 confirmed the UI hides and shows ' +
+          'the gap line based on that same sign, so it is now treated as a defect.',
       ]);
   }
 

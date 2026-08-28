@@ -222,23 +222,58 @@ const checkRowMetrics = (rows, apiRows, keyOf, prefix, group, toggleLabel) => {
 };
 
 /**
- * Gap is rendered abbreviated ("-66K"), so this asserts MAGNITUDE within a
+ * The small variant labels itself "Gap:", the large (card) variant "Gap to
+ * close:". Matching only the former meant HFB cards were never inspected at
+ * all. The trailing colon is required so the section subtitle "By gap to goal
+ * (worst first)" is not mistaken for a value.
+ */
+const GAP_LABEL = /Gap(?:\\s+to\\s+close)?\\s*:/i;
+
+/**
+ * Gap is rendered abbreviated ("-66K"), so magnitude is asserted within a
  * tolerance the abbreviation allows - it would still catch a unit error such
- * as K printed where M was meant. Sign is reported separately because the two
- * gap fields disagree in sign in the API itself.
+ * as K printed where M was meant.
+ *
+ * Visibility is checked FIRST and for every row. This function used to return
+ * early when no row rendered a gap, which made "the gap is missing" - the one
+ * failure mode worth catching - structurally invisible. SSPLAN-908 is exactly
+ * that bug, and it survived a full live run because of this guard.
  */
 const checkRowGaps = (rows, apiRows, keyOf, group) => {
-    // Country cards carry no Gap element at all - the gap pair only appears on
-    // PA rows. That is a layout difference between levels, not a missing value,
-    // so it is skipped rather than reported as a harness failure.
-    if (!rows.some((r) => /Gap:/i.test(r.text))) return;
+    // A positive netQuantityGap means actuals are short of the goal, so there
+    // is something left to close and the row must say so. A gap <= 0 means the
+    // goal is already met and the line is correctly hidden.
+    const vis = [];
+    rows.forEach((r) => {
+        const api = apiRows.find((a) => keyOf(a) === r.no);
+        if (!api) return;
+        const gap = Number(api.netQuantityGap);
+        if (!isFinite(gap) || gap === 0) return;
+        vis.push({ id: r.no, shown: GAP_LABEL.test(r.text), shouldShow: gap > 0, gap: gap });
+    });
+    if (vis.length) {
+        const wrong = vis.filter((v) => v.shown !== v.shouldShow);
+        record(group, 'Gap is displayed exactly when the API says one is left to close',
+            wrong.length ? 'failed' : 'passed',
+            wrong.slice(0, 6).map((v) => v.shown
+                ? v.id + ': gap ' + v.gap + ' (goal already met) but a gap is displayed'
+                : v.id + ': gap ' + v.gap + ' still to close but no gap is displayed'),
+            'checked ' + vis.length + ' rows, ' + wrong.length + ' wrong');
+    }
+
+    if (!rows.some((r) => GAP_LABEL.test(r.text))) {
+        record(group, 'Gap magnitudes match API netQuantityGap / netSalesGap',
+            'harness', ['no row rendered a gap label, so no magnitude could be compared'],
+            'API reported a non-zero gap on ' + vis.length + ' rows');
+        return;
+    }
 
     const checks = [];
     const signNotes = [];
     rows.forEach((r) => {
         const api = apiRows.find((a) => keyOf(a) === r.no);
         if (!api) return;
-        const m = r.text.match(/Gap:\\s*([^/]+)\\/\\s*([^0-9-]*[-0-9][^ ]*)/i);
+        const m = r.text.match(/Gap(?:\\s+to\\s+close)?\\s*:\\s*([^/]+)\\/\\s*([^0-9-]*[-0-9][^ ]*)/i);
         if (!m) return;
         const qty = parseAbbrev(m[1]);
         const sales = parseAbbrev(m[2]);
@@ -261,9 +296,11 @@ const checkRowGaps = (rows, apiRows, keyOf, group) => {
     record(group, 'Gap magnitudes match API netQuantityGap / netSalesGap',
         verdict.outcome, verdict.reasons, 'compared ' + checks.length + ' rows');
     if (signNotes.length) {
-        record(group, 'Gap sign convention differs from the API',
-            'observed', signNotes.slice(0, 4),
-            'UI appears to re-sign gap as "amount to close" - awaiting confirmation, not treated as a defect');
+        record(group, 'Gap sign convention matches the API',
+            'failed', signNotes.slice(0, 6),
+            'SSPLAN-908 confirmed this: the API means gap > 0 as "still short of goal", ' +
+            'the UI renders it as its own negation. Previously recorded as observed pending ' +
+            'confirmation - that confirmation has now arrived, so it is a defect.');
     }
 };
 

@@ -269,6 +269,28 @@ const PROBES = [
         expect: { statusIn: [401, 403] },
     },
 
+    // ── Access control, as distinct from authentication ───────────────────────
+    // Everything above asks "is this token genuine?". These ask the different
+    // and so far unexamined question: "is this token ALLOWED to see this data?"
+    // The signed-in user works in one market, so whether one market's token can
+    // read another market's numbers is a real access-control question. The
+    // answer is recorded as an observation because the intended scoping rule
+    // has never been written down anywhere we can check it against.
+    ...['GB', 'SE', 'DE', 'NL', 'CN'].map((ru) => ({
+        group: 'Access control',
+        name: `Data for market ${ru} is reachable with this user's token`,
+        description:
+            'Reads a market the signed-in user is not currently looking at. A 200 ' +
+            'with rows means the API scopes by request, not by identity.',
+        body: { metric: 'KPI_SUMMARY', level: 'country', filters: { retailUnitCode: ru } },
+        observe: true,
+        note:
+            `Records whether market ${ru} is readable with a token issued for this user. ` +
+            'If every market is readable then the API scopes purely by what is asked for, ' +
+            'not by who is asking - which may be entirely intended for an internal ' +
+            'planning tool, but should be a stated decision rather than an accident.',
+    })),
+
     // ── Unknown identifiers ───────────────────────────────────────────────────
     {
         group: 'Unknown identifiers',
@@ -1141,6 +1163,256 @@ try {
     });
 }
 
+// ── Error envelope consistency ───────────────────────────────────────────────
+// A client can only handle errors uniformly if the API reports them uniformly.
+// This drives four different kinds of failure and compares the SHAPE of what
+// comes back, not the content.
+try {
+    const cases = [
+        { label: 'bad metric name (400)', body: { metric: 'NOT_A_METRIC', level: 'country', filters: { retailUnitCode: 'US' } }, auth: true },
+        { label: 'bad level name (400)', body: { metric: 'KPI_SUMMARY', level: 'galaxy', filters: { retailUnitCode: 'US' } }, auth: true },
+        { label: 'unsupported level for metric (400)', body: { metric: 'KPI_SUMMARY', level: 'pra', filters: { retailUnitCode: 'US' } }, auth: true },
+        { label: 'invalid token (401)', body: { metric: 'KPI_SUMMARY', level: 'country', filters: { retailUnitCode: 'US' } }, auth: 'Bearer not-a-real-token' },
+    ];
+
+    const shapes = [];
+    for (const c of cases) {
+        const headers = { 'Content-Type': 'application/json' };
+        if (c.auth === true) headers.Authorization = window.__auth;
+        else if (typeof c.auth === 'string') headers.Authorization = c.auth;
+        const res = await window.__origFetch(ENDPOINT, {
+            method: 'POST', headers, body: JSON.stringify(c.body),
+        });
+        const text = await res.text();
+        let keys = null;
+        let parseable = true;
+        try {
+            const j = JSON.parse(text);
+            keys = (j && typeof j === 'object' && !Array.isArray(j)) ? Object.keys(j).sort() : [];
+        } catch (e) { parseable = false; }
+        shapes.push({ label: c.label, status: res.status, parseable, keys, empty: text.length === 0 });
+    }
+
+    const describe = (s) =>
+        s.label + ' -> ' + s.status + ' ' +
+        (s.empty ? '(empty body)' : s.parseable ? '{' + (s.keys || []).join(', ') + '}' : '(not JSON)');
+
+    const signatures = shapes.map((s) => s.empty ? 'EMPTY' : s.parseable ? (s.keys || []).join(',') : 'NONJSON');
+    const distinct = [...new Set(signatures)];
+
+    results.push({
+        group: 'Error envelope',
+        name: 'Every kind of failure reports itself the same way',
+        status: null,
+        outcome: distinct.length === 1 ? 'passed' : 'observed',
+        reasons: distinct.length === 1 ? [] : [
+            distinct.length + ' different error shapes across ' + shapes.length + ' failure kinds',
+        ],
+        note: distinct.length === 1
+            ? 'All four failure kinds return the same JSON envelope, so a client can parse errors uniformly.'
+            : 'Failure kinds do not share one envelope: ' + shapes.map(describe).join(' | ') +
+              '. A client cannot then read the reason out of a single field, which usually ends up as ' +
+              '"something went wrong" in the UI regardless of what actually happened.',
+        preview: shapes.map(describe).join(' | ').slice(0, 400),
+    });
+
+    // A separate, sharper question: do the 4xx bodies carry a human-readable
+    // reason at all? The UI can only explain a failure if the API does.
+    const withMessage = shapes.filter((s) => s.parseable && (s.keys || []).some(
+        (k) => /message|error|detail|reason|title/i.test(k)
+    ));
+    results.push({
+        group: 'Error envelope',
+        name: 'Failure responses carry a readable reason',
+        status: null,
+        outcome: withMessage.length === shapes.length ? 'passed' : 'observed',
+        reasons: withMessage.length === shapes.length ? [] : [
+            withMessage.length + ' of ' + shapes.length + ' failure responses had a message-like field',
+        ],
+        note: 'Where a failure carries no message field the UI has nothing to show the planner beyond ' +
+              'a generic error, so the same blank screen can mean a typo, an outage or an expired login.',
+        preview: shapes.map(describe).join(' | ').slice(0, 400),
+    });
+} catch (err) {
+    results.push({
+        group: 'Error envelope',
+        name: 'Error envelope comparison',
+        status: null,
+        outcome: 'harness',
+        reasons: ['envelope comparison threw: ' + String(err).slice(0, 160)],
+        preview: '',
+    });
+}
+
+// ── Metric x level support matrix ────────────────────────────────────────────
+// PRA was found by accident. Rather than discover the rest the same way, ask
+// every metric about every level once and write the answer down.
+try {
+    const METRIC_LIST = ${JSON.stringify(METRICS)};
+    const LEVEL_LIST = ${JSON.stringify(LEVELS)};
+    const FILTERS_FOR = {
+        country: { retailUnitCode: 'US' },
+        hfb: { retailUnitCode: 'US', hfbNo: '05' },
+        pa: { retailUnitCode: 'US', hfbNo: '01', paNo: '001' },
+        pra: { retailUnitCode: 'US', hfbNo: '01', paNo: '001' },
+    };
+
+    const grid = [];
+    for (const metric of METRIC_LIST) {
+        for (const level of LEVEL_LIST) {
+            const res = await window.__origFetch(ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Authorization: window.__auth },
+                body: JSON.stringify({ metric, level, filters: FILTERS_FOR[level] }),
+            });
+            const text = await res.text();
+            let rows = null;
+            try {
+                const j = JSON.parse(text);
+                const d = (j && j.data && j.data.data) || [];
+                rows = Array.isArray(d) ? d.length : null;
+            } catch (e) { /* non-JSON error body */ }
+            grid.push({ metric, level, status: res.status, rows });
+        }
+    }
+
+    const cell = (g) => g.metric + '/' + g.level + '=' + g.status + (g.rows === null ? '' : ' (' + g.rows + ' rows)');
+    const ok = grid.filter((g) => g.status === 200 && g.rows > 0);
+    const refused = grid.filter((g) => g.status >= 400);
+    const emptyOk = grid.filter((g) => g.status === 200 && g.rows === 0);
+
+    results.push({
+        group: 'Metric x level matrix',
+        name: 'Which metric and level combinations are supported',
+        status: null,
+        outcome: 'observed',
+        reasons: [],
+        note:
+            'Of ' + grid.length + ' combinations: ' + ok.length + ' return data, ' +
+            refused.length + ' are refused with a 4xx, and ' + emptyOk.length +
+            ' return 200 with no rows. The last group is the awkward one - a caller cannot ' +
+            'tell "this combination is not supported" from "this combination is supported but ' +
+            'has nothing in it". Full grid: ' + grid.map(cell).join('; '),
+        preview: grid.map(cell).join('; ').slice(0, 400),
+    });
+
+    // Anything that errors with a 5xx is a genuine defect rather than a question.
+    const broken = grid.filter((g) => g.status >= 500);
+    results.push({
+        group: 'Metric x level matrix',
+        name: 'No metric and level combination causes a server error',
+        status: null,
+        outcome: broken.length ? 'failed' : 'passed',
+        reasons: broken.map(cell),
+        note: 'An unsupported combination should be refused politely with a 4xx, not crash the server.',
+        preview: broken.map(cell).join('; ').slice(0, 300),
+    });
+} catch (err) {
+    results.push({
+        group: 'Metric x level matrix',
+        name: 'Metric and level matrix',
+        status: null,
+        outcome: 'harness',
+        reasons: ['matrix sweep threw: ' + String(err).slice(0, 160)],
+        preview: '',
+    });
+}
+
+// ── Week and time filtering ──────────────────────────────────────────────────
+// Nothing in the suite has ever passed a time filter. Since unknown filter keys
+// are silently ignored, "does it work?" cannot be answered by the status code -
+// it has to be answered by whether the returned data actually changes.
+try {
+    const weeksIn = (j) => {
+        const rows = (j && j.data && j.data.data) || [];
+        return rows.map((r) => String(r.ikeaWeek || r.week || r.weekNo || '')).filter(Boolean);
+    };
+    const getWeekly = async (filters) => {
+        const res = await window.__origFetch(ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: window.__auth },
+            body: JSON.stringify({ metric: 'WEEKLY_SALES_TREND', level: 'country', filters }),
+        });
+        const text = await res.text();
+        try { return { status: res.status, json: JSON.parse(text) }; }
+        catch (e) { return { status: res.status, json: null }; }
+    };
+
+    const base = await getWeekly({ retailUnitCode: 'US' });
+    const baseWeeks = weeksIn(base.json);
+
+    if (!baseWeeks.length) {
+        results.push({
+            group: 'Time filtering',
+            name: 'Week filtering could not be assessed',
+            status: base.status,
+            outcome: 'harness',
+            reasons: ['the unfiltered weekly response carried no recognisable week field'],
+            note: 'Checked ikeaWeek, week and weekNo. Without a week field on the rows there is no ' +
+                  'way to tell whether a week filter was honoured.',
+            preview: JSON.stringify(base.json).slice(0, 200),
+        });
+    } else {
+        const pick = baseWeeks[Math.floor(baseWeeks.length / 2)];
+        const candidates = ['ikeaWeek', 'week', 'weekNo', 'weekFrom'];
+        const honoured = [];
+        const ignored = [];
+        for (const key of candidates) {
+            const filters = { retailUnitCode: 'US' };
+            filters[key] = pick;
+            const got = await getWeekly(filters);
+            const weeks = weeksIn(got.json);
+            if (got.status !== 200) { ignored.push(key + ' -> ' + got.status); continue; }
+            if (weeks.length && weeks.length < baseWeeks.length) honoured.push(key + ' -> ' + weeks.length + ' of ' + baseWeeks.length + ' weeks');
+            else ignored.push(key + ' -> unchanged (' + weeks.length + ' weeks)');
+        }
+
+        results.push({
+            group: 'Time filtering',
+            name: 'A week filter narrows the weekly trend',
+            status: 200,
+            outcome: honoured.length ? 'passed' : 'observed',
+            reasons: [],
+            note: honoured.length
+                ? 'Honoured: ' + honoured.join('; ') + '.'
+                : 'None of the tried filter names (' + candidates.join(', ') + ') changed the result - ' +
+                  'each returned all ' + baseWeeks.length + ' weeks. Combined with unknown keys being ' +
+                  'silently ignored, that means the whole series is always returned and any narrowing ' +
+                  'is the client\\'s job. Worth confirming there is no server-side week filter, because ' +
+                  'a caller has no way to discover one.',
+            preview: (honoured.concat(ignored)).join('; ').slice(0, 400),
+        });
+
+        // Year boundaries are where week arithmetic usually breaks.
+        const boundaries = ['202601', '202552', '202553', '999999'];
+        const boundaryResults = [];
+        for (const wk of boundaries) {
+            const got = await getWeekly({ retailUnitCode: 'US', ikeaWeek: wk });
+            boundaryResults.push(wk + ' -> ' + got.status);
+        }
+        const crashed = boundaryResults.filter((r) => / -> 5\\d\\d$/.test(r));
+        results.push({
+            group: 'Time filtering',
+            name: 'Year-boundary and impossible week numbers do not crash the API',
+            status: null,
+            outcome: crashed.length ? 'failed' : 'passed',
+            reasons: crashed,
+            note: 'Weeks 202552/202553 straddle a year end and 999999 cannot exist. None should produce ' +
+                  'a server error. Results: ' + boundaryResults.join('; '),
+            preview: boundaryResults.join('; ').slice(0, 300),
+        });
+    }
+} catch (err) {
+    results.push({
+        group: 'Time filtering',
+        name: 'Week filtering',
+        status: null,
+        outcome: 'harness',
+        reasons: ['week filter probing threw: ' + String(err).slice(0, 160)],
+        preview: '',
+    });
+}
+
 const totals = {
     total: results.length,
     passed: results.filter((r) => r.outcome === 'passed').length,
@@ -1197,6 +1469,177 @@ return JSON.stringify({
 `.trim();
 }
 
+/**
+ * Transport-security check, run from Node rather than the browser.
+ *
+ * A browser can only see the response headers listed in the API's
+ * `Access-Control-Expose-Headers` — four of them here. Asserting from page
+ * JavaScript that `strict-transport-security` is missing would therefore be a
+ * false finding: the header may well be on the wire and simply invisible.
+ *
+ * Node has no such restriction, so this reads the full response head. It needs
+ * no bearer token: an unauthenticated request still comes back with the same
+ * security headers attached, and a 401 body is all we want anyway.
+ *
+ * Returns results in the same shape as the in-page probes so they can be merged
+ * straight into the published payload.
+ */
+async function checkTransportSecurity(origin = API_ORIGIN) {
+    const endpoint = origin + '/metrics';
+    const results = [];
+
+    const record = (name, outcome, reasons, note, preview, status) =>
+        results.push({
+            group: 'Transport security',
+            name,
+            status: status === undefined ? null : status,
+            outcome,
+            reasons: reasons || [],
+            note: note || null,
+            preview: preview || '',
+        });
+
+    let res;
+    try {
+        res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ metric: 'KPI_SUMMARY', level: 'country', filters: { retailUnitCode: 'US' } }),
+        });
+        await res.text();
+    } catch (err) {
+        record(
+            'Response headers could not be read from Node',
+            'harness',
+            ['request threw: ' + String(err.message || err).slice(0, 200)],
+            'Without a successful request the transport-security headers cannot be inspected at all.',
+        );
+        return { target: origin, ranAt: new Date().toISOString(), results };
+    }
+
+    const headers = {};
+    res.headers.forEach((v, k) => { headers[k.toLowerCase()] = v; });
+    const names = Object.keys(headers).sort();
+
+    // Prove the point of running this outside the browser at all.
+    record(
+        'The full response head is readable from outside the browser',
+        names.length > 4 ? 'passed' : 'observed',
+        [],
+        'Node sees ' + names.length + ' response header(s); page JavaScript sees only the four the API ' +
+        'chooses to expose via CORS. This is why the header checks below cannot live in the in-page suite.',
+        names.join(', ').slice(0, 400),
+        res.status,
+    );
+
+    // Expected on any HTTPS API. Absence is a real finding now that we can see it.
+    const expected = [
+        {
+            header: 'strict-transport-security',
+            why: 'tells the browser to refuse plain HTTP to this host in future, which closes a downgrade attack',
+        },
+        {
+            header: 'x-content-type-options',
+            why: 'stops a browser second-guessing the declared content type, which is how a JSON response gets treated as script',
+        },
+    ];
+
+    for (const { header, why } of expected) {
+        const present = headers[header] !== undefined;
+        record(
+            'Response carries ' + header,
+            present ? 'passed' : 'observed',
+            present ? [] : [header + ' was not present on the response'],
+            present
+                ? header + ': ' + headers[header]
+                : 'Not set. This header ' + why + '. Low severity for an internal, ' +
+                  'authenticated, HTTPS-only API behind SSO, but it is free to add and it is the kind of ' +
+                  'thing a security review asks about. Recorded as a question rather than a defect ' +
+                  'because it may already be handled at the ingress or CDN layer rather than by the service.',
+            present ? headers[header].slice(0, 200) : '',
+            res.status,
+        );
+    }
+
+    // A header that leaks the stack in use gives an attacker a starting point.
+    const disclosing = ['server', 'x-powered-by', 'x-aspnet-version']
+        .filter((h) => headers[h] !== undefined)
+        .map((h) => h + ': ' + headers[h]);
+
+    record(
+        'Response does not advertise the server technology',
+        disclosing.length ? 'observed' : 'passed',
+        disclosing.length ? disclosing : [],
+        disclosing.length
+            ? 'These headers name the technology serving the API. Not a vulnerability by itself, but it ' +
+              'tells anyone probing the host which exploits are worth trying first.'
+            : 'No server, x-powered-by or x-aspnet-version header is returned.',
+        disclosing.join('; ').slice(0, 200),
+        res.status,
+    );
+
+    // The API is unusable from the browser without CORS, so check it is scoped
+    // rather than open to the world. This needs a second request carrying an
+    // Origin header: without one the server has no reason to answer at all, so
+    // the absence of access-control-allow-origin above proves nothing.
+    let corsOutcome = 'harness';
+    let corsReasons = [];
+    let corsNote = '';
+    let corsPreview = '';
+    const strangerOrigin = 'https://qa-probe.invalid';
+    try {
+        const pre = await fetch(endpoint, {
+            method: 'OPTIONS',
+            headers: {
+                Origin: strangerOrigin,
+                'Access-Control-Request-Method': 'POST',
+                'Access-Control-Request-Headers': 'authorization,content-type',
+            },
+        });
+        await pre.text();
+        const allowed = pre.headers.get('access-control-allow-origin');
+        const creds = pre.headers.get('access-control-allow-credentials');
+        corsPreview = 'preflight ' + pre.status + '; allow-origin: ' + (allowed || '(absent)') +
+            '; allow-credentials: ' + (creds || '(absent)');
+
+        if (allowed === null) {
+            corsOutcome = 'passed';
+            corsNote = 'An unknown origin (' + strangerOrigin + ') was refused a CORS grant - the preflight ' +
+                'came back without access-control-allow-origin, so a browser will not let a stranger site ' +
+                'call this API on a signed-in user\'s behalf.';
+        } else if (allowed === '*') {
+            corsOutcome = 'observed';
+            corsReasons = ['access-control-allow-origin: *'];
+            corsNote = 'Any origin is granted access. With bearer-token auth that is usually survivable ' +
+                'because the token is not sent automatically, but it does mean any site can call this API ' +
+                'from a browser. Worth confirming it is deliberate.';
+        } else if (allowed === strangerOrigin) {
+            corsOutcome = 'observed';
+            corsReasons = ['the API reflected an unknown origin back: ' + allowed];
+            corsNote = 'The API echoed a made-up origin straight back rather than checking it against an ' +
+                'allow-list. Reflecting any origin is effectively the same as allowing all of them, and if ' +
+                'access-control-allow-credentials is ever turned on it becomes a genuine hole.';
+        } else {
+            corsOutcome = 'passed';
+            corsNote = 'Scoped to ' + allowed + ' rather than reflecting the requesting origin.';
+        }
+    } catch (err) {
+        corsReasons = ['preflight threw: ' + String(err.message || err).slice(0, 200)];
+        corsNote = 'The CORS preflight could not be completed, so origin scoping is unverified.';
+    }
+
+    record(
+        'Cross-origin access is not granted to an unknown origin',
+        corsOutcome,
+        corsReasons,
+        corsNote,
+        corsPreview,
+        res.status,
+    );
+
+    return { target: origin, ranAt: new Date().toISOString(), results };
+}
+
 module.exports = {
     API_ORIGIN,
     METRICS,
@@ -1206,20 +1649,30 @@ module.exports = {
     buildProbeScript,
     buildCaptureScript,
     buildCleanupScript,
+    checkTransportSecurity,
 };
 
 // Allow `node api-probes.js --emit=probe|capture|cleanup` so the agent can pipe
 // the script straight into the canvas without hand-copying it.
 if (require.main === module) {
-    const arg = (process.argv.find((a) => a.startsWith('--emit=')) || '--emit=probe').split('=')[1];
-    const map = {
-        probe: buildProbeScript,
-        capture: buildCaptureScript,
-        cleanup: buildCleanupScript,
-    };
-    if (!map[arg]) {
-        console.error(`Unknown --emit target '${arg}'. Use probe, capture or cleanup.`);
-        process.exit(1);
+    if (process.argv.includes('--headers')) {
+        checkTransportSecurity()
+            .then((r) => process.stdout.write(JSON.stringify(r, null, 2) + '\n'))
+            .catch((err) => {
+                console.error('Transport security check failed:', err.message);
+                process.exit(1);
+            });
+    } else {
+        const arg = (process.argv.find((a) => a.startsWith('--emit=')) || '--emit=probe').split('=')[1];
+        const map = {
+            probe: buildProbeScript,
+            capture: buildCaptureScript,
+            cleanup: buildCleanupScript,
+        };
+        if (!map[arg]) {
+            console.error(`Unknown --emit target '${arg}'. Use probe, capture or cleanup.`);
+            process.exit(1);
+        }
+        process.stdout.write(map[arg]());
     }
-    process.stdout.write(map[arg]());
 }

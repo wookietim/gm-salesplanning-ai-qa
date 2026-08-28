@@ -192,7 +192,24 @@ function buildPaChildRows(hierarchy, retailUnitCode, hfbNo) {
     );
 }
 
-function buildKpiSummaryResponse(requestBody, hierarchy, emptyChildren = false) {
+// Live production data genuinely contains JSON `null` for numeric metric fields
+// (e.g. HFB 70 "Home Appliances" returns null for its forecast/index metrics —
+// it means "no forecast exists", not "broken data"). Setting a field to null
+// here reproduces that exactly so tests can document how the UI renders it.
+function applyNullMetrics(row, nullMetrics) {
+    if (!row || !Array.isArray(nullMetrics)) return row;
+    for (const field of nullMetrics) {
+        row[field] = null;
+    }
+    return row;
+}
+
+function buildKpiSummaryResponse(requestBody, hierarchy, opts = {}) {
+    const emptyChildren = Boolean(opts.emptyChildren);
+    const nullMetrics = Array.isArray(opts.nullMetrics) ? opts.nullMetrics : [];
+    const rowOverrides = opts.metricOverrides || {};
+    const childOverrides = opts.childMetricOverrides || {};
+
     const level = String(requestBody?.level || 'country').toLowerCase();
     const filters = requestBody?.filters || {};
     const retailUnitCode = filters.retailUnitCode || 'SE';
@@ -213,6 +230,13 @@ function buildKpiSummaryResponse(requestBody, hierarchy, emptyChildren = false) 
         row = buildKpiRow({ retailUnitCode });
         children = buildHfbChildRows(retailUnitCode);
     }
+
+    // Additive test hooks: override specific fields on the main row and/or child
+    // rows, then null out any requested fields. Applied last so nulls always win.
+    row = applyNullMetrics({ ...row, ...rowOverrides }, nullMetrics);
+    children = children.map((child) =>
+        applyNullMetrics({ ...child, ...childOverrides }, nullMetrics),
+    );
 
     return {
         metric: 'KPI_SUMMARY',
@@ -235,7 +259,12 @@ function resolveMetricsResponse(requestBody, hierarchy, options = {}) {
     const metric = requestBody?.metric;
     if (metric === 'ROLLING_SALES_TREND') return rollingTrendResponse;
     if (metric === 'KPI_SUMMARY') {
-        return buildKpiSummaryResponse(requestBody, hierarchy, Boolean(options.emptyChildren));
+        return buildKpiSummaryResponse(requestBody, hierarchy, {
+            emptyChildren: options.emptyChildren,
+            nullMetrics: options.nullMetrics,
+            metricOverrides: options.metricOverrides,
+            childMetricOverrides: options.childMetricOverrides,
+        });
     }
     return weeklyMetricsResponse;
 }
@@ -565,12 +594,28 @@ async function gotoAuthenticated(page, url, options = {}) {
 
     // Backend metrics — register catch-all FIRST (lower priority in Playwright's last-wins stack)
     await page.route(/\/metrics/, async (route) => {
+        const requestBody = route.request().postDataJSON();
+
+        // Never-resolving response: leave the request hanging so the app is stuck
+        // in its loading/spinner state. The context tears down at test end.
+        if (options.metricsHang) {
+            await new Promise(() => {});
+            return;
+        }
+
+        // Per-HFB delay keyed on the requested hfbNo, so a navigation race between
+        // a slow HFB and a fast HFB is fully deterministic.
+        const hfbMetricsDelays = options.hfbMetricsDelays || {};
+        const requestedHfbNo = requestBody?.filters?.hfbNo;
+        if (requestedHfbNo != null && hfbMetricsDelays[requestedHfbNo] != null) {
+            await wait(hfbMetricsDelays[requestedHfbNo]);
+        }
+
         if (metricsDelayMs > 0) await wait(metricsDelayMs);
         if (metricsStatus !== 200) {
             await route.fulfill({ status: metricsStatus, contentType: 'application/json', body: '{}' });
             return;
         }
-        const requestBody = route.request().postDataJSON();
 
         // HFB and PA performance are both derived from KPI_SUMMARY, so simulate
         // their failures by failing that request at the matching level.
@@ -588,8 +633,13 @@ async function gotoAuthenticated(page, url, options = {}) {
 
         const responseBody = resolveMetricsResponse(requestBody, hierarchyResponse, {
             emptyChildren: options.emptyChildren,
+            nullMetrics: options.nullMetrics,
+            metricOverrides: options.metricOverrides,
+            childMetricOverrides: options.childMetricOverrides,
         });
-        await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(responseBody) });
+        await route
+            .fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(responseBody) })
+            .catch(() => {});
     });
 
     // Hierarchy — registered LAST so it takes priority (last-wins) over metrics** catch-all
@@ -2630,5 +2680,398 @@ test.describe('API data → UI binding', () => {
             await expect(page.getByRole('heading', { name: 'FY26 sales index' })).toBeVisible();
             await expect(page.locator('body')).toContainText(/\d+/);
         });
+    });
+});
+
+// ─── Newly added coverage (null metrics, viewports, slow/hung responses, token
+//     expiry, navigation races, number-formatting boundaries) ──────────────────
+//
+// These extend the existing mock harness additively (new option keys only):
+//   nullMetrics            — array of KPI field names forced to JSON null
+//   metricOverrides        — object merged into the main KPI row
+//   childMetricOverrides   — object merged into each KPI child row
+//   hfbMetricsDelays       — { [hfbNo]: ms } per-HFB metrics delay (race tests)
+//   metricsHang            — leave every /metrics request unresolved
+//
+// Ground truth for the assertions was established by reading the deployed
+// bundle: the app coerces null numeric fields to 0 (parseFloat(String(x ?? "0")))
+// and the MetricRowCell/Hero formatters render 0 as an em dash "—" — EXCEPT the
+// HeroMetric, which renders Math.round(index) and therefore prints a literal "0"
+// for a null index-to-goal. Findings like that are captured in the test names.
+
+const EM_DASH = '\u2014';
+const BAD_TOKENS = ['NaN', 'undefined', 'null'];
+
+async function expectNoBadNumberTokens(locator) {
+    const text = (await locator.textContent()) || '';
+    for (const token of BAD_TOKENS) {
+        expect(text, `rendered text should not contain the literal "${token}"`).not.toContain(token);
+    }
+}
+
+test.describe('Null metric rendering (production returns JSON null, e.g. HFB 70)', () => {
+    // The four fields IKEA production genuinely returns as null for a
+    // forecast-less HFB. netSalesForecastYtd / netQuantityForecastYtd are not
+    // bound to any of these components, but the two IndexVsLatestForecast fields
+    // drive the "vs latest forecast" MetricRowCell.
+    const PROD_NULL_FIELDS = [
+        'netSalesForecastYtd',
+        'netQuantityForecastYtd',
+        'netSalesIndexVsLatestForecast',
+        'netQuantityIndexVsLatestForecast',
+    ];
+
+    test('PA hero metric renders a literal "0" (not a dash) when netSalesIndexToGoal is null', async ({ page }) => {
+        // FINDING: a null index-to-goal is coerced to 0 and the HeroMetric prints
+        // Math.round(0) = "0" with a "100pt" critical badge — a misleading value,
+        // NOT the em-dash placeholder used elsewhere.
+        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', {
+            metricsDelayMs: 200,
+            nullMetrics: ['netSalesIndexToGoal'],
+        });
+        const card = page
+            .getByRole('heading', { name: 'YTD sales index' })
+            .locator('xpath=ancestor::div[1]');
+        await expect(page.getByRole('heading', { name: 'YTD sales index' })).toBeVisible();
+        const cardText = (await card.textContent()) || '';
+        expect(cardText).toContain('0vs goal');
+        expect(cardText).toContain('100pt');
+        // Whatever it shows, it must not be a broken numeric token.
+        await expectNoBadNumberTokens(card);
+    });
+
+    test('PA "vs latest forecast" MetricRowCell renders an em dash when its index is null', async ({ page }) => {
+        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', {
+            metricsDelayMs: 200,
+            nullMetrics: ['netSalesIndexVsLatestForecast', 'netQuantityIndexVsLatestForecast'],
+        });
+        await expect(page.getByRole('heading', { name: 'YTD sales index' })).toBeVisible();
+        const cell = page.getByText('vs latest forecast', { exact: true }).locator('xpath=..');
+        await expect(cell).toContainText(EM_DASH);
+        await expectNoBadNumberTokens(cell);
+    });
+
+    test('HFB "vs latest forecast" MetricRowCell renders an em dash when its index is null', async ({ page }) => {
+        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', {
+            metricsDelayMs: 200,
+            hierarchyDelayMs: 200,
+            nullMetrics: ['netSalesIndexVsLatestForecast', 'netQuantityIndexVsLatestForecast'],
+        });
+        await expect(page.getByRole('heading', { name: 'YTD sales index' })).toBeVisible();
+        const cell = page.getByText('vs latest forecast', { exact: true }).locator('xpath=..');
+        await expect(cell).toContainText(EM_DASH);
+        await expectNoBadNumberTokens(cell);
+    });
+
+    test('HFB list rows render em dashes (never NaN/undefined) when a child index is null', async ({ page }) => {
+        await gotoBypassAuth(page, '/region-dashboard/se/', {
+            metricsDelayMs: 200,
+            childMetricOverrides: {},
+            nullMetrics: ['netSalesIndexVsDemandPlan', 'netQuantityIndexVsDemandPlan'],
+        });
+        await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
+        const region = page.getByLabel('HFB list navigation');
+        await expect(region).toContainText(EM_DASH);
+        const cell = region.getByText('vs demand plan', { exact: true }).first().locator('xpath=..');
+        await expect(cell).toContainText(EM_DASH);
+        await expectNoBadNumberTokens(region);
+    });
+
+    test('PA list rows render em dashes (never NaN/undefined) when a child index is null', async ({ page }) => {
+        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', {
+            metricsDelayMs: 200,
+            hierarchyDelayMs: 200,
+            nullMetrics: ['netSalesIndexVsDemandPlan', 'netQuantityIndexVsDemandPlan'],
+        });
+        await page.getByRole('button', { name: /Sofas.*001/ }).waitFor();
+        const region = page.getByLabel('PA list navigation');
+        await expect(region).toContainText(EM_DASH);
+        const cell = region.getByText('vs demand plan', { exact: true }).first().locator('xpath=..');
+        await expect(cell).toContainText(EM_DASH);
+        await expectNoBadNumberTokens(region);
+    });
+
+    test('realistic HFB-70 payload (all forecast/index fields null) never renders NaN/undefined/null', async ({ page }) => {
+        await gotoBypassAuth(page, '/region-dashboard/se/hfb/70/pa/001', {
+            metricsDelayMs: 200,
+            nullMetrics: PROD_NULL_FIELDS,
+        });
+        await expect(page.getByRole('heading', { name: 'YTD sales index' })).toBeVisible();
+        // The "vs latest forecast" cell is the one genuinely driven by the null
+        // production fields — it degrades to an em dash, not a broken value.
+        const cell = page.getByText('vs latest forecast', { exact: true }).locator('xpath=..');
+        await expect(cell).toContainText(EM_DASH);
+        const card = page
+            .getByRole('heading', { name: 'YTD sales index' })
+            .locator('xpath=ancestor::div[contains(@class,"card")][1]');
+        await expectNoBadNumberTokens(card);
+    });
+});
+
+test.describe('Responsive viewports (tablet 768x1024, phone 390x844)', () => {
+    const TABLET = { width: 768, height: 1024 };
+    const PHONE = { width: 390, height: 844 };
+
+    async function expectNoHorizontalOverflow(page) {
+        const overflow = await page.evaluate(() => ({
+            scrollWidth: document.documentElement.scrollWidth,
+            innerWidth: window.innerWidth,
+        }));
+        // Allow a 1px rounding tolerance.
+        expect(
+            overflow.scrollWidth,
+            `document (${overflow.scrollWidth}px) should not overflow the viewport (${overflow.innerWidth}px)`,
+        ).toBeLessThanOrEqual(overflow.innerWidth + 1);
+    }
+
+    for (const [name, size] of [['tablet', TABLET], ['phone', PHONE]]) {
+        test(`country dashboard survives and navigates at ${name} width`, async ({ page }) => {
+            await page.setViewportSize(size);
+            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 200 });
+            await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
+            await expect(page.getByRole('link', { name: 'Sales Planning' })).toBeVisible();
+            await expect(page.getByRole('heading', { level: 3, name: 'FY26 sales index' })).toBeVisible();
+            await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
+            await expectNoHorizontalOverflow(page);
+            // Primary navigation still works.
+            await page.getByRole('button', { name: 'View HFB plan' }).first().click();
+            await expect(page).toHaveURL(/\/region-dashboard\/se\/hfb\/\d+$/);
+        });
+
+        test(`HFB dashboard survives at ${name} width`, async ({ page }) => {
+            await page.setViewportSize(size);
+            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', {
+                metricsDelayMs: 200,
+                hierarchyDelayMs: 200,
+            });
+            await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 01');
+            await expect(page.getByLabel('Breadcrumb')).toBeVisible();
+            await expect(page.getByRole('heading', { level: 3, name: 'YTD sales index' })).toBeVisible();
+            await page.getByRole('button', { name: /Sofas.*001/ }).waitFor();
+            await expectNoHorizontalOverflow(page);
+        });
+
+        test(`PA dashboard survives at ${name} width`, async ({ page }) => {
+            await page.setViewportSize(size);
+            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 200 });
+            await expect(page.getByRole('heading', { level: 1 })).toContainText('PA 001');
+            await expect(page.getByRole('link', { name: 'Sales Planning' })).toBeVisible();
+            await expect(page.getByRole('heading', { level: 3, name: 'YTD sales index' })).toBeVisible();
+            await expect(page.getByLabel('Sales by week')).toBeVisible();
+            await expectNoHorizontalOverflow(page);
+        });
+    }
+});
+
+test.describe('Slow and never-resolving responses', () => {
+    test('a very slow (5s) metrics response shows a loading state then resolves to real content', async ({ page }) => {
+        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 5000 });
+        // Loading state is visible while the request is in flight.
+        await expect(page.getByLabel('Sales by week').getByRole('status'))
+            .toContainText('Loading trend data...', { timeout: 4000 });
+        // ...and it eventually resolves to real content (no error).
+        await expect(page.getByRole('button', { name: 'View HFB plan' }).first()).toBeVisible({ timeout: 15000 });
+        await expect(page.getByLabel('Sales by week')).not.toContainText('unavailable');
+    });
+
+    test('a never-resolving metrics response keeps the country page in its loading state (no error, no blank shell)', async ({ page }) => {
+        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsHang: true });
+        // The shell still renders (not blank)...
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
+        // ...and the data regions stay in their loading state, bounded so the test
+        // itself terminates quickly.
+        await expect(page.getByLabel('Sales by week').getByRole('status'))
+            .toContainText('Loading trend data...', { timeout: 8000 });
+        await expect(page.getByLabel('HFB list navigation').getByRole('status'))
+            .toContainText('Loading HFB performance...', { timeout: 8000 });
+        // It must NOT flip to an error state while genuinely still pending.
+        await expect(page.getByLabel('Sales by week')).not.toContainText('unavailable');
+    });
+
+    test('a never-resolving metrics response keeps the HFB PA list spinning without erroring', async ({ page }) => {
+        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsHang: true });
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 01');
+        await expect(page.getByText('Loading PA performance...')).toBeVisible({ timeout: 8000 });
+        await expect(page.getByLabel('Sales by week')).not.toContainText('unavailable');
+    });
+});
+
+test.describe('Mid-session token expiry (metrics start returning 401 after a good load)', () => {
+    // Registered AFTER navigation, so this handler wins Playwright's last-wins
+    // stack for later fetches. Hierarchy is still served so we isolate the effect
+    // of the metrics 401 specifically.
+    async function expireMetricsToken(page) {
+        await page.route(/\/metrics/, async (route) => {
+            const url = route.request().url();
+            if (url.includes('/metrics/hierarchy')) {
+                await route.fulfill({
+                    status: 200,
+                    contentType: 'application/json',
+                    body: JSON.stringify(hierarchyResponse),
+                }).catch(() => {});
+                return;
+            }
+            await route.fulfill({ status: 401, contentType: 'application/json', body: '{}' }).catch(() => {});
+        });
+    }
+
+    test('navigating to a new page after the token expires surfaces an honest error, not stale/blank data', async ({ page }) => {
+        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 150 });
+        await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
+
+        await expireMetricsToken(page);
+
+        await page
+            .getByRole('heading', { level: 3, name: /01\s*-/ })
+            .locator('xpath=ancestor::div[.//button[contains(., "View HFB plan")]][1]')
+            .getByRole('button', { name: 'View HFB plan' })
+            .click();
+
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 01');
+        // The freshly-fetched HFB metrics fail auth → the UI shows its error state.
+        await expect(page.getByLabel('Sales by week')).toContainText('unavailable', { timeout: 25000 });
+    });
+
+    test('after token expiry the SalesIndexTrend also errors rather than showing fabricated data', async ({ page }) => {
+        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 150 });
+        await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
+
+        await expireMetricsToken(page);
+
+        await page.getByLabel('Breadcrumb'); // no-op guard; ensure page interactive
+        await page
+            .getByRole('heading', { level: 3, name: /02\s*-/ })
+            .locator('xpath=ancestor::div[.//button[contains(., "View HFB plan")]][1]')
+            .getByRole('button', { name: 'View HFB plan' })
+            .click();
+
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 02');
+        await expect(page.getByLabel('Trends - Sales index vs LY')).toContainText('unavailable', { timeout: 25000 });
+    });
+
+    test('token expiry leaves the app shell intact (h1 + breadcrumb still render)', async ({ page }) => {
+        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 150 });
+        await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
+
+        await expireMetricsToken(page);
+
+        await page
+            .getByRole('heading', { level: 3, name: /01\s*-/ })
+            .locator('xpath=ancestor::div[.//button[contains(., "View HFB plan")]][1]')
+            .getByRole('button', { name: 'View HFB plan' })
+            .click();
+
+        // The chrome (heading, breadcrumb, header link) must remain — the failure
+        // is contained to the data regions, not a full white-screen crash.
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 01');
+        await expect(page.getByLabel('Breadcrumb').getByText('HFB 01')).toBeVisible();
+        await expect(page.getByRole('link', { name: 'Sales Planning' })).toBeVisible();
+    });
+});
+
+test.describe('Navigation race conditions (deterministic via per-HFB delays)', () => {
+    async function clickHfbCard(page, hfbNo) {
+        await page
+            .getByRole('heading', { level: 3, name: new RegExp(`^${hfbNo}\\s*-`) })
+            .locator('xpath=ancestor::div[.//button[contains(., "View HFB plan")]][1]')
+            .getByRole('button', { name: 'View HFB plan' })
+            .click();
+    }
+
+    test('a slow HFB 01 request does not overwrite the fast HFB 02 view the user ended on', async ({ page }) => {
+        // HFB 01 KPI (which builds the PA list) is slow; HFB 02 is fast. HFB 01 has
+        // PAs (Sofas/Armchairs) in the hierarchy; HFB 02 has none — a clean,
+        // data-driven differentiator between the two views.
+        await gotoBypassAuth(page, '/region-dashboard/se/', {
+            hfbMetricsDelays: { '01': 3000, '02': 100 },
+        });
+        await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
+
+        await clickHfbCard(page, '01');
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 01');
+        // Immediately bounce back and go to HFB 02 before HFB 01 resolves.
+        await page.getByRole('button', { name: 'Go back' }).click();
+        await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
+        await clickHfbCard(page, '02');
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 02');
+
+        // Wait past HFB 01's delay: the late response must NOT inject HFB 01's PAs.
+        await page.waitForTimeout(3500);
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 02');
+        await expect(page.getByRole('heading', { level: 1 })).not.toContainText('HFB 01');
+        await expect(page.getByRole('button', { name: /Sofas.*001/ })).toHaveCount(0);
+    });
+
+    test('country → HFB (slow) → back to country: the late HFB response does not clobber the country view', async ({ page }) => {
+        await gotoBypassAuth(page, '/region-dashboard/se/', {
+            hfbMetricsDelays: { '01': 3000 },
+        });
+        await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
+
+        await clickHfbCard(page, '01');
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 01');
+        // Return to the country dashboard before HFB 01 resolves.
+        await page.getByRole('button', { name: 'Go back' }).click();
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
+
+        // Wait past HFB 01's delay: we must still be on the country dashboard.
+        await page.waitForTimeout(3500);
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
+        await expect(page.getByRole('heading', { level: 1 })).not.toContainText('HFB 01');
+        await expect(page.getByRole('button', { name: 'View HFB plan' })).toHaveCount(16);
+    });
+});
+
+test.describe('Number formatting boundaries (Gap to close, currency-compact formatter)', () => {
+    // The KpiSummaryCard "Gap to close" sales figure is rendered by an
+    // Intl.NumberFormat currency/compact formatter (maximumFractionDigits: 1).
+    // It is displayed as the negation of netSalesGap, so netSalesGap = -999,900,000
+    // renders as "$999.9M". netQuantityGap is fixed negative so the (large-variant)
+    // Gap to close block stays visible. Expected strings were captured from the
+    // deployed app's own Intl output, which differs from Node's ICU in places.
+    async function gapText(page, netSalesGap) {
+        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', {
+            metricsDelayMs: 200,
+            metricOverrides: { netQuantityGap: '-1000', netSalesGap: String(netSalesGap) },
+        });
+        await expect(page.getByRole('heading', { name: 'YTD sales index' })).toBeVisible();
+        return page.getByText(/Gap to close:/);
+    }
+
+    test('just under the billion boundary renders "$999.9M"', async ({ page }) => {
+        await expect(await gapText(page, -999900000)).toContainText('$999.9M');
+    });
+
+    test('at/just over the billion boundary renders "$1B"', async ({ page }) => {
+        const gap = await gapText(page, -1000000000);
+        await expect(gap).toContainText('$1B');
+        await expect(gap).not.toContainText('$999.9M');
+    });
+
+    test('just under the million boundary renders "$999.9K"', async ({ page }) => {
+        await expect(await gapText(page, -999900)).toContainText('$999.9K');
+    });
+
+    test('at/just over the million boundary renders "$1M"', async ({ page }) => {
+        const gap = await gapText(page, -1000000);
+        await expect(gap).toContainText('$1M');
+        await expect(gap).not.toContainText('$999.9K');
+    });
+
+    test('exactly zero renders as "-$0" (signed-zero quirk of the negated formatter)', async ({ page }) => {
+        // FINDING: because the value is displayed as -(netSalesGap), a zero gap is
+        // formatted from -0 and renders as "-$0", not "$0".
+        await expect(await gapText(page, 0)).toContainText('-$0');
+    });
+
+    test('a negative gap-to-close (goal already exceeded) renders with a leading minus, "-$2.1M"', async ({ page }) => {
+        await expect(await gapText(page, 2100000)).toContainText('-$2.1M');
+    });
+
+    test('a very small non-zero gap renders "$1" without abbreviation', async ({ page }) => {
+        const gap = await gapText(page, -1);
+        await expect(gap).toContainText('$1');
+        await expect(gap).not.toContainText('$1M');
+        await expect(gap).not.toContainText('$1B');
     });
 });

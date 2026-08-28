@@ -25,6 +25,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { stepsFor } = require('./repro-steps');
 
 const PAGE_ID = '1353804850';
 const HEADING = 'UI ↔ API Integration Run';
@@ -96,7 +97,7 @@ function buildSection(payload, today) {
 
   const header =
     '<tr>' +
-    ['Check', 'Outcome', 'Evidence']
+    ['Check', 'Outcome', 'Evidence', 'Replicate by hand']
       .map((c) => `<th><p><strong>${c}</strong></p></th>`)
       .join('') +
     '</tr>';
@@ -104,7 +105,7 @@ function buildSection(payload, today) {
   const body = groups
     .map((g) => {
       const groupRow =
-        '<tr><td colspan="3" style="background-color: rgb(244,245,247);">' +
+        '<tr><td colspan="4" style="background-color: rgb(244,245,247);">' +
         `<p><strong>${escapeXml(g.name)}</strong></p></td></tr>`;
       const rows = g.rows
         .map((r) => {
@@ -114,11 +115,28 @@ function buildSection(payload, today) {
             `<td style="background-color: ${style.color};"><p>${
               bold ? `<strong>${v}</strong>` : v
             }</p></td>`;
+
+          // Steps are authored in repro-steps.js and already carry their own
+          // inline markup, so they are emitted as-is rather than escaped. They
+          // are collapsed per row because 72 checks x ~9 steps would otherwise
+          // bury the results the table exists to show.
+          const steps = stepsFor(r, payload);
+          const stepsCell =
+            `<td style="background-color: ${style.color};">` +
+            '<ac:structured-macro ac:name="expand" ac:schema-version="1">' +
+            '<ac:parameter ac:name="title">Show steps</ac:parameter>' +
+            '<ac:rich-text-body>' +
+            `<ol>${steps.map((s) => `<li><p>${s}</p></li>`).join('')}</ol>` +
+            '</ac:rich-text-body>' +
+            '</ac:structured-macro>' +
+            '</td>';
+
           return (
             '<tr>' +
             cell(escapeXml(r.name)) +
             cell(escapeXml(style.label), true) +
             cell(escapeXml(detail)) +
+            stepsCell +
             '</tr>'
           );
         })
@@ -178,6 +196,13 @@ function buildSection(payload, today) {
     `(retail unit <code>${escapeXml(payload.retailUnit || 'n/a')}</code>).</p>` +
     harnessNote +
     observedNote +
+    '<p><strong>Replicating a check by hand:</strong> every row has a ' +
+    '<em>Show steps</em> drawer with numbered steps — the exact URL, what to look at ' +
+    'on screen, and what to compare it against. Most steps involve reading an API ' +
+    'response, and the only practical manual route is DevTools → Network, because the ' +
+    'endpoint is a POST that needs the signed-in session\'s token and so cannot simply ' +
+    'be opened in a tab. Checks that only concern what is on screen say so and do not ' +
+    'mention DevTools.</p>' +
     detailTable +
     (payload.note ? `<p><em>${escapeXml(payload.note)}</em></p>` : '') +
     '<ac:structured-macro ac:name="expand" ac:schema-version="1">' +

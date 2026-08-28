@@ -1,17 +1,17 @@
 {
-  "runId": "e2e-20260827-192847",
+  "runId": "e2e-20260827-192128",
   "agentId": "e2e",
-  "startedAt": "2026-08-27T19:28:47.794Z",
-  "endedAt": "2026-08-27T19:32:26.426Z",
+  "startedAt": "2026-08-27T19:21:28.294Z",
+  "endedAt": "2026-08-27T19:24:33.005Z",
   "status": "pass",
-  "summary": "238/238 passed",
+  "summary": "211/211 passed",
   "commandRun": "npm test -- --reporter=json --project=chromium",
   "targetUrl": "https://dev.salesplanning.ingka.com",
-  "e2eRoot": "/Users/timothy.collins/copilot-worktrees/gm-salesplanning-ai-qa/wookietim-silver-goggles/e2e",
-  "durationMs": 218632,
+  "e2eRoot": "/Users/timothy.collins/Documents/ikea work/gm-salesplanning-ai-qa/e2e",
+  "durationMs": 184711,
   "totals": {
-    "total": 238,
-    "passed": 238,
+    "total": 211,
+    "passed": 211,
     "failed": 0,
     "flaky": 0,
     "skipped": 0
@@ -268,7 +268,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 768,
+      "durationMs": 690,
       "retries": 0
     },
     {
@@ -281,7 +281,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 498,
+      "durationMs": 560,
       "retries": 0
     },
     {
@@ -294,7 +294,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 387,
+      "durationMs": 421,
       "retries": 0
     },
     {
@@ -307,7 +307,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 96,
+      "durationMs": 98,
       "retries": 0
     },
     {
@@ -320,7 +320,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 294,
+      "durationMs": 286,
       "retries": 0
     },
     {
@@ -333,7 +333,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 910,
+      "durationMs": 893,
       "retries": 0
     },
     {
@@ -346,7 +346,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 151,
+      "durationMs": 169,
       "retries": 0
     },
     {
@@ -359,7 +359,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 965,
+      "durationMs": 968,
       "retries": 0
     },
     {
@@ -372,7 +372,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 143,
+      "durationMs": 138,
       "retries": 0
     },
     {
@@ -385,7 +385,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 128,
+      "durationMs": 112,
       "retries": 0
     },
     {
@@ -398,7 +398,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 135,
+      "durationMs": 131,
       "retries": 0
     },
     {
@@ -411,7 +411,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 155,
+      "durationMs": 186,
       "retries": 0
     },
     {
@@ -424,7 +424,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 973,
+      "durationMs": 956,
       "retries": 0
     },
     {
@@ -437,7 +437,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 991,
+      "durationMs": 983,
       "retries": 0
     },
     {
@@ -450,7 +450,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 914,
+      "durationMs": 917,
       "retries": 0
     },
     {
@@ -463,7 +463,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 151,
+      "durationMs": 134,
       "retries": 0
     },
     {
@@ -476,7 +476,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 180,
+      "durationMs": 149,
       "retries": 0
     },
     {
@@ -489,7 +489,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 134,
+      "durationMs": 116,
       "retries": 0
     },
     {
@@ -502,7 +502,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 158,
+      "durationMs": 161,
       "retries": 0
     },
     {
@@ -515,7 +515,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 889,
+      "durationMs": 904,
       "retries": 0
     },
     {
@@ -528,7 +528,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 162,
+      "durationMs": 163,
       "retries": 0
     },
     {
@@ -541,7 +541,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 92,
+      "durationMs": 77,
       "retries": 0
     },
     {
@@ -554,7 +554,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 159,
+      "durationMs": 158,
       "retries": 0
     },
     {
@@ -567,7 +567,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 164,
+      "durationMs": 184,
       "retries": 0
     },
     {
@@ -580,7 +580,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 163,
+      "durationMs": 142,
       "retries": 0
     },
     {
@@ -594,7 +594,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 1026,
+      "durationMs": 1014,
       "retries": 0
     },
     {
@@ -608,7 +608,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 988,
+      "durationMs": 986,
       "retries": 0
     },
     {
@@ -622,7 +622,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 957,
+      "durationMs": 1021,
       "retries": 0
     },
     {
@@ -636,7 +636,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 986,
+      "durationMs": 1001,
       "retries": 0
     },
     {
@@ -650,7 +650,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 1069,
+      "durationMs": 1080,
       "retries": 0
     },
     {
@@ -664,7 +664,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 976,
+      "durationMs": 998,
       "retries": 0
     },
     {
@@ -678,7 +678,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 1033,
+      "durationMs": 997,
       "retries": 0
     },
     {
@@ -692,7 +692,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 1067,
+      "durationMs": 1045,
       "retries": 0
     },
     {
@@ -706,7 +706,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 1060,
+      "durationMs": 1050,
       "retries": 0
     },
     {
@@ -720,7 +720,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 142,
+      "durationMs": 118,
       "retries": 0
     },
     {
@@ -734,7 +734,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 131,
+      "durationMs": 121,
       "retries": 0
     },
     {
@@ -748,7 +748,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 127,
+      "durationMs": 122,
       "retries": 0
     },
     {
@@ -762,7 +762,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 114,
+      "durationMs": 113,
       "retries": 0
     },
     {
@@ -776,7 +776,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 115,
+      "durationMs": 112,
       "retries": 0
     },
     {
@@ -790,7 +790,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 120,
+      "durationMs": 111,
       "retries": 0
     },
     {
@@ -804,7 +804,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 1116,
+      "durationMs": 1093,
       "retries": 0
     },
     {
@@ -818,7 +818,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 1401,
+      "durationMs": 1448,
       "retries": 0
     },
     {
@@ -832,7 +832,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 218,
+      "durationMs": 216,
       "retries": 0
     },
     {
@@ -846,7 +846,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 200,
+      "durationMs": 185,
       "retries": 0
     },
     {
@@ -860,7 +860,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 175,
+      "durationMs": 169,
       "retries": 0
     },
     {
@@ -873,7 +873,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 8522,
+      "durationMs": 8619,
       "retries": 0
     },
     {
@@ -886,7 +886,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 8651,
+      "durationMs": 8207,
       "retries": 0
     },
     {
@@ -899,7 +899,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 7479,
+      "durationMs": 7467,
       "retries": 0
     },
     {
@@ -912,7 +912,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 91,
+      "durationMs": 93,
       "retries": 0
     },
     {
@@ -925,7 +925,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 113,
+      "durationMs": 112,
       "retries": 0
     },
     {
@@ -938,7 +938,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 195,
+      "durationMs": 168,
       "retries": 0
     },
     {
@@ -951,7 +951,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 394,
+      "durationMs": 403,
       "retries": 0
     },
     {
@@ -964,7 +964,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 497,
+      "durationMs": 472,
       "retries": 0
     },
     {
@@ -977,7 +977,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 151,
+      "durationMs": 121,
       "retries": 0
     },
     {
@@ -990,7 +990,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 118,
+      "durationMs": 123,
       "retries": 0
     },
     {
@@ -1003,7 +1003,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 125,
+      "durationMs": 109,
       "retries": 0
     },
     {
@@ -1016,7 +1016,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 130,
+      "durationMs": 112,
       "retries": 0
     },
     {
@@ -1029,7 +1029,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 139,
+      "durationMs": 122,
       "retries": 0
     },
     {
@@ -1042,7 +1042,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 133,
+      "durationMs": 113,
       "retries": 0
     },
     {
@@ -1055,7 +1055,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 130,
+      "durationMs": 133,
       "retries": 0
     },
     {
@@ -1068,7 +1068,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 7433,
+      "durationMs": 7440,
       "retries": 0
     },
     {
@@ -1094,7 +1094,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 203,
+      "durationMs": 178,
       "retries": 0
     },
     {
@@ -1107,7 +1107,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 189,
+      "durationMs": 187,
       "retries": 0
     },
     {
@@ -1120,7 +1120,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 190,
+      "durationMs": 178,
       "retries": 0
     },
     {
@@ -1133,7 +1133,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 131,
+      "durationMs": 126,
       "retries": 0
     },
     {
@@ -1146,7 +1146,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 394,
+      "durationMs": 402,
       "retries": 0
     },
     {
@@ -1159,7 +1159,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 185,
+      "durationMs": 167,
       "retries": 0
     },
     {
@@ -1172,7 +1172,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 189,
+      "durationMs": 185,
       "retries": 0
     },
     {
@@ -1185,7 +1185,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 137,
+      "durationMs": 139,
       "retries": 0
     },
     {
@@ -1198,7 +1198,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 145,
+      "durationMs": 141,
       "retries": 0
     },
     {
@@ -1211,7 +1211,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 205,
+      "durationMs": 182,
       "retries": 0
     },
     {
@@ -1224,7 +1224,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 7546,
+      "durationMs": 7535,
       "retries": 0
     },
     {
@@ -1237,7 +1237,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 197,
+      "durationMs": 185,
       "retries": 0
     },
     {
@@ -1250,7 +1250,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 198,
+      "durationMs": 174,
       "retries": 0
     },
     {
@@ -1266,7 +1266,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 915,
+      "durationMs": 932,
       "retries": 0
     },
     {
@@ -1282,7 +1282,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 884,
+      "durationMs": 945,
       "retries": 0
     },
     {
@@ -1298,7 +1298,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 920,
+      "durationMs": 954,
       "retries": 0
     },
     {
@@ -1314,7 +1314,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 203,
+      "durationMs": 183,
       "retries": 0
     },
     {
@@ -1330,7 +1330,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 131,
+      "durationMs": 120,
       "retries": 0
     },
     {
@@ -1346,7 +1346,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 124,
+      "durationMs": 109,
       "retries": 0
     },
     {
@@ -1362,7 +1362,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 116,
+      "durationMs": 121,
       "retries": 0
     },
     {
@@ -1378,7 +1378,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 126,
+      "durationMs": 122,
       "retries": 0
     },
     {
@@ -1394,7 +1394,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 125,
+      "durationMs": 114,
       "retries": 0
     },
     {
@@ -1410,7 +1410,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 310,
+      "durationMs": 312,
       "retries": 0
     },
     {
@@ -1426,7 +1426,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 508,
+      "durationMs": 518,
       "retries": 0
     },
     {
@@ -1442,7 +1442,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 517,
+      "durationMs": 519,
       "retries": 0
     },
     {
@@ -1458,7 +1458,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 470,
+      "durationMs": 441,
       "retries": 0
     },
     {
@@ -1474,7 +1474,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 442,
+      "durationMs": 435,
       "retries": 0
     },
     {
@@ -1490,7 +1490,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 149,
+      "durationMs": 132,
       "retries": 0
     },
     {
@@ -1506,7 +1506,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 137,
+      "durationMs": 138,
       "retries": 0
     },
     {
@@ -1522,7 +1522,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 138,
+      "durationMs": 136,
       "retries": 0
     },
     {
@@ -1538,7 +1538,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 146,
+      "durationMs": 138,
       "retries": 0
     },
     {
@@ -1554,7 +1554,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 434,
+      "durationMs": 489,
       "retries": 0
     },
     {
@@ -1570,7 +1570,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 133,
+      "durationMs": 143,
       "retries": 0
     },
     {
@@ -1586,7 +1586,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 469,
+      "durationMs": 436,
       "retries": 0
     },
     {
@@ -1602,7 +1602,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 443,
+      "durationMs": 445,
       "retries": 0
     },
     {
@@ -1618,7 +1618,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 409,
+      "durationMs": 398,
       "retries": 0
     },
     {
@@ -1635,7 +1635,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 920,
+      "durationMs": 947,
       "retries": 0
     },
     {
@@ -1652,7 +1652,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 951,
+      "durationMs": 937,
       "retries": 0
     },
     {
@@ -1669,7 +1669,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 428,
+      "durationMs": 964,
       "retries": 0
     },
     {
@@ -1686,7 +1686,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 941,
+      "durationMs": 959,
       "retries": 0
     },
     {
@@ -1703,7 +1703,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 433,
+      "durationMs": 438,
       "retries": 0
     },
     {
@@ -1720,7 +1720,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 922,
+      "durationMs": 925,
       "retries": 0
     },
     {
@@ -1734,7 +1734,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 119,
+      "durationMs": 121,
       "retries": 0
     },
     {
@@ -1748,7 +1748,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 128,
+      "durationMs": 117,
       "retries": 0
     },
     {
@@ -1762,7 +1762,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 112,
+      "durationMs": 110,
       "retries": 0
     },
     {
@@ -1776,7 +1776,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 913,
+      "durationMs": 945,
       "retries": 0
     },
     {
@@ -1790,7 +1790,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 129,
+      "durationMs": 133,
       "retries": 0
     },
     {
@@ -1804,7 +1804,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 112,
+      "durationMs": 124,
       "retries": 0
     },
     {
@@ -1818,7 +1818,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 181,
+      "durationMs": 189,
       "retries": 0
     },
     {
@@ -1832,7 +1832,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 112,
+      "durationMs": 113,
       "retries": 0
     },
     {
@@ -1846,7 +1846,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 913,
+      "durationMs": 932,
       "retries": 0
     },
     {
@@ -1860,7 +1860,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 126,
+      "durationMs": 130,
       "retries": 0
     },
     {
@@ -1874,7 +1874,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 1013,
+      "durationMs": 1050,
       "retries": 0
     },
     {
@@ -1888,7 +1888,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 113,
+      "durationMs": 110,
       "retries": 0
     },
     {
@@ -1902,7 +1902,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 121,
+      "durationMs": 111,
       "retries": 0
     },
     {
@@ -1916,7 +1916,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 89,
+      "durationMs": 81,
       "retries": 0
     },
     {
@@ -1944,7 +1944,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 80,
+      "durationMs": 78,
       "retries": 0
     },
     {
@@ -1958,7 +1958,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 264,
+      "durationMs": 254,
       "retries": 0
     },
     {
@@ -1972,7 +1972,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 284,
+      "durationMs": 273,
       "retries": 0
     },
     {
@@ -1986,7 +1986,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 118,
+      "durationMs": 110,
       "retries": 0
     },
     {
@@ -2000,7 +2000,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 118,
+      "durationMs": 115,
       "retries": 0
     },
     {
@@ -2014,7 +2014,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 112,
+      "durationMs": 110,
       "retries": 0
     },
     {
@@ -2028,7 +2028,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 907,
+      "durationMs": 928,
       "retries": 0
     },
     {
@@ -2042,7 +2042,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 937,
+      "durationMs": 950,
       "retries": 0
     },
     {
@@ -2056,7 +2056,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 412,
+      "durationMs": 937,
       "retries": 0
     },
     {
@@ -2070,7 +2070,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 408,
+      "durationMs": 952,
       "retries": 0
     },
     {
@@ -2084,7 +2084,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 913,
+      "durationMs": 934,
       "retries": 0
     },
     {
@@ -2098,7 +2098,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 134,
+      "durationMs": 129,
       "retries": 0
     },
     {
@@ -2112,7 +2112,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 123,
+      "durationMs": 121,
       "retries": 0
     },
     {
@@ -2126,7 +2126,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 174,
+      "durationMs": 150,
       "retries": 0
     },
     {
@@ -2140,7 +2140,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 1019,
+      "durationMs": 1001,
       "retries": 0
     },
     {
@@ -2154,7 +2154,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 958,
+      "durationMs": 1016,
       "retries": 0
     },
     {
@@ -2168,7 +2168,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 134,
+      "durationMs": 120,
       "retries": 0
     },
     {
@@ -2182,7 +2182,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 128,
+      "durationMs": 121,
       "retries": 0
     },
     {
@@ -2196,7 +2196,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 109,
+      "durationMs": 115,
       "retries": 0
     },
     {
@@ -2210,7 +2210,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 114,
+      "durationMs": 118,
       "retries": 0
     },
     {
@@ -2224,7 +2224,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 992,
+      "durationMs": 1022,
       "retries": 0
     },
     {
@@ -2238,7 +2238,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 989,
+      "durationMs": 1022,
       "retries": 0
     },
     {
@@ -2252,7 +2252,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 1037,
+      "durationMs": 1013,
       "retries": 0
     },
     {
@@ -2266,7 +2266,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 1400,
+      "durationMs": 1354,
       "retries": 0
     },
     {
@@ -2279,7 +2279,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 122,
+      "durationMs": 114,
       "retries": 0
     },
     {
@@ -2292,7 +2292,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 131,
+      "durationMs": 123,
       "retries": 0
     },
     {
@@ -2305,7 +2305,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 116,
+      "durationMs": 117,
       "retries": 0
     },
     {
@@ -2318,7 +2318,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 906,
+      "durationMs": 922,
       "retries": 0
     },
     {
@@ -2331,7 +2331,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 420,
+      "durationMs": 427,
       "retries": 0
     },
     {
@@ -2344,7 +2344,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 923,
+      "durationMs": 933,
       "retries": 0
     },
     {
@@ -2357,7 +2357,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 900,
+      "durationMs": 946,
       "retries": 0
     },
     {
@@ -2370,7 +2370,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 411,
+      "durationMs": 953,
       "retries": 0
     },
     {
@@ -2383,7 +2383,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 134,
+      "durationMs": 131,
       "retries": 0
     },
     {
@@ -2396,7 +2396,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 130,
+      "durationMs": 122,
       "retries": 0
     },
     {
@@ -2409,7 +2409,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 125,
+      "durationMs": 123,
       "retries": 0
     },
     {
@@ -2422,7 +2422,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 126,
+      "durationMs": 127,
       "retries": 0
     },
     {
@@ -2435,7 +2435,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 136,
+      "durationMs": 114,
       "retries": 0
     },
     {
@@ -2448,7 +2448,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 168,
+      "durationMs": 167,
       "retries": 0
     },
     {
@@ -2461,7 +2461,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 115,
+      "durationMs": 128,
       "retries": 0
     },
     {
@@ -2474,7 +2474,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 125,
+      "durationMs": 120,
       "retries": 0
     },
     {
@@ -2487,7 +2487,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 116,
+      "durationMs": 115,
       "retries": 0
     },
     {
@@ -2513,7 +2513,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 110,
+      "durationMs": 114,
       "retries": 0
     },
     {
@@ -2526,7 +2526,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 7443,
+      "durationMs": 7472,
       "retries": 0
     },
     {
@@ -2539,7 +2539,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 7466,
+      "durationMs": 7479,
       "retries": 0
     },
     {
@@ -2552,7 +2552,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 7494,
+      "durationMs": 7499,
       "retries": 0
     },
     {
@@ -2565,7 +2565,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 7480,
+      "durationMs": 7474,
       "retries": 0
     },
     {
@@ -2578,7 +2578,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 155,
+      "durationMs": 127,
       "retries": 0
     },
     {
@@ -2591,7 +2591,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 120,
+      "durationMs": 112,
       "retries": 0
     },
     {
@@ -2604,7 +2604,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 115,
+      "durationMs": 112,
       "retries": 0
     },
     {
@@ -2617,7 +2617,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 1006,
+      "durationMs": 1021,
       "retries": 0
     },
     {
@@ -2630,7 +2630,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 992,
+      "durationMs": 1016,
       "retries": 0
     },
     {
@@ -2643,7 +2643,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 196,
+      "durationMs": 181,
       "retries": 0
     },
     {
@@ -2656,7 +2656,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 421,
+      "durationMs": 406,
       "retries": 0
     },
     {
@@ -2669,7 +2669,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 131,
+      "durationMs": 148,
       "retries": 0
     },
     {
@@ -2682,7 +2682,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 927,
+      "durationMs": 950,
       "retries": 0
     },
     {
@@ -2695,7 +2695,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 929,
+      "durationMs": 946,
       "retries": 0
     },
     {
@@ -2709,7 +2709,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 96,
+      "durationMs": 105,
       "retries": 0
     },
     {
@@ -2723,7 +2723,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 172,
+      "durationMs": 170,
       "retries": 0
     },
     {
@@ -2737,7 +2737,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 163,
+      "durationMs": 181,
       "retries": 0
     },
     {
@@ -2751,7 +2751,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 171,
+      "durationMs": 182,
       "retries": 0
     },
     {
@@ -2765,7 +2765,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 951,
+      "durationMs": 435,
       "retries": 0
     },
     {
@@ -2779,7 +2779,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 427,
+      "durationMs": 430,
       "retries": 0
     },
     {
@@ -2793,7 +2793,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 926,
+      "durationMs": 938,
       "retries": 0
     },
     {
@@ -2807,7 +2807,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 980,
+      "durationMs": 1018,
       "retries": 0
     },
     {
@@ -2821,7 +2821,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 127,
+      "durationMs": 111,
       "retries": 0
     },
     {
@@ -2835,7 +2835,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 118,
+      "durationMs": 112,
       "retries": 0
     },
     {
@@ -2849,7 +2849,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 128,
+      "durationMs": 118,
       "retries": 0
     },
     {
@@ -2863,7 +2863,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 117,
+      "durationMs": 111,
       "retries": 0
     },
     {
@@ -2877,7 +2877,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 114,
+      "durationMs": 115,
       "retries": 0
     },
     {
@@ -2891,7 +2891,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 136,
+      "durationMs": 129,
       "retries": 0
     },
     {
@@ -2905,7 +2905,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 146,
+      "durationMs": 130,
       "retries": 0
     },
     {
@@ -2919,7 +2919,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 118,
+      "durationMs": 119,
       "retries": 0
     },
     {
@@ -2933,7 +2933,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 118,
+      "durationMs": 116,
       "retries": 0
     },
     {
@@ -2947,7 +2947,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 121,
+      "durationMs": 108,
       "retries": 0
     },
     {
@@ -2961,7 +2961,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 118,
+      "durationMs": 112,
       "retries": 0
     },
     {
@@ -2975,7 +2975,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 115,
+      "durationMs": 127,
       "retries": 0
     },
     {
@@ -2989,7 +2989,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 944,
+      "durationMs": 974,
       "retries": 0
     },
     {
@@ -3003,7 +3003,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 954,
+      "durationMs": 964,
       "retries": 0
     },
     {
@@ -3017,7 +3017,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 441,
+      "durationMs": 964,
       "retries": 0
     },
     {
@@ -3031,7 +3031,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 429,
+      "durationMs": 939,
       "retries": 0
     },
     {
@@ -3045,7 +3045,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 428,
+      "durationMs": 439,
       "retries": 0
     },
     {
@@ -3059,7 +3059,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 7443,
+      "durationMs": 7478,
       "retries": 0
     },
     {
@@ -3073,7 +3073,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 7480,
+      "durationMs": 7487,
       "retries": 0
     },
     {
@@ -3087,7 +3087,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 7449,
+      "durationMs": 7477,
       "retries": 0
     },
     {
@@ -3101,7 +3101,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 7445,
+      "durationMs": 7465,
       "retries": 0
     },
     {
@@ -3115,7 +3115,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 102,
+      "durationMs": 86,
       "retries": 0
     },
     {
@@ -3129,7 +3129,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 113,
+      "durationMs": 118,
       "retries": 0
     },
     {
@@ -3157,7 +3157,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 181,
+      "durationMs": 179,
       "retries": 0
     },
     {
@@ -3171,7 +3171,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 1790,
+      "durationMs": 1824,
       "retries": 0
     },
     {
@@ -3185,358 +3185,7 @@
       "file": "salesplanning-frontend.spec.js",
       "project": "chromium",
       "status": "passed",
-      "durationMs": 941,
-      "retries": 0
-    },
-    {
-      "title": "PA hero metric renders a literal \"0\" (not a dash) when netSalesIndexToGoal is null",
-      "suitePath": [
-        "Null metric rendering (production returns JSON null, e.g. HFB 70)"
-      ],
-      "fullTitle": "Null metric rendering (production returns JSON null, e.g. HFB 70) › PA hero metric renders a literal \"0\" (not a dash) when netSalesIndexToGoal is null",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 391,
-      "retries": 0
-    },
-    {
-      "title": "PA \"vs latest forecast\" MetricRowCell renders an em dash when its index is null",
-      "suitePath": [
-        "Null metric rendering (production returns JSON null, e.g. HFB 70)"
-      ],
-      "fullTitle": "Null metric rendering (production returns JSON null, e.g. HFB 70) › PA \"vs latest forecast\" MetricRowCell renders an em dash when its index is null",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 382,
-      "retries": 0
-    },
-    {
-      "title": "HFB \"vs latest forecast\" MetricRowCell renders an em dash when its index is null",
-      "suitePath": [
-        "Null metric rendering (production returns JSON null, e.g. HFB 70)"
-      ],
-      "fullTitle": "Null metric rendering (production returns JSON null, e.g. HFB 70) › HFB \"vs latest forecast\" MetricRowCell renders an em dash when its index is null",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 404,
-      "retries": 0
-    },
-    {
-      "title": "HFB list rows render em dashes (never NaN/undefined) when a child index is null",
-      "suitePath": [
-        "Null metric rendering (production returns JSON null, e.g. HFB 70)"
-      ],
-      "fullTitle": "Null metric rendering (production returns JSON null, e.g. HFB 70) › HFB list rows render em dashes (never NaN/undefined) when a child index is null",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 378,
-      "retries": 0
-    },
-    {
-      "title": "PA list rows render em dashes (never NaN/undefined) when a child index is null",
-      "suitePath": [
-        "Null metric rendering (production returns JSON null, e.g. HFB 70)"
-      ],
-      "fullTitle": "Null metric rendering (production returns JSON null, e.g. HFB 70) › PA list rows render em dashes (never NaN/undefined) when a child index is null",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 391,
-      "retries": 0
-    },
-    {
-      "title": "realistic HFB-70 payload (all forecast/index fields null) never renders NaN/undefined/null",
-      "suitePath": [
-        "Null metric rendering (production returns JSON null, e.g. HFB 70)"
-      ],
-      "fullTitle": "Null metric rendering (production returns JSON null, e.g. HFB 70) › realistic HFB-70 payload (all forecast/index fields null) never renders NaN/undefined/null",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 373,
-      "retries": 0
-    },
-    {
-      "title": "country dashboard survives and navigates at tablet width",
-      "suitePath": [
-        "Responsive viewports (tablet 768x1024, phone 390x844)"
-      ],
-      "fullTitle": "Responsive viewports (tablet 768x1024, phone 390x844) › country dashboard survives and navigates at tablet width",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 471,
-      "retries": 0
-    },
-    {
-      "title": "HFB dashboard survives at tablet width",
-      "suitePath": [
-        "Responsive viewports (tablet 768x1024, phone 390x844)"
-      ],
-      "fullTitle": "Responsive viewports (tablet 768x1024, phone 390x844) › HFB dashboard survives at tablet width",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 368,
-      "retries": 0
-    },
-    {
-      "title": "PA dashboard survives at tablet width",
-      "suitePath": [
-        "Responsive viewports (tablet 768x1024, phone 390x844)"
-      ],
-      "fullTitle": "Responsive viewports (tablet 768x1024, phone 390x844) › PA dashboard survives at tablet width",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 412,
-      "retries": 0
-    },
-    {
-      "title": "country dashboard survives and navigates at phone width",
-      "suitePath": [
-        "Responsive viewports (tablet 768x1024, phone 390x844)"
-      ],
-      "fullTitle": "Responsive viewports (tablet 768x1024, phone 390x844) › country dashboard survives and navigates at phone width",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 435,
-      "retries": 0
-    },
-    {
-      "title": "HFB dashboard survives at phone width",
-      "suitePath": [
-        "Responsive viewports (tablet 768x1024, phone 390x844)"
-      ],
-      "fullTitle": "Responsive viewports (tablet 768x1024, phone 390x844) › HFB dashboard survives at phone width",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 355,
-      "retries": 0
-    },
-    {
-      "title": "PA dashboard survives at phone width",
-      "suitePath": [
-        "Responsive viewports (tablet 768x1024, phone 390x844)"
-      ],
-      "fullTitle": "Responsive viewports (tablet 768x1024, phone 390x844) › PA dashboard survives at phone width",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 419,
-      "retries": 0
-    },
-    {
-      "title": "a very slow (5s) metrics response shows a loading state then resolves to real content",
-      "suitePath": [
-        "Slow and never-resolving responses"
-      ],
-      "fullTitle": "Slow and never-resolving responses › a very slow (5s) metrics response shows a loading state then resolves to real content",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 5491,
-      "retries": 0
-    },
-    {
-      "title": "a never-resolving metrics response keeps the country page in its loading state (no error, no blank shell)",
-      "suitePath": [
-        "Slow and never-resolving responses"
-      ],
-      "fullTitle": "Slow and never-resolving responses › a never-resolving metrics response keeps the country page in its loading state (no error, no blank shell)",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 136,
-      "retries": 0
-    },
-    {
-      "title": "a never-resolving metrics response keeps the HFB PA list spinning without erroring",
-      "suitePath": [
-        "Slow and never-resolving responses"
-      ],
-      "fullTitle": "Slow and never-resolving responses › a never-resolving metrics response keeps the HFB PA list spinning without erroring",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 140,
-      "retries": 0
-    },
-    {
-      "title": "navigating to a new page after the token expires surfaces an honest error, not stale/blank data",
-      "suitePath": [
-        "Mid-session token expiry (metrics start returning 401 after a good load)"
-      ],
-      "fullTitle": "Mid-session token expiry (metrics start returning 401 after a good load) › navigating to a new page after the token expires surfaces an honest error, not stale/blank data",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 7849,
-      "retries": 0
-    },
-    {
-      "title": "after token expiry the SalesIndexTrend also errors rather than showing fabricated data",
-      "suitePath": [
-        "Mid-session token expiry (metrics start returning 401 after a good load)"
-      ],
-      "fullTitle": "Mid-session token expiry (metrics start returning 401 after a good load) › after token expiry the SalesIndexTrend also errors rather than showing fabricated data",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 7840,
-      "retries": 0
-    },
-    {
-      "title": "token expiry leaves the app shell intact (h1 + breadcrumb still render)",
-      "suitePath": [
-        "Mid-session token expiry (metrics start returning 401 after a good load)"
-      ],
-      "fullTitle": "Mid-session token expiry (metrics start returning 401 after a good load) › token expiry leaves the app shell intact (h1 + breadcrumb still render)",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 487,
-      "retries": 0
-    },
-    {
-      "title": "a slow HFB 01 request does not overwrite the fast HFB 02 view the user ended on",
-      "suitePath": [
-        "Navigation race conditions (deterministic via per-HFB delays)"
-      ],
-      "fullTitle": "Navigation race conditions (deterministic via per-HFB delays) › a slow HFB 01 request does not overwrite the fast HFB 02 view the user ended on",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 3827,
-      "retries": 0
-    },
-    {
-      "title": "country → HFB (slow) → back to country: the late HFB response does not clobber the country view",
-      "suitePath": [
-        "Navigation race conditions (deterministic via per-HFB delays)"
-      ],
-      "fullTitle": "Navigation race conditions (deterministic via per-HFB delays) › country → HFB (slow) → back to country: the late HFB response does not clobber the country view",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 3814,
-      "retries": 0
-    },
-    {
-      "title": "just under the billion boundary renders \"$999.9M\"",
-      "suitePath": [
-        "Number formatting boundaries (Gap to close, currency-compact formatter)"
-      ],
-      "fullTitle": "Number formatting boundaries (Gap to close, currency-compact formatter) › just under the billion boundary renders \"$999.9M\"",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 391,
-      "retries": 0
-    },
-    {
-      "title": "at/just over the billion boundary renders \"$1B\"",
-      "suitePath": [
-        "Number formatting boundaries (Gap to close, currency-compact formatter)"
-      ],
-      "fullTitle": "Number formatting boundaries (Gap to close, currency-compact formatter) › at/just over the billion boundary renders \"$1B\"",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 376,
-      "retries": 0
-    },
-    {
-      "title": "just under the million boundary renders \"$999.9K\"",
-      "suitePath": [
-        "Number formatting boundaries (Gap to close, currency-compact formatter)"
-      ],
-      "fullTitle": "Number formatting boundaries (Gap to close, currency-compact formatter) › just under the million boundary renders \"$999.9K\"",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 376,
-      "retries": 0
-    },
-    {
-      "title": "at/just over the million boundary renders \"$1M\"",
-      "suitePath": [
-        "Number formatting boundaries (Gap to close, currency-compact formatter)"
-      ],
-      "fullTitle": "Number formatting boundaries (Gap to close, currency-compact formatter) › at/just over the million boundary renders \"$1M\"",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 383,
-      "retries": 0
-    },
-    {
-      "title": "exactly zero renders as \"-$0\" (signed-zero quirk of the negated formatter)",
-      "suitePath": [
-        "Number formatting boundaries (Gap to close, currency-compact formatter)"
-      ],
-      "fullTitle": "Number formatting boundaries (Gap to close, currency-compact formatter) › exactly zero renders as \"-$0\" (signed-zero quirk of the negated formatter)",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 372,
-      "retries": 0
-    },
-    {
-      "title": "a negative gap-to-close (goal already exceeded) renders with a leading minus, \"-$2.1M\"",
-      "suitePath": [
-        "Number formatting boundaries (Gap to close, currency-compact formatter)"
-      ],
-      "fullTitle": "Number formatting boundaries (Gap to close, currency-compact formatter) › a negative gap-to-close (goal already exceeded) renders with a leading minus, \"-$2.1M\"",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 392,
-      "retries": 0
-    },
-    {
-      "title": "a very small non-zero gap renders \"$1\" without abbreviation",
-      "suitePath": [
-        "Number formatting boundaries (Gap to close, currency-compact formatter)"
-      ],
-      "fullTitle": "Number formatting boundaries (Gap to close, currency-compact formatter) › a very small non-zero gap renders \"$1\" without abbreviation",
-      "jiraTickets": [],
-      "file": "salesplanning-frontend.spec.js",
-      "project": "chromium",
-      "status": "passed",
-      "durationMs": 380,
+      "durationMs": 963,
       "retries": 0
     }
   ],
@@ -4803,168 +4452,6 @@
     },
     {
       "specTitle": "XX region (nonexistent) still gets the mock API data and renders the KpiSummaryCard",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "PA hero metric renders a literal \"0\" (not a dash) when netSalesIndexToGoal is null",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "PA \"vs latest forecast\" MetricRowCell renders an em dash when its index is null",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "HFB \"vs latest forecast\" MetricRowCell renders an em dash when its index is null",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "HFB list rows render em dashes (never NaN/undefined) when a child index is null",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "PA list rows render em dashes (never NaN/undefined) when a child index is null",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "realistic HFB-70 payload (all forecast/index fields null) never renders NaN/undefined/null",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "country dashboard survives and navigates at tablet width",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "HFB dashboard survives at tablet width",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "PA dashboard survives at tablet width",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "country dashboard survives and navigates at phone width",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "HFB dashboard survives at phone width",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "PA dashboard survives at phone width",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "a very slow (5s) metrics response shows a loading state then resolves to real content",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "a never-resolving metrics response keeps the country page in its loading state (no error, no blank shell)",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "a never-resolving metrics response keeps the HFB PA list spinning without erroring",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "navigating to a new page after the token expires surfaces an honest error, not stale/blank data",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "after token expiry the SalesIndexTrend also errors rather than showing fabricated data",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "token expiry leaves the app shell intact (h1 + breadcrumb still render)",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "a slow HFB 01 request does not overwrite the fast HFB 02 view the user ended on",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "country → HFB (slow) → back to country: the late HFB response does not clobber the country view",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "just under the billion boundary renders \"$999.9M\"",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "at/just over the billion boundary renders \"$1B\"",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "just under the million boundary renders \"$999.9K\"",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "at/just over the million boundary renders \"$1M\"",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "exactly zero renders as \"-$0\" (signed-zero quirk of the negated formatter)",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "a negative gap-to-close (goal already exceeded) renders with a leading minus, \"-$2.1M\"",
-      "result": "PASS",
-      "venue": "REAL FE",
-      "evidence": ""
-    },
-    {
-      "specTitle": "a very small non-zero gap renders \"$1\" without abbreviation",
       "result": "PASS",
       "venue": "REAL FE",
       "evidence": ""

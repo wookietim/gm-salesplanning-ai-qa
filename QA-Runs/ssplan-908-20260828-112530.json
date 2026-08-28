@@ -1,0 +1,298 @@
+{
+  "ticket": "SSPLAN-908",
+  "ru": "US",
+  "ranAt": "2026-08-28T11:25:30.824Z",
+  "results": [
+    {
+      "group": "Gap formula",
+      "name": "netSalesGap equals netSalesGoalFy minus netSalesYtd",
+      "outcome": "passed",
+      "reasons": [
+        "210 of 210 entities match exactly"
+      ],
+      "note": "Establishes the gap is measured against the FULL-YEAR goal"
+    },
+    {
+      "group": "Index formula",
+      "name": "netSalesIndexToGoal equals netSalesYtd divided by netSalesGoalYtd",
+      "outcome": "passed",
+      "reasons": [
+        "210 of 210 entities match exactly"
+      ],
+      "note": "Establishes the index is measured against the YEAR-TO-DATE goal"
+    },
+    {
+      "group": "Denominator mismatch",
+      "name": "Gap and index are measured against the same goal",
+      "outcome": "failed",
+      "reasons": [
+        "gap uses netSalesGoalFy (full year); index uses netSalesGoalYtd (year to date)"
+      ],
+      "note": "Root cause: the two figures answer different questions, so they can disagree"
+    },
+    {
+      "group": "Gap to close visibility",
+      "name": "\"Gap to close\" is shown for HFBs that are behind goal",
+      "outcome": "failed",
+      "reasons": [
+        "HFB 02: gap 2144056 to close, index 92.96, UI shows NO gap line",
+        "HFB 03: gap 1967 to close, index 109.32, UI shows NO gap line",
+        "HFB 04: gap 341480 to close, index 105.23, UI shows NO gap line",
+        "HFB 05: gap 591443 to close, index 86.73, UI shows NO gap line",
+        "HFB 06: gap 356644 to close, index 98.43, UI shows NO gap line",
+        "HFB 07: gap 1304566 to close, index 94.31, UI shows NO gap line"
+      ],
+      "note": "Condition is inverted: shown only for the 2 HFBs whose gap is negative (already past the full-year goal), hidden for the 17 genuinely behind. 19 of 19 consistent."
+    },
+    {
+      "group": "Reported symptom",
+      "name": "No gap to close while index is below 100 (the reporter's claim)",
+      "outcome": "failed",
+      "reasons": [
+        "HFB 01 Living room seating: sales index 92.06 but gap -72210477",
+        "HFB 02 Store and organise furniture: sales index 95.99 but gap -163254973",
+        "HFB 03 Workspaces: sales index 97.99 but gap -69215109",
+        "HFB 04 Bedroom furniture: sales index 96.66 but gap -208588867",
+        "HFB 05 Beds & Mattresses: sales index 83.66 but gap -44511343",
+        "HFB 06 Bathroom & Water: sales index 92.74 but gap -14977998"
+      ],
+      "note": "17 of 19 HFBs reproduce the reported symptom on the sales metric"
+    },
+    {
+      "group": "Goal data sanity",
+      "name": "Full-year sales goal is at least the year-to-date sales goal",
+      "outcome": "failed",
+      "reasons": [
+        "HFB 01: goalFy 259773463 < goalYtd 360633550",
+        "HFB 02: goalFy 487583645 < goalYtd 677994758",
+        "HFB 03: goalFy 199118506 < goalYtd 273838163",
+        "HFB 04: goalFy 625598174 < goalYtd 863002985",
+        "HFB 05: goalFy 341850409 < goalYtd 461837167"
+      ],
+      "note": "19 of 19 HFBs have a full-year goal SMALLER than the year-to-date goal, which is impossible for a cumulative target. Quantity goals do not show this; product areas do not show this."
+    },
+    {
+      "group": "Goal data sanity",
+      "name": "Product-area goals are unaffected",
+      "outcome": "passed",
+      "reasons": [
+        "0 of 191 product areas affected"
+      ],
+      "note": "Scopes the defect to HFB-level sales goals"
+    }
+  ],
+  "hfbs": [
+    {
+      "id": "01",
+      "name": "Living room seating",
+      "qtyIdx": 108.37,
+      "qtyGap": -16448,
+      "salesIdx": 92.06,
+      "salesGap": -72210477,
+      "salesGoalFy": 259773463,
+      "salesGoalYtd": 360633550,
+      "uiGapShown": "16K / $72.2M"
+    },
+    {
+      "id": "02",
+      "name": "Store and organise furniture",
+      "qtyIdx": 92.96,
+      "qtyGap": 2144056,
+      "salesIdx": 95.99,
+      "salesGap": -163254973,
+      "salesGoalFy": 487583645,
+      "salesGoalYtd": 677994758,
+      "uiGapShown": null
+    },
+    {
+      "id": "03",
+      "name": "Workspaces",
+      "qtyIdx": 109.32,
+      "qtyGap": 1967,
+      "salesIdx": 97.99,
+      "salesGap": -69215109,
+      "salesGoalFy": 199118506,
+      "salesGoalYtd": 273838163,
+      "uiGapShown": null
+    },
+    {
+      "id": "04",
+      "name": "Bedroom furniture",
+      "qtyIdx": 105.23,
+      "qtyGap": 341480,
+      "salesIdx": 96.66,
+      "salesGap": -208588867,
+      "salesGoalFy": 625598174,
+      "salesGoalYtd": 863002985,
+      "uiGapShown": null
+    },
+    {
+      "id": "05",
+      "name": "Beds & Mattresses",
+      "qtyIdx": 86.73,
+      "qtyGap": 591443,
+      "salesIdx": 83.66,
+      "salesGap": -44511343,
+      "salesGoalFy": 341850409,
+      "salesGoalYtd": 461837167,
+      "uiGapShown": null
+    },
+    {
+      "id": "06",
+      "name": "Bathroom & Water",
+      "qtyIdx": 98.43,
+      "qtyGap": 356644,
+      "salesIdx": 92.74,
+      "salesGap": -14977998,
+      "salesGoalFy": 56475710,
+      "salesGoalYtd": 77048692,
+      "uiGapShown": null
+    },
+    {
+      "id": "07",
+      "name": "Kitchen",
+      "qtyIdx": 94.31,
+      "qtyGap": 1304566,
+      "salesIdx": 93.81,
+      "salesGap": -86672087,
+      "salesGoalFy": 282794569,
+      "salesGoalYtd": 393841058,
+      "uiGapShown": null
+    },
+    {
+      "id": "08",
+      "name": "Dining",
+      "qtyIdx": 87.69,
+      "qtyGap": 475676,
+      "salesIdx": 89.24,
+      "salesGap": -32243007,
+      "salesGoalFy": 123984559,
+      "salesGoalYtd": 175062043,
+      "uiGapShown": null
+    },
+    {
+      "id": "09",
+      "name": "Children's IKEA",
+      "qtyIdx": 103.38,
+      "qtyGap": 549386,
+      "salesIdx": 94.79,
+      "salesGap": -48843374,
+      "salesGoalFy": 149136150,
+      "salesGoalYtd": 208856154,
+      "uiGapShown": null
+    },
+    {
+      "id": "10",
+      "name": "Lighting & Home electronics",
+      "qtyIdx": 110.51,
+      "qtyGap": -201122,
+      "salesIdx": 101.81,
+      "salesGap": -49829172,
+      "salesGoalFy": 116783287,
+      "salesGoalYtd": 163653596,
+      "uiGapShown": "201K / $49.8M"
+    },
+    {
+      "id": "11",
+      "name": "Bed and bath textiles",
+      "qtyIdx": 96.68,
+      "qtyGap": 1363638,
+      "salesIdx": 97.46,
+      "salesGap": -60789229,
+      "salesGoalFy": 176121934,
+      "salesGoalYtd": 243078355,
+      "uiGapShown": null
+    },
+    {
+      "id": "12",
+      "name": "Home textiles",
+      "qtyIdx": 86.11,
+      "qtyGap": 2791797,
+      "salesIdx": 90.44,
+      "salesGap": -28957690,
+      "salesGoalFy": 109490525,
+      "salesGoalYtd": 153075203,
+      "uiGapShown": null
+    },
+    {
+      "id": "13",
+      "name": "Rugs",
+      "qtyIdx": 87.33,
+      "qtyGap": 540439,
+      "salesIdx": 94.56,
+      "salesGap": -20717379,
+      "salesGoalFy": 64130576,
+      "salesGoalYtd": 89729750,
+      "uiGapShown": null
+    },
+    {
+      "id": "14",
+      "name": "Cooking",
+      "qtyIdx": 103.1,
+      "qtyGap": 1289545,
+      "salesIdx": 106.42,
+      "salesGap": -52232144,
+      "salesGoalFy": 116962822,
+      "salesGoalYtd": 158986007,
+      "uiGapShown": null
+    },
+    {
+      "id": "15",
+      "name": "Eating",
+      "qtyIdx": 102.58,
+      "qtyGap": 1407376,
+      "salesIdx": 99.69,
+      "salesGap": -36102868,
+      "salesGoalFy": 95643271,
+      "salesGoalYtd": 132160791,
+      "uiGapShown": null
+    },
+    {
+      "id": "16",
+      "name": "Decoration",
+      "qtyIdx": 105.12,
+      "qtyGap": 449308,
+      "salesIdx": 91.17,
+      "salesGap": -44324259,
+      "salesGoalFy": 159185213,
+      "salesGoalYtd": 223211947,
+      "uiGapShown": null
+    },
+    {
+      "id": "17",
+      "name": "Outdoor",
+      "qtyIdx": 73.46,
+      "qtyGap": 607063,
+      "salesIdx": 87.28,
+      "salesGap": -1574399,
+      "salesGoalFy": 66957223,
+      "salesGoalYtd": 78516574,
+      "uiGapShown": null
+    },
+    {
+      "id": "18",
+      "name": "Home organisation",
+      "qtyIdx": 96.89,
+      "qtyGap": 4759520,
+      "salesIdx": 97.03,
+      "salesGap": -54538206,
+      "salesGoalFy": 175804420,
+      "salesGoalYtd": 237403796,
+      "uiGapShown": null
+    },
+    {
+      "id": "70",
+      "name": "Home Appliances",
+      "qtyIdx": 82.69,
+      "qtyGap": 22734,
+      "salesIdx": 88.15,
+      "salesGap": -3191612,
+      "salesGoalFy": 17949998,
+      "salesGoalYtd": 23984227,
+      "uiGapShown": null
+    }
+  ],
+  "title": "Goal calculations are inaccurate",
+  "scope": "Live dev environment (<code>https://dev.salesplanning.ingka.com</code>, retail unit <code>US</code>), real backend data from <code>https://api.dev.salesplanning.ingka.com/metrics</code>. 211 entities probed: 1 country, 19 HFBs, 191 product areas. This run <strong>confirms the reporter’s description</strong> — it is not an independent claim.",
+  "repro": "<p>Everything below is read live in one browser session. No tooling beyond DevTools and a calculator.</p><h3>Setup (do this once)</h3><ol><li style=\"line-height: 1.4;\">Open <code>https://dev.salesplanning.ingka.com/region-dashboard/us</code> and sign in.</li><li style=\"line-height: 1.4;\">Open DevTools → <strong>Network</strong> tab, and type <code>metrics</code> into the filter box.</li><li style=\"line-height: 1.4;\">Reload the page.</li><li style=\"line-height: 1.4;\">Click the <code>POST</code> request to <code>api.dev.salesplanning.ingka.com/metrics</code> whose <strong>Payload</strong> is <code>{\"metric\":\"KPI_SUMMARY\",\"level\":\"hfb\",\"filters\":{\"retailUnitCode\":\"US\"}}</code>.</li><li style=\"line-height: 1.4;\">Open its <strong>Response</strong> tab. Under <code>data.children</code> you get one entry per HFB. Every number is a string in Java scientific notation — <code>\"3.3198394048E8\"</code> means <code>331983940.48</code>.</li></ol><h3>A. The gap is measured against the FULL-YEAR goal</h3><ol><li style=\"line-height: 1.4;\">In the response, find the child whose <code>hfbNo</code> is <code>01</code> (Living room seating).</li><li style=\"line-height: 1.4;\">Read three fields: <code>netQuantityYtd</code> = <strong>2,049,167</strong>, <code>netQuantityGoalFy</code> = <strong>2,032,719</strong>, <code>netQuantityGap</code> = <strong>−16,448</strong>.</li><li style=\"line-height: 1.4;\">On a calculator: <code>2,032,719 − 2,049,167 = −16,448</code>.</li><li style=\"line-height: 1.4;\">That is <code>netQuantityGap</code> exactly. So <strong>gap = goalFy − ytd</strong>. It holds on all 210 entities that returned data.</li></ol><h3>B. The index is measured against the YEAR-TO-DATE goal</h3><ol><li style=\"line-height: 1.4;\">Same HFB 01 child. Read <code>netQuantityGoalYtd</code> = <strong>1,890,972</strong> and <code>netQuantityIndexToGoal</code> = <strong>108.37</strong>.</li><li style=\"line-height: 1.4;\">On a calculator: <code>2,049,167 ÷ 1,890,972 × 100 = 108.37</code>.</li><li style=\"line-height: 1.4;\">That is <code>netQuantityIndexToGoal</code> exactly. So <strong>index = ytd ÷ goalYtd × 100</strong>.</li><li style=\"line-height: 1.4;\">Compare with step A: the gap divides against <code>GoalFy</code>, the index against <code>GoalYtd</code>. <strong>Two different denominators.</strong> That is why the two numbers can contradict each other on the same card.</li></ol><h3>C. The &quot;Gap to close&quot; line is shown on exactly the wrong cards</h3><ol><li style=\"line-height: 1.4;\">Go back to <code>https://dev.salesplanning.ingka.com/region-dashboard/us</code> and scroll to the HFB cards.</li><li style=\"line-height: 1.4;\">Count how many cards show a <strong>Gap to close</strong> line. The answer is <strong>2 of 19</strong>: HFB 01 Living room seating (<code>16K / $72.2M</code>) and HFB 10 Lighting &amp; Home electronics (<code>201K / $49.8M</code>).</li><li style=\"line-height: 1.4;\">Now look up those two in the API response. HFB 01 <code>netQuantityGap</code> = <strong>−16,448</strong>; HFB 10 <code>netQuantityGap</code> = <strong>−201,122</strong>. Both are <strong>negative</strong> — they have already passed the full-year goal, so there is nothing left to close.</li><li style=\"line-height: 1.4;\">Now pick any card with no Gap to close line, e.g. HFB 17 Outdoor. Its <code>netQuantityGap</code> is <strong>+607,063</strong> and its index is <strong>73.46</strong> — it is genuinely a long way behind, and it is exactly the card that should be showing a gap.</li><li style=\"line-height: 1.4;\">Check the sign against the display for all 19 HFBs. The line appears <strong>if and only if the gap is negative</strong>, with zero exceptions. <strong>The condition is inverted.</strong></li><li style=\"line-height: 1.4;\">Also note the two shown values are the <em>absolute value</em> of a negative number: HFB 01’s <code>−16,448</code> is rendered as <code>16K</code>.</li></ol><h3>D. The reported symptom, in the reporter’s own words</h3><ol><li style=\"line-height: 1.4;\">Switch the HFB list toggle to <strong>Sales index</strong>.</li><li style=\"line-height: 1.4;\">Take HFB 05 Beds &amp; Mattresses: the card shows an index of <strong>83.66</strong> (well below 100) and <strong>no Gap to close</strong> — which reads as &quot;we met the target&quot;.</li><li style=\"line-height: 1.4;\">In the API response its <code>netSalesGap</code> is <strong>−44,511,343</strong>: negative, because YTD sales already exceed the <em>full-year</em> sales goal, even though YTD sales are 16% short of the <em>year-to-date</em> goal.</li><li style=\"line-height: 1.4;\">That is the exact contradiction on the ticket. It reproduces on <strong>17 of the 19 HFBs</strong>.</li></ol><h3>E. The underlying data problem: FY goal is smaller than YTD goal</h3><ol><li style=\"line-height: 1.4;\">Still in the same HFB response, read HFB 01’s <code>netSalesGoalFy</code> = <strong>259,773,463</strong> and <code>netSalesGoalYtd</code> = <strong>360,633,550</strong>.</li><li style=\"line-height: 1.4;\">The full-year goal is <strong>smaller</strong> than the goal due by week 34. For a cumulative target that is impossible — the whole year cannot be less than part of the year.</li><li style=\"line-height: 1.4;\">Repeat for the other HFBs: <strong>all 19</strong> have <code>GoalFy &lt; GoalYtd</code>, ratio 0.71–0.85.</li><li style=\"line-height: 1.4;\">Now change the request body to <code>{\"metric\":\"KPI_SUMMARY\",\"level\":\"pa\",\"filters\":{\"retailUnitCode\":\"US\",\"hfbNo\":\"01\"}}</code> and check the product areas: their ratio is ~1.04 and none are inverted. The quantity goals are also fine. <strong>The defect is specific to HFB-level sales goals.</strong></li></ol><h3>Open question (not established)</h3><p>At week 34 of 52 you would expect <code>GoalFy ÷ GoalYtd</code> to be roughly <strong>1.5</strong>. HFBs show ~0.72 and product areas show ~1.04. <strong>Neither matches clean pro-rating</strong>, so the goal-loading rule itself is not something this run can explain — it needs someone who knows how <code>GoalFy</code> and <code>GoalYtd</code> are populated upstream.</p>"
+}

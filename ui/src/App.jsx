@@ -88,7 +88,7 @@ export default function App() {
     {
       id: crypto.randomUUID(),
       role: 'agent',
-      text: 'Ask me to list Jira tickets, run Pablo for SSPLAN keys, or write results to Confluence.',
+      text: 'Ask me to list Jira tickets or run Pablo for SSPLAN keys.',
     },
   ]);
   const [isStreaming, setIsStreaming] = useState(false);

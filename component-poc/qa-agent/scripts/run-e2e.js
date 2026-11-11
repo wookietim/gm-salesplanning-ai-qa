@@ -332,8 +332,8 @@ function buildResult(report, meta) {
 
 /**
  * Rolls results up per Jira ticket. Only tests carrying a ticket key are
- * included, because the Confluence QA summary table is ticket-scoped and
- * full-suite totals must never be written as a ticket row.
+ * included, because the QA summary table is ticket-scoped and full-suite
+ * totals must never be written as a ticket row.
  */
 function buildTicketRollup(specs) {
   const tickets = new Map();

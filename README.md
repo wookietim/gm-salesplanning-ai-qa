@@ -35,12 +35,6 @@ JIRA_BASE_URL=https://jira.digital.ingka.com
 JIRA_USER_EMAIL=your.email@ingka.ikea.com
 JIRA_API_TOKEN=your_jira_personal_access_token
 JIRA_PROJECT=SSPLAN
-
-# Confluence credentials / settings
-CONFLUENCE_BASE_URL=https://confluence.build.ingka.ikea.com
-CONFLUENCE_SPACE_KEY=SSP
-CONFLUENCE_PAGE_ID=your_confluence_page_id
-CONFLUENCE_API_TOKEN=your_confluence_personal_access_token
 ```
 
 > **Never commit `.env` to source control.** It is listed in `.gitignore`.

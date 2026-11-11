@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { API_BASE } from '../api';
 
 export default function BatchResultsPanel({ batchState }) {
   const [expanded, setExpanded] = useState(null);
@@ -62,8 +61,6 @@ export default function BatchResultsPanel({ batchState }) {
 }
 
 function BatchTicketDetail({ ticket }) {
-  const [writeStatus, setWriteStatus] = useState(null);
-
   const FAILURE_DESCRIPTIONS = {
     'sad-path-source-signals': 'Components are missing error handling, loading states, or fallback UI.',
     'jira-issue-key-coverage': 'Test plans were generated without this Jira ticket scoped in.',
@@ -77,26 +74,6 @@ function BatchTicketDetail({ ticket }) {
       failureReasons[r] = (failureReasons[r] || 0) + 1;
     }
   }
-
-  const writeToConfluence = async (markAsPassed) => {
-    setWriteStatus('loading');
-    try {
-      const res = await fetch(`${API_BASE}/api/confluence-write`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ticketKey: ticket.key,
-          ticketSummary: ticket.summary,
-          tests: ticket.tests,
-          markAsPassed,
-        }),
-      });
-      const data = await res.json();
-      setWriteStatus({ ok: data.ok, msg: data.ok ? `Written (v${data.version})` : data.error });
-    } catch (e) {
-      setWriteStatus({ ok: false, msg: e.message });
-    }
-  };
 
   return (
     <div className="batch-detail">
@@ -117,32 +94,6 @@ function BatchTicketDetail({ ticket }) {
       {ticket.status === 'done' && ticket.failed === 0 && ticket.tests.length > 0 && (
         <p className="batch-all-passed">All {ticket.passed} tests passed.</p>
       )}
-
-      {ticket.tests && ticket.tests.length > 0 && (
-        <div className="confluence-actions">
-          <button
-            className="confluence-btn"
-            onClick={() => writeToConfluence(false)}
-            disabled={writeStatus === 'loading'}
-          >
-            📤 Write to Confluence
-          </button>
-          <button
-            className="confluence-btn primary"
-            onClick={() => writeToConfluence(true)}
-            disabled={writeStatus === 'loading'}
-          >
-            ✅ Mark as Passed & Write
-          </button>
-        </div>
-      )}
-
-      {writeStatus && writeStatus !== 'loading' && (
-        <p className={`confluence-feedback ${writeStatus.ok ? 'success' : 'error'}`}>
-          {writeStatus.ok ? '✅' : '❌'} {writeStatus.msg}
-        </p>
-      )}
-      {writeStatus === 'loading' && <p className="confluence-feedback">Writing to Confluence…</p>}
     </div>
   );
 }

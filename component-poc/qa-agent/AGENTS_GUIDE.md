@@ -1,6 +1,6 @@
 # QA Agent System — Complete User Guide
 
-> **Last updated:** 2026-08-26
+> **Last updated:** 2026-11-11
 > **Location:** `component-poc/qa-agent/agents/`
 
 ---
@@ -47,8 +47,6 @@ The QA Agent System is a multi-agent framework for automated and semi-automated 
 | **API-Agent** | API discovery, contract extraction, Bob/Susan handoff | Pablo (automatic), or you directly |
 | **Unit-Test-QA** | Ephemeral unit test writer and executor | Pablo (automatic after API-Agent), or you directly |
 | **Security-QA** | Full-stack security audit — XSS, token storage, CORS, auth, CVEs | Pablo (automatic after Smoke), or you directly |
-| **Confluence-Agent** | Publishes supplied content to Confluence pages (create/update) | Pablo (on request), or you directly |
-| **Confluence-Writer** | Upserts per-ticket QA summary metrics table on AI QA Summary page | Pablo (on request), or you directly |
 | **Bob** | Component test creator | Pablo (or you directly) |
 | **Susan** | Component test executor | Pablo (or you directly) |
 | **Jira-Agent** | Jira ticket fetcher | Bob, Pablo |
@@ -63,55 +61,6 @@ The QA Agent System is a multi-agent framework for automated and semi-automated 
 ---
 
 ## Agent Details
-
----
-
-### Confluence-Agent — Confluence Publishing
-
-**Folder:** `agents/confluence-agent/`
-
-Confluence-Agent takes structured input and publishes it to Confluence as a page.
-It supports both:
-- **Create** mode (new page in a target space)
-- **Update** mode (existing page by `pageId`)
-
-Use this when you want a run summary, test report, or any provided content
-written directly to Confluence in a repeatable, auditable way.
-
----
-
-### Confluence-Writer — AI QA Summary Table Upsert
-
-**Folder:** `agents/confluence-writer/`
-
-Confluence-Writer updates a single canonical Confluence page:
-`https://confluence.build.ingka.ikea.com/spaces/SSP/pages/1353804850/AI+QA+Summary`
-
-It maintains one row per Jira ticket and upserts these exact fields:
-- `Last Test Run`
-- `Jira Title`
-- `tests passing`
-- `Tests failing`
-- `tests blocked`
-- `No of Bugs found`
-
-`Last Test Run` is written as date-only (`YYYY-MM-DD`).
-Rows are color-coded by result:
-- red when a row has failed tests
-- yellow when a row has blocked tests and no failures
-- green when a row has no failed or blocked tests
-Confluence-Writer also places a legend above the summary table explaining these colors.
-
-Row behavior:
-- If a ticket row already exists, Confluence-Writer overwrites that row with
-  the latest run values.
-- If the ticket row does not exist, Confluence-Writer appends a new row.
-- Rows are only written for tickets that had actual ticket-scoped execution.
-- Fallback/full-suite totals must never be labeled with a Jira ticket key.
-- The page must contain only one managed QA summary table.
-- Jira ticket cells are written as links to the corresponding Jira ticket.
-
-Confluence-Writer delegates the final page write to **Confluence-Agent**.
 
 ---
 

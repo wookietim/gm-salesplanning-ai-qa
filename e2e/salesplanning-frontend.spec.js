@@ -715,14 +715,14 @@ test.describe('Region dashboard (/region-dashboard/se/)', () => {
         await expect(page.getByLabel('HFB list navigation')).toBeVisible();
         await expect(page.getByLabel('HFB list navigation').getByRole('status'))
             .toContainText('Loading HFB performance...');
-        await expect(page.getByLabel('Sales by week').getByRole('status'))
+        await expect(page.getByLabel(/weekly performance/i).getByRole('status'))
             .toContainText('Loading trend data...');
     });
 
     test('renders HFB cards and graph sections after data loads', async ({ page }) => {
         await expect(page.getByText('FY26 sales index')).toBeVisible();
         await expect(page.getByRole('button', { name: 'View HFB plan' })).toHaveCount(16);
-        await expect(page.getByLabel('Sales by week')).toBeVisible();
+        await expect(page.getByLabel(/weekly performance/i)).toBeVisible();
     });
 
     test('HfbList shows Qty/Sales index SegmentedControl and switches metric', async ({ page }) => {
@@ -795,9 +795,9 @@ test.describe('HFB dashboard (/region-dashboard/se/hfb/01)', () => {
         await expect(page.getByRole('heading', { level: 1 })).toContainText('PA 001');
     });
 
-    test('renders HFB-level sales graphs (YTD sales index, Sales by week)', async ({ page }) => {
+    test('renders HFB-level sales graphs (YTD sales index, Weekly Performance)', async ({ page }) => {
         await expect(page.getByText('YTD sales index')).toBeVisible();
-        await expect(page.getByLabel('Sales by week')).toBeVisible();
+        await expect(page.getByLabel(/weekly performance/i)).toBeVisible();
         await expect(page.getByRole('link', { name: 'Sales Planning' })).toBeVisible();
     });
 
@@ -845,7 +845,7 @@ test.describe('PA dashboard (/region-dashboard/se/hfb/01/pa/001)', () => {
 
     test('renders PA-level sales graphs (no PA list)', async ({ page }) => {
         await expect(page.getByText('YTD sales index')).toBeVisible();
-        await expect(page.getByLabel('Sales by week')).toBeVisible();
+        await expect(page.getByLabel(/weekly performance/i)).toBeVisible();
         await expect(page.getByLabel('PA list navigation')).not.toBeVisible();
         await expect(page.getByRole('link', { name: 'Sales Planning' })).toBeVisible();
     });
@@ -1120,7 +1120,7 @@ test.describe('Error states', () => {
     test('SalesByWeek shows error message when metrics API returns 500', async ({ page }) => {
         await gotoBypassAuth(page, '/region-dashboard/se/', { hfbDelayMs: 250, metricsStatus: 500 });
         // TanStack Query retries 3× with exponential back-off — allow up to 20s
-        await expect(page.getByLabel('Sales by week')).toContainText(SALES_BY_WEEK_ERROR_TEXT, { timeout: 20000 });
+        await expect(page.getByLabel(/weekly performance/i)).toContainText(SALES_BY_WEEK_ERROR_TEXT, { timeout: 20000 });
     });
 });
 
@@ -1240,7 +1240,7 @@ test.describe('SalesByWeek SegmentControl (metric type switching)', () => {
     });
 
     test('defaults to Sales and shows all four metric options', async ({ page }) => {
-        const chart = page.getByLabel('Sales by week');
+        const chart = page.getByLabel(/weekly performance/i);
         await expect(chart.getByRole('button', { name: 'Sales', exact: true })).toHaveAttribute('aria-pressed', 'true');
         await expect(chart.getByRole('button', { name: 'Qty', exact: true })).toBeVisible();
         await expect(chart.getByRole('button', { name: 'Sales index' })).toBeVisible();
@@ -1248,20 +1248,20 @@ test.describe('SalesByWeek SegmentControl (metric type switching)', () => {
     });
 
     test('switches to Qty metric', async ({ page }) => {
-        const chart = page.getByLabel('Sales by week');
+        const chart = page.getByLabel(/weekly performance/i);
         await chart.getByRole('button', { name: 'Qty', exact: true }).click();
         await expect(chart.getByRole('button', { name: 'Qty', exact: true })).toHaveAttribute('aria-pressed', 'true');
         await expect(chart.getByRole('button', { name: 'Sales', exact: true })).toHaveAttribute('aria-pressed', 'false');
     });
 
     test('switches to Sales index metric', async ({ page }) => {
-        const chart = page.getByLabel('Sales by week');
+        const chart = page.getByLabel(/weekly performance/i);
         await chart.getByRole('button', { name: 'Sales index' }).click();
         await expect(chart.getByRole('button', { name: 'Sales index' })).toHaveAttribute('aria-pressed', 'true');
     });
 
     test('switches to Qty index metric', async ({ page }) => {
-        const chart = page.getByLabel('Sales by week');
+        const chart = page.getByLabel(/weekly performance/i);
         await chart.getByRole('button', { name: 'Qty index' }).click();
         await expect(chart.getByRole('button', { name: 'Qty index' })).toHaveAttribute('aria-pressed', 'true');
     });
@@ -1425,7 +1425,7 @@ test.describe('Acceptance criteria from Jira stories', () => {
     test.describe('SSPLAN-691 — Segmented Control on all levels', () => {
         test('SegmentControl with all 4 options appears in SalesByWeek on the country dashboard', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
-            const chart = page.getByLabel('Sales by week');
+            const chart = page.getByLabel(/weekly performance/i);
             for (const label of ['Qty index', 'Qty', 'Sales index', 'Sales']) {
                 await expect(chart.getByRole('button', { name: label, exact: true })).toBeVisible();
             }
@@ -1433,7 +1433,7 @@ test.describe('Acceptance criteria from Jira stories', () => {
 
         test('SegmentControl with all 4 options appears in SalesByWeek on the HFB dashboard', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
-            const chart = page.getByLabel('Sales by week');
+            const chart = page.getByLabel(/weekly performance/i);
             for (const label of ['Qty index', 'Qty', 'Sales index', 'Sales']) {
                 await expect(chart.getByRole('button', { name: label, exact: true })).toBeVisible();
             }
@@ -1441,7 +1441,7 @@ test.describe('Acceptance criteria from Jira stories', () => {
 
         test('SegmentControl with all 4 options appears in SalesByWeek on the PA dashboard', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
-            const chart = page.getByLabel('Sales by week');
+            const chart = page.getByLabel(/weekly performance/i);
             for (const label of ['Qty index', 'Qty', 'Sales index', 'Sales']) {
                 await expect(chart.getByRole('button', { name: label, exact: true })).toBeVisible();
             }
@@ -1449,7 +1449,7 @@ test.describe('Acceptance criteria from Jira stories', () => {
 
         test('Selecting each metric option highlights only that button (aria-pressed=true)', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
-            const chart = page.getByLabel('Sales by week');
+            const chart = page.getByLabel(/weekly performance/i);
 
             for (const label of ['Qty index', 'Qty', 'Sales index', 'Sales']) {
                 await chart.getByRole('button', { name: label, exact: true }).click();
@@ -1474,11 +1474,11 @@ test.describe('Acceptance criteria from Jira stories', () => {
     test.describe('SSPLAN-623 — SalesByWeek legend conditional rendering', () => {
         test.beforeEach(async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
-            await page.getByLabel('Sales by week').waitFor();
+            await page.getByLabel(/weekly performance/i).waitFor();
         });
 
         test('"last year sales" legend item is always visible in all metric modes', async ({ page }) => {
-            const chart = page.getByLabel('Sales by week');
+            const chart = page.getByLabel(/weekly performance/i);
             for (const label of ['Qty index', 'Qty', 'Sales index', 'Sales']) {
                 await chart.getByRole('button', { name: label, exact: true }).click();
                 await expect(chart).toContainText('last year');
@@ -1486,7 +1486,7 @@ test.describe('Acceptance criteria from Jira stories', () => {
         });
 
         test('"latest forecast" legend item is always visible in all metric modes', async ({ page }) => {
-            const chart = page.getByLabel('Sales by week');
+            const chart = page.getByLabel(/weekly performance/i);
             for (const label of ['Qty index', 'Qty', 'Sales index', 'Sales']) {
                 await chart.getByRole('button', { name: label, exact: true }).click();
                 await expect(chart).toContainText('latest forecast');
@@ -1494,25 +1494,25 @@ test.describe('Acceptance criteria from Jira stories', () => {
         });
 
         test('"actual sales" legend shows in Sales mode (Pieces)', async ({ page }) => {
-            const chart = page.getByLabel('Sales by week');
+            const chart = page.getByLabel(/weekly performance/i);
             await chart.getByRole('button', { name: 'Sales', exact: true }).click();
             await expect(chart).toContainText('actual sales');
         });
 
         test('"actual sales" legend shows in Qty mode (Pieces)', async ({ page }) => {
-            const chart = page.getByLabel('Sales by week');
+            const chart = page.getByLabel(/weekly performance/i);
             await chart.getByRole('button', { name: 'Qty', exact: true }).click();
             await expect(chart).toContainText('actual sales');
         });
 
         test('"actual sales" legend is HIDDEN in Sales index mode (not a Pieces view)', async ({ page }) => {
-            const chart = page.getByLabel('Sales by week');
+            const chart = page.getByLabel(/weekly performance/i);
             await chart.getByRole('button', { name: 'Sales index' }).click();
             await expect(chart).not.toContainText('actual sales');
         });
 
         test('"actual sales" legend is HIDDEN in Qty index mode (not a Pieces view)', async ({ page }) => {
-            const chart = page.getByLabel('Sales by week');
+            const chart = page.getByLabel(/weekly performance/i);
             await chart.getByRole('button', { name: 'Qty index' }).click();
             await expect(chart).not.toContainText('actual sales');
         });
@@ -1530,35 +1530,35 @@ test.describe('Acceptance criteria from Jira stories', () => {
     test.describe('SSPLAN-646 — SalesByWeek legend behaviour at HFB and PA level', () => {
         test('"actual sales" hidden in Sales index mode on HFB page', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
-            const chart = page.getByLabel('Sales by week');
+            const chart = page.getByLabel(/weekly performance/i);
             await chart.getByRole('button', { name: 'Sales index' }).click();
             await expect(chart).not.toContainText('actual sales');
         });
 
         test('"actual sales" hidden in Qty index mode on HFB page', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
-            const chart = page.getByLabel('Sales by week');
+            const chart = page.getByLabel(/weekly performance/i);
             await chart.getByRole('button', { name: 'Qty index' }).click();
             await expect(chart).not.toContainText('actual sales');
         });
 
         test('"actual sales" visible in Sales (Pieces) mode on HFB page', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
-            const chart = page.getByLabel('Sales by week');
+            const chart = page.getByLabel(/weekly performance/i);
             await chart.getByRole('button', { name: 'Sales', exact: true }).click();
             await expect(chart).toContainText('actual sales');
         });
 
         test('"actual sales" hidden in Sales index mode on PA page', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
-            const chart = page.getByLabel('Sales by week');
+            const chart = page.getByLabel(/weekly performance/i);
             await chart.getByRole('button', { name: 'Sales index' }).click();
             await expect(chart).not.toContainText('actual sales');
         });
 
         test('"actual sales" visible in Qty (Pieces) mode on PA page', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
-            const chart = page.getByLabel('Sales by week');
+            const chart = page.getByLabel(/weekly performance/i);
             await chart.getByRole('button', { name: 'Qty', exact: true }).click();
             await expect(chart).toContainText('actual sales');
         });
@@ -1571,7 +1571,7 @@ test.describe('Acceptance criteria from Jira stories', () => {
     test.describe('SSPLAN-736 — Chart tooltips', () => {
         test('SalesByWeek chart renders and tooltip appears on hover over a data bar', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
-            const chart = page.getByLabel('Sales by week');
+            const chart = page.getByLabel(/weekly performance/i);
             await expect(chart).toBeVisible();
             // Hover over the chart area to trigger the Recharts tooltip
             const chartBox = await chart.boundingBox();
@@ -1911,13 +1911,13 @@ test.describe('Edge cases', () => {
     test.describe('SalesByWeek loading state on HFB and PA pages', () => {
         test('SalesByWeek shows Loading trend data... while metrics are fetching on HFB page', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 1000 });
-            await expect(page.getByLabel('Sales by week').getByRole('status'))
+            await expect(page.getByLabel(/weekly performance/i).getByRole('status'))
                 .toContainText('Loading trend data...');
         });
 
         test('SalesByWeek shows Loading trend data... while metrics are fetching on PA page', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 1000 });
-            await expect(page.getByLabel('Sales by week').getByRole('status'))
+            await expect(page.getByLabel(/weekly performance/i).getByRole('status'))
                 .toContainText('Loading trend data...');
         });
     });
@@ -2013,7 +2013,7 @@ test.describe('Accessibility basics', () => {
         await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 500 });
         await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
         await expect(page.getByLabel('Breadcrumb')).toBeVisible();
-        await expect(page.getByLabel('Sales by week')).toBeVisible();
+        await expect(page.getByLabel(/weekly performance/i)).toBeVisible();
     });
 });
 
@@ -2113,22 +2113,22 @@ test.describe('PlaceholderAvatar / user avatar', () => {
 });
 
 test.describe('SalesByWeek h3 title on all dashboard levels', () => {
-    test('"Sales by week" h3 heading renders on the country dashboard', async ({ page }) => {
+    test('"Weekly Performance" h3 heading renders on the country dashboard', async ({ page }) => {
         await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
-        await expect(page.getByLabel('Sales by week')
-            .getByRole('heading', { level: 3 })).toContainText('Sales by week');
+        await expect(page.getByLabel(/weekly performance/i)
+            .getByRole('heading', { level: 3 })).toContainText(/weekly performance/i);
     });
 
-    test('"Sales by week" h3 heading renders on the HFB dashboard', async ({ page }) => {
+    test('"Weekly Performance" h3 heading renders on the HFB dashboard', async ({ page }) => {
         await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
-        await expect(page.getByLabel('Sales by week')
-            .getByRole('heading', { level: 3 })).toContainText('Sales by week');
+        await expect(page.getByLabel(/weekly performance/i)
+            .getByRole('heading', { level: 3 })).toContainText(/weekly performance/i);
     });
 
-    test('"Sales by week" h3 heading renders on the PA dashboard', async ({ page }) => {
+    test('"Weekly Performance" h3 heading renders on the PA dashboard', async ({ page }) => {
         await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
-        await expect(page.getByLabel('Sales by week')
-            .getByRole('heading', { level: 3 })).toContainText('Sales by week');
+        await expect(page.getByLabel(/weekly performance/i)
+            .getByRole('heading', { level: 3 })).toContainText(/weekly performance/i);
     });
 });
 
@@ -2151,12 +2151,12 @@ test.describe('SalesByWeek and SalesIndexTrend error states at HFB and PA level'
 
     test('SalesByWeek shows error on HFB page when /metrics returns 500', async ({ page }) => {
         await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsStatus: 500 });
-        await expect(page.getByLabel('Sales by week')).toContainText(ERROR_MSG, { timeout: 20000 });
+        await expect(page.getByLabel(/weekly performance/i)).toContainText(ERROR_MSG, { timeout: 20000 });
     });
 
     test('SalesByWeek shows error on PA page when /metrics returns 500', async ({ page }) => {
         await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsStatus: 500 });
-        await expect(page.getByLabel('Sales by week')).toContainText(ERROR_MSG, { timeout: 20000 });
+        await expect(page.getByLabel(/weekly performance/i)).toContainText(ERROR_MSG, { timeout: 20000 });
     });
 
     test('SalesIndexTrend shows error on HFB page when /metrics returns 500', async ({ page }) => {
@@ -2182,7 +2182,7 @@ test.describe('aria-live and aria-busy attributes on loading spinners', () => {
     });
 
     test('SalesByWeek loading div: aria-live=polite, aria-busy=true', async ({ page }) => {
-        const spinner = page.getByLabel('Sales by week').getByRole('status');
+        const spinner = page.getByLabel(/weekly performance/i).getByRole('status');
         await expect(spinner).toHaveAttribute('aria-live', 'polite');
         await expect(spinner).toHaveAttribute('aria-busy', 'true');
     });
@@ -2472,7 +2472,7 @@ test.describe('API data → UI binding', () => {
         });
     });
 
-    test.describe('Weekly metrics API data → Sales by week chart', () => {
+    test.describe('Weekly metrics API data → Weekly Performance chart', () => {
         // Uses a custom weekly metrics response with distinct values to verify binding
         const customWeekly = {
             data: {
@@ -2496,38 +2496,38 @@ test.describe('API data → UI binding', () => {
 
         test('SalesByWeek section is visible and not in an error state when metrics API returns data', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
-            const section = page.getByLabel('Sales by week');
+            const section = page.getByLabel(/weekly performance/i);
             await expect(section).toBeVisible();
             await expect(section).not.toContainText('unavailable');
         });
 
         test('SalesByWeek section renders on the HFB page when metrics API returns data', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
-            await expect(page.getByLabel('Sales by week')).toBeVisible();
-            await expect(page.getByLabel('Sales by week')).not.toContainText('unavailable');
+            await expect(page.getByLabel(/weekly performance/i)).toBeVisible();
+            await expect(page.getByLabel(/weekly performance/i)).not.toContainText('unavailable');
         });
 
         test('SalesByWeek section renders on the PA page when metrics API returns data', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
-            await expect(page.getByLabel('Sales by week')).toBeVisible();
-            await expect(page.getByLabel('Sales by week')).not.toContainText('unavailable');
+            await expect(page.getByLabel(/weekly performance/i)).toBeVisible();
+            await expect(page.getByLabel(/weekly performance/i)).not.toContainText('unavailable');
         });
 
         test('SalesByWeek does NOT show the error message when /metrics returns 200', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
-            await expect(page.getByLabel('Sales by week')).not.toContainText(SALES_BY_WEEK_ERROR_TEXT, { timeout: 5000 });
+            await expect(page.getByLabel(/weekly performance/i)).not.toContainText(SALES_BY_WEEK_ERROR_TEXT, { timeout: 5000 });
         });
 
         test('switching to "Sales" segment reflects that the section is still populated (no error)', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
-            const section = page.getByLabel('Sales by week');
+            const section = page.getByLabel(/weekly performance/i);
             await section.getByRole('button', { name: 'Sales', exact: true }).click();
             await expect(section).not.toContainText('unavailable');
         });
 
         test('switching to "Qty" segment does not produce an error when metrics data is available', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
-            const section = page.getByLabel('Sales by week');
+            const section = page.getByLabel(/weekly performance/i);
             await section.getByRole('button', { name: 'Qty', exact: true }).click();
             await expect(section).not.toContainText('unavailable');
         });
@@ -2616,17 +2616,17 @@ test.describe('API data → UI binding', () => {
     test.describe('API error responses produce UI error messages (not blank/stale data)', () => {
         test('when /metrics returns 500 on the country page, error text replaces the SalesByWeek chart', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/', { metricsStatus: 500 });
-            await expect(page.getByLabel('Sales by week')).toContainText(SALES_BY_WEEK_ERROR_TEXT, { timeout: 20000 });
+            await expect(page.getByLabel(/weekly performance/i)).toContainText(SALES_BY_WEEK_ERROR_TEXT, { timeout: 20000 });
         });
 
         test('when /metrics returns 500 on the HFB page, error text replaces the SalesByWeek chart', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsStatus: 500 });
-            await expect(page.getByLabel('Sales by week')).toContainText(SALES_BY_WEEK_ERROR_TEXT, { timeout: 20000 });
+            await expect(page.getByLabel(/weekly performance/i)).toContainText(SALES_BY_WEEK_ERROR_TEXT, { timeout: 20000 });
         });
 
         test('when /metrics returns 500 on the PA page, error text replaces the SalesByWeek chart', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsStatus: 500 });
-            await expect(page.getByLabel('Sales by week')).toContainText(SALES_BY_WEEK_ERROR_TEXT, { timeout: 20000 });
+            await expect(page.getByLabel(/weekly performance/i)).toContainText(SALES_BY_WEEK_ERROR_TEXT, { timeout: 20000 });
         });
 
         test('when /metrics returns 500, SalesIndexTrend also shows the error message', async ({ page }) => {
@@ -2657,11 +2657,11 @@ test.describe('API data → UI binding', () => {
         test('SE and US pages both render without error when metrics API responds', async ({ page }) => {
             await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
-            await expect(page.getByLabel('Sales by week')).not.toContainText('unavailable', { timeout: 5000 });
+            await expect(page.getByLabel(/weekly performance/i)).not.toContainText('unavailable', { timeout: 5000 });
 
             await gotoBypassAuth(page, '/region-dashboard/us/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('US Sales');
-            await expect(page.getByLabel('Sales by week')).not.toContainText('unavailable', { timeout: 5000 });
+            await expect(page.getByLabel(/weekly performance/i)).not.toContainText('unavailable', { timeout: 5000 });
         });
 
         test('SE and US KpiSummaryCards both show metric data from the API', async ({ page }) => {
@@ -2857,7 +2857,7 @@ test.describe('Responsive viewports (tablet 768x1024, phone 390x844)', () => {
             await expect(page.getByRole('heading', { level: 1 })).toContainText('PA 001');
             await expect(page.getByRole('link', { name: 'Sales Planning' })).toBeVisible();
             await expect(page.getByRole('heading', { level: 3, name: 'YTD sales index' })).toBeVisible();
-            await expect(page.getByLabel('Sales by week')).toBeVisible();
+            await expect(page.getByLabel(/weekly performance/i)).toBeVisible();
             await expectNoHorizontalOverflow(page);
         });
     }
@@ -2867,11 +2867,11 @@ test.describe('Slow and never-resolving responses', () => {
     test('a very slow (5s) metrics response shows a loading state then resolves to real content', async ({ page }) => {
         await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 5000 });
         // Loading state is visible while the request is in flight.
-        await expect(page.getByLabel('Sales by week').getByRole('status'))
+        await expect(page.getByLabel(/weekly performance/i).getByRole('status'))
             .toContainText('Loading trend data...', { timeout: 4000 });
         // ...and it eventually resolves to real content (no error).
         await expect(page.getByRole('button', { name: 'View HFB plan' }).first()).toBeVisible({ timeout: 15000 });
-        await expect(page.getByLabel('Sales by week')).not.toContainText('unavailable');
+        await expect(page.getByLabel(/weekly performance/i)).not.toContainText('unavailable');
     });
 
     test('a never-resolving metrics response keeps the country page in its loading state (no error, no blank shell)', async ({ page }) => {
@@ -2880,19 +2880,19 @@ test.describe('Slow and never-resolving responses', () => {
         await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
         // ...and the data regions stay in their loading state, bounded so the test
         // itself terminates quickly.
-        await expect(page.getByLabel('Sales by week').getByRole('status'))
+        await expect(page.getByLabel(/weekly performance/i).getByRole('status'))
             .toContainText('Loading trend data...', { timeout: 8000 });
         await expect(page.getByLabel('HFB list navigation').getByRole('status'))
             .toContainText('Loading HFB performance...', { timeout: 8000 });
         // It must NOT flip to an error state while genuinely still pending.
-        await expect(page.getByLabel('Sales by week')).not.toContainText('unavailable');
+        await expect(page.getByLabel(/weekly performance/i)).not.toContainText('unavailable');
     });
 
     test('a never-resolving metrics response keeps the HFB PA list spinning without erroring', async ({ page }) => {
         await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsHang: true });
         await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 01');
         await expect(page.getByText('Loading PA performance...')).toBeVisible({ timeout: 8000 });
-        await expect(page.getByLabel('Sales by week')).not.toContainText('unavailable');
+        await expect(page.getByLabel(/weekly performance/i)).not.toContainText('unavailable');
     });
 });
 
@@ -2929,7 +2929,7 @@ test.describe('Mid-session token expiry (metrics start returning 401 after a goo
 
         await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 01');
         // The freshly-fetched HFB metrics fail auth → the UI shows its error state.
-        await expect(page.getByLabel('Sales by week')).toContainText('unavailable', { timeout: 25000 });
+        await expect(page.getByLabel(/weekly performance/i)).toContainText('unavailable', { timeout: 25000 });
     });
 
     test('after token expiry the SalesIndexTrend also errors rather than showing fabricated data', async ({ page }) => {

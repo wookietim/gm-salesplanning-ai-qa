@@ -16,7 +16,7 @@
  *   1. Read this file, take the string exported by `buildProbeScript()`, and
  *      pass it as the `script` argument to the canvas `evaluate_javascript`
  *      action against the authenticated page.
- *   2. Feed the returned JSON to `publish-api-confluence.js`.
+ *   2. Record the returned JSON alongside the ticket's QA findings.
  *   3. ALWAYS run `buildCleanupScript()` afterwards to restore `window.fetch`
  *      and delete the captured header.
  *

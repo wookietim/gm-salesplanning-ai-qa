@@ -433,13 +433,13 @@ input {
   opacity: 0.95;
 }
 
-.confluence-btn.suppress-all {
+.action-btn.suppress-all {
   background: rgba(255, 60, 40, 0.12);
   border-color: rgba(255, 100, 80, 0.4);
   color: #ffb3a7;
 }
 
-.confluence-btn.suppress-all:hover:not(:disabled) {
+.action-btn.suppress-all:hover:not(:disabled) {
   background: rgba(255, 60, 40, 0.2);
 }
  
@@ -928,13 +928,13 @@ input {
   color: #cfcfcf;
 }
 
-.confluence-actions {
+.test-actions {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-.confluence-btn {
+.action-btn {
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 10px;
   padding: 10px 14px;
@@ -945,49 +945,33 @@ input {
   transition: opacity 0.15s ease, transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
 
-.confluence-btn:hover:not(:disabled) {
+.action-btn:hover:not(:disabled) {
   transform: translateY(-1px);
   border-color: rgba(255, 255, 255, 0.24);
 }
 
-.confluence-btn:disabled {
+.action-btn:disabled {
   opacity: 0.55;
   cursor: not-allowed;
 }
 
-.confluence-btn.primary {
-  background: #ffda1a;
-  color: #141414;
-  border-color: #ffda1a;
-}
-
-.confluence-btn.success {
+.action-btn.success {
   background: rgba(76, 216, 122, 0.18);
   border-color: rgba(76, 216, 122, 0.35);
   color: #8ff1af;
 }
 
-.confluence-btn.primary.success {
-  background: rgba(76, 216, 122, 0.18);
-  border-color: rgba(76, 216, 122, 0.35);
-  color: #8ff1af;
-}
-
-.confluence-feedback {
+.action-feedback {
   min-height: 18px;
   font-size: 0.76rem;
   color: #a8adb5;
   transition: opacity 0.2s ease;
 }
 
-.confluence-feedback.success {
+.action-feedback.success {
   color: #7ff0a5;
 }
 
-.confluence-feedback.error {
+.action-feedback.error {
   color: #ff9b9b;
-}
-
-.confluence-feedback.loading {
-  color: #ffe27a;
 }

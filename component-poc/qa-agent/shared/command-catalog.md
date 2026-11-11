@@ -92,29 +92,6 @@ Suggested execution entry points by agent type.
 - Produces bobHandoff (security test cases) and susanHandoff (source validation steps)
 - Standalone: "Pablo, run a security scan for SSPLAN-698" or "Pablo, run a full security scan"
 
-## confluence-agent
-
-- Create a new Confluence page from provided `spaceKey`, `title`, and `content`
-- Update an existing Confluence page when `pageId` is provided
-- Support `dryRun` preview mode without writing to Confluence
-- Return page metadata (id/title/url/version) and publish status
-- Write publishing artifacts to QA-Runs/
-
-## confluence-writer
-
-- Upsert QA summary table rows on Confluence page `AI QA Summary` (`SSP`, pageId `1353804850`)
-- Maintain one row per Jira ticket with columns: `Jira Ticket` (link), `Last Test Run`, `Jira Title`, `tests passing`, `Tests failing`, `tests blocked`, `No of Bugs found`
-- `Last Test Run` is date-only (`YYYY-MM-DD`)
-- Row background colors: red for failed tests, yellow for blocked-only rows, green for fully passing rows
-- Add a legend above the table describing red/yellow/green meanings
-- Keep exactly one managed QA summary table on the page (merge/remove duplicates)
-- Update existing ticket row metrics when present; append a new row when missing
-- Write Jira ticket cells as links to the corresponding Jira issue
-- Only write rows for tickets with ticket-scoped executed test evidence
-- Never assign fallback/full-suite totals to Jira ticket rows
-- Delegate final page publish to `confluence-agent`
-- Supports `dryRun` preview mode without writing to Confluence
-
 ## e2e
 
 - Run the target project's real Playwright suite: `cd <e2eRoot> && npm run test:e2e`

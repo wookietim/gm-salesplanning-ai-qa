@@ -25,7 +25,7 @@ export default function InputBar({ onSend, disabled }) {
             submit();
           }
         }}
-        placeholder="Try: Run tests for SSPLAN-714 and write to Confluence"
+        placeholder="Try: Run tests for SSPLAN-714"
         disabled={disabled}
       />
       <button type="button" onClick={submit} disabled={disabled || !value.trim()}>

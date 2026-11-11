@@ -76,28 +76,6 @@ const COMPLETE_STAGE_TICKETS = [
   },
 ];
 
-const WRITE_ERROR_TICKETS = [
-  {
-    key: 'SSPLAN-913',
-    summary: 'Confluence error demo',
-    status: 'In Review',
-    issueType: 'Story',
-    isSubtask: false,
-    parentKey: null,
-  },
-];
-
-const WRITE_DELAY_TICKETS = [
-  {
-    key: 'SSPLAN-914',
-    summary: 'Confluence loading demo',
-    status: 'In Review',
-    issueType: 'Story',
-    isSubtask: false,
-    parentKey: null,
-  },
-];
-
 const MIXED_TESTS = [
   {
     component: 'PricingSummaryCard',
@@ -288,35 +266,8 @@ function createRunEvents(ticketKey) {
         { type: 'line', text: 'Bob output end' },
         { type: 'line', text: 'Invoking Susan for 1 selected components' },
         { type: 'line', text: 'Susan overall: passed: 1 failed: 0 blocked: 0' },
-        { type: 'line', text: 'Confluence page updated to version 12' },
         { type: 'line', text: 'Overall: pass' },
         { type: 'done', text: 'Complete.' },
-      ],
-    },
-    'SSPLAN-913': {
-      delayMs: 50,
-      events: [
-        { type: 'line', text: 'Run ID: RUN-913' },
-        { type: 'line', text: 'Jira issues: SSPLAN-913' },
-        { type: 'line', text: 'Invoking Bob for 2 component(s)' },
-        { type: 'line', text: 'Bob output end' },
-        { type: 'line', text: 'Invoking Susan for 2 selected components' },
-        { type: 'line', text: 'Susan overall: passed: 2 failed: 0 blocked: 0' },
-        { type: 'tests', tests: PASS_TESTS },
-        { type: 'done', text: 'Pablo run complete.' },
-      ],
-    },
-    'SSPLAN-914': {
-      delayMs: 50,
-      events: [
-        { type: 'line', text: 'Run ID: RUN-914' },
-        { type: 'line', text: 'Jira issues: SSPLAN-914' },
-        { type: 'line', text: 'Invoking Bob for 2 component(s)' },
-        { type: 'line', text: 'Bob output end' },
-        { type: 'line', text: 'Invoking Susan for 2 selected components' },
-        { type: 'line', text: 'Susan overall: passed: 2 failed: 0 blocked: 0' },
-        { type: 'tests', tests: PASS_TESTS },
-        { type: 'done', text: 'Pablo run complete.' },
       ],
     },
   };
@@ -369,26 +320,6 @@ function createCommandResponse(text) {
       events: [
         { type: 'tickets', tickets: COMPLETE_STAGE_TICKETS },
         { type: 'done', text: 'Loaded completed stage demo tickets.' },
-      ],
-    };
-  }
-
-  if (text === 'Load write error demo tickets') {
-    return {
-      delayMs: 40,
-      events: [
-        { type: 'tickets', tickets: WRITE_ERROR_TICKETS },
-        { type: 'done', text: 'Loaded error demo tickets.' },
-      ],
-    };
-  }
-
-  if (text === 'Load write delay demo tickets') {
-    return {
-      delayMs: 40,
-      events: [
-        { type: 'tickets', tickets: WRITE_DELAY_TICKETS },
-        { type: 'done', text: 'Loaded delay demo tickets.' },
       ],
     };
   }
@@ -446,7 +377,6 @@ let mockState;
 test.beforeEach(async ({ page }) => {
   mockState = {
     commandRequests: [],
-    confluenceRequests: [],
     suppressRequests: [],
   };
 
@@ -474,36 +404,6 @@ test.beforeEach(async ({ page }) => {
     });
   });
 
-  await page.route('**/api/confluence-write', async (route) => {
-    const payload = JSON.parse(route.request().postData() || '{}');
-    mockState.confluenceRequests.push(payload);
-
-    if (payload.ticketKey === 'SSPLAN-913') {
-      await route.fulfill({
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': 'http://localhost:5173',
-        },
-        body: JSON.stringify({ ok: false, error: 'Confluence unavailable' }),
-      });
-      return;
-    }
-
-    if (payload.ticketKey === 'SSPLAN-914') {
-      await delay(2000);
-    }
-
-    await route.fulfill({
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'http://localhost:5173',
-      },
-      body: JSON.stringify({ ok: true, version: payload.markAsPassed ? 42 : 41 }),
-    });
-  });
-
   await page.route('**/api/suppress-test', async (route) => {
     const payload = JSON.parse(route.request().postData() || '{}');
     mockState.suppressRequests.push(payload);
@@ -526,7 +426,7 @@ test.describe('Page load', () => {
     await expect(page.locator('h1')).toHaveText('GM Sales Planning QA');
     await expect(page.locator('.eyebrow')).toHaveText('IKEA QA Agent');
     await expect(page.locator('.chat-conversation-panel')).toContainText(
-      'Ask me to list Jira tickets, run Pablo for SSPLAN keys, or write results to Confluence.'
+      'Ask me to list Jira tickets or run Pablo for SSPLAN keys.'
     );
     await expect(page.locator('.chip')).toHaveCount(2);
     await expect(page.getByRole('button', { name: 'List In Review tickets' })).toBeEnabled();
@@ -660,7 +560,7 @@ test.describe('Single-ticket run (ResultsPanel)', () => {
 
       await expect(page.locator('.results-ticket-key')).toHaveText('SSPLAN-101');
       await expect(page.locator('.results-ticket-summary')).toHaveText('Pricing summary cards');
-      await expect(page.locator('.results-stage.pending')).toHaveCount(4);
+      await expect(page.locator('.results-stage.pending')).toHaveCount(3);
       await expect(page.locator('.results-log')).toContainText('Run ID: RUN-101');
       await expect(page.locator('.test-results')).toBeVisible();
       await expect(page.locator('.overall-status')).toHaveText('❌ 2 Tests Failed');
@@ -684,7 +584,7 @@ test.describe('Single-ticket run (ResultsPanel)', () => {
     test('shows all stages as done and run ID when run is complete', async ({ page }) => {
       await loadTicketList(page, 'Load completed stage demo tickets', 'SSPLAN-911');
       await page.locator('.ticket-item.story', { hasText: 'SSPLAN-911' }).getByRole('button', { name: '▶ Run Tests' }).click();
-      await expect(page.locator('.results-stage.done')).toHaveCount(4);
+      await expect(page.locator('.results-stage.done')).toHaveCount(3);
       await expect(page.locator('.results-run-id')).toContainText('RUN-911');
     });
 
@@ -699,65 +599,6 @@ test.describe('Single-ticket run (ResultsPanel)', () => {
       await expect(page.locator('.overall-status')).toHaveText('✅ All Tests Passed');
       await expect(page.locator('.results-log')).not.toContainText('RUN-101');
       await expect(page.getByRole('button', { name: '🗑 Remove all failing tests from future runs' })).toHaveCount(0);
-    });
-  });
-
-  test.describe('Confluence write actions', () => {
-    test('shows write action buttons after a run with failures', async ({ page }) => {
-      await page.getByRole('button', { name: 'List In Review tickets' }).click();
-      await page.locator('.ticket-item.story', { hasText: 'SSPLAN-101' }).getByRole('button', { name: '▶ Run Tests' }).click();
-      await expect(page.getByRole('button', { name: '📤 Write to Confluence' })).toBeVisible();
-      await expect(page.getByRole('button', { name: '✅ Mark as Passed & Write' })).toBeVisible();
-      await expect(page.getByRole('button', { name: '🗑 Remove all failing tests from future runs' })).toBeVisible();
-    });
-
-    test('Write to Confluence sends the correct payload and shows success feedback', async ({ page }) => {
-      await page.getByRole('button', { name: 'List In Review tickets' }).click();
-      await page.locator('.ticket-item.story', { hasText: 'SSPLAN-101' }).getByRole('button', { name: '▶ Run Tests' }).click();
-      await page.getByRole('button', { name: '📤 Write to Confluence' }).click();
-      await expect.poll(() => mockState.confluenceRequests.length).toBe(1);
-      expect(mockState.confluenceRequests[0]).toMatchObject({
-        ticketKey: 'SSPLAN-101',
-        ticketSummary: 'Pricing summary cards',
-        markAsPassed: false,
-      });
-      await expect(page.locator('.confluence-feedback.success')).toContainText('v41');
-    });
-
-    test('Mark as Passed & Write sends markAsPassed:true and shows success feedback', async ({ page }) => {
-      await page.getByRole('button', { name: 'List In Review tickets' }).click();
-      await page.locator('.ticket-item.story', { hasText: 'SSPLAN-101' }).getByRole('button', { name: '▶ Run Tests' }).click();
-      await page.getByRole('button', { name: '✅ Mark as Passed & Write' }).click();
-      await expect.poll(() => mockState.confluenceRequests.length).toBe(1);
-      expect(mockState.confluenceRequests[0]).toMatchObject({
-        ticketKey: 'SSPLAN-101',
-        ticketSummary: 'Pricing summary cards',
-        markAsPassed: true,
-      });
-      await expect(page.locator('.confluence-feedback.success')).toContainText('v42');
-    });
-
-    test('shows an error state when the Confluence write API returns 500', async ({ page }) => {
-      await sendPrompt(page, 'Load write error demo tickets', 'enter');
-      await page.locator('.ticket-item.story', { hasText: 'SSPLAN-913' }).getByRole('button', { name: '▶ Run Tests' }).click();
-      await page.getByRole('button', { name: '📤 Write to Confluence' }).click();
-      await expect(page.locator('.confluence-feedback.error')).toContainText('Confluence unavailable');
-    });
-
-    test('disables write buttons and shows loading feedback while write is in flight', async ({ page }) => {
-      await sendPrompt(page, 'Load write delay demo tickets', 'enter');
-      await page.locator('.ticket-item.story', { hasText: 'SSPLAN-914' }).getByRole('button', { name: '▶ Run Tests' }).click();
-      // Use class-based locators — the button text changes to "⏳ Writing…" during loading,
-      // so role+name locators can't find them mid-flight.
-      const writeButton = page.locator('.confluence-actions .confluence-btn.primary');
-      const markPassedButton = page.locator('.confluence-actions .confluence-btn:not(.primary):not(.suppress-all)');
-      await writeButton.click();
-      // Assert loading state while the 2s mock delay is in flight
-      await expect(writeButton).toHaveText('⏳ Writing…');
-      await expect(writeButton).toBeDisabled();
-      await expect(markPassedButton).toBeDisabled();
-      await expect(page.locator('.confluence-feedback')).toContainText('Writing to Confluence…');
-      await expect(page.locator('.confluence-feedback.success')).toContainText('v41');
     });
   });
 
@@ -793,7 +634,7 @@ test.describe('Single-ticket run (ResultsPanel)', () => {
 });
 
 test.describe('Batch run (BatchResultsPanel)', () => {
-  test('handles batch progress, status icons, detail expansion, write actions, and completion state', async ({ page }) => {
+  test('handles batch progress, status icons, detail expansion, and completion state', async ({ page }) => {
     await page.getByRole('button', { name: 'List In Review tickets' }).click();
     await page.getByRole('button', { name: '▶ Run All 4 Tests' }).click();
 
@@ -818,10 +659,6 @@ test.describe('Batch run (BatchResultsPanel)', () => {
     await expect(page.locator('.batch-detail')).toBeVisible();
     await expect(page.locator('.batch-detail')).toContainText('Why tests failed');
     await expect(page.locator('.batch-detail')).toContainText('sad-path-source-signals');
-    await expect(page.getByRole('button', { name: '📤 Write to Confluence' })).toBeVisible();
-    await expect(page.getByRole('button', { name: '✅ Mark as Passed & Write' })).toBeVisible();
-    await page.getByRole('button', { name: '📤 Write to Confluence' }).click();
-    await expect.poll(() => mockState.confluenceRequests.some((request) => request.ticketKey === 'SSPLAN-101')).toBeTruthy();
 
     await failingRow.click();
     await expect(page.locator('.batch-detail')).toHaveCount(0);

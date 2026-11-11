@@ -11,7 +11,6 @@ function parseLines(lines) {
     { key: 'jira', label: 'Fetching Jira context', status: 'pending' },
     { key: 'bob', label: 'Bob generating test plans', status: 'pending' },
     { key: 'susan', label: 'Susan executing tests', status: 'pending' },
-    { key: 'confluence', label: 'Writing to Confluence', status: 'pending' },
   ];
 
   let runId = null;
@@ -45,14 +44,6 @@ function parseLines(lines) {
     }
     if (line.includes('Susan overall:')) {
       stages[2].status = 'done';
-    }
-    if (line.includes('Confluence') || line.includes('confluence')) {
-      if (stages[2].status === 'done') {
-        stages[3].status = 'running';
-      }
-    }
-    if (line.includes('updated') && line.includes('version')) {
-      stages[3].status = 'done';
     }
     if (line.includes('Overall: pass') || (line.includes('Overall:') && line.includes('pass'))) {
       stages.forEach((stage) => {
@@ -116,7 +107,7 @@ function buildFailureSummary(tests) {
 
 export default function ResultsPanel({ runState }) {
   const bottomRef = useRef(null);
-  const [confluenceState, setConfluenceState] = useState({ status: 'idle', message: '' });
+  const [actionState, setActionState] = useState({ status: 'idle', message: '' });
   const [suppressingAllFailures, setSuppressingAllFailures] = useState(false);
 
   useEffect(() => {
@@ -125,20 +116,20 @@ export default function ResultsPanel({ runState }) {
 
   useEffect(() => {
     if (!runState.ticket) {
-      setConfluenceState({ status: 'idle', message: '' });
+      setActionState({ status: 'idle', message: '' });
       setSuppressingAllFailures(false);
       return;
     }
 
     if (runState.status === 'running' && runState.lines.length === 0) {
-      setConfluenceState({ status: 'idle', message: '' });
+      setActionState({ status: 'idle', message: '' });
       setSuppressingAllFailures(false);
     }
   }, [runState.ticket, runState.status, runState.lines.length]);
 
   useEffect(() => {
     if (runState.tests && runState.tests.length > 0) {
-      setConfluenceState({ status: 'idle', message: '' });
+      setActionState({ status: 'idle', message: '' });
     }
   }, [runState.tests]);
 
@@ -166,46 +157,6 @@ export default function ResultsPanel({ runState }) {
     overallStatusClass = 'blocked';
   }
 
-  const handleConfluenceWrite = async (markAsPassed) => {
-    setConfluenceState({ status: 'loading', message: 'Writing to Confluence…' });
-
-    try {
-      const response = await fetch(`${API_BASE}/api/confluence-write`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ticketKey: runState.ticket.key,
-          ticketSummary: runState.ticket.summary,
-          tests: runState.tests,
-          markAsPassed,
-        }),
-      });
-
-      let payload;
-      try {
-        payload = await response.json();
-      } catch (error) {
-        throw new Error(`Unexpected response (${response.status})`);
-      }
-
-      if (!response.ok || !payload.ok) {
-        throw new Error(payload.error || `Request failed with status ${response.status}`);
-      }
-
-      setConfluenceState({
-        status: 'success',
-        message: `✅ Written to Confluence (v${payload.version})`,
-      });
-    } catch (error) {
-      setConfluenceState({
-        status: 'error',
-        message: `❌ Error: ${error.message}`,
-      });
-    }
-  };
-
   const handleSuppressFailingTests = async () => {
     const failingTests = (runState.tests || []).filter((test) => test.status === 'fail');
     if (!failingTests.length) return;
@@ -232,12 +183,12 @@ export default function ResultsPanel({ runState }) {
           })
         )
       );
-      setConfluenceState({
+      setActionState({
         status: 'success',
         message: `✅ Removed ${responses.length} failing test${responses.length === 1 ? '' : 's'} from future runs`,
       });
     } catch (error) {
-      setConfluenceState({
+      setActionState({
         status: 'error',
         message: `❌ Error: ${error.message}`,
       });
@@ -276,27 +227,11 @@ export default function ResultsPanel({ runState }) {
               </div>
             )}
 
-            <div className="confluence-actions">
-              <button
-                type="button"
-                className={`confluence-btn primary${confluenceState.status === 'success' ? ' success' : ''}`}
-                onClick={() => handleConfluenceWrite(false)}
-                disabled={confluenceState.status === 'loading'}
-              >
-                {confluenceState.status === 'loading' ? '⏳ Writing…' : '📤 Write to Confluence'}
-              </button>
-              <button
-                type="button"
-                className={`confluence-btn${confluenceState.status === 'success' ? ' success' : ''}`}
-                onClick={() => handleConfluenceWrite(true)}
-                disabled={confluenceState.status === 'loading'}
-              >
-                {confluenceState.status === 'loading' ? '⏳ Writing…' : '✅ Mark as Passed & Write'}
-              </button>
+            <div className="test-actions">
               {testCounts.failed > 0 && (
                 <button
                   type="button"
-                  className={`confluence-btn suppress-all${confluenceState.status === 'success' ? ' success' : ''}`}
+                  className={`action-btn suppress-all${actionState.status === 'success' ? ' success' : ''}`}
                   onClick={handleSuppressFailingTests}
                   disabled={suppressingAllFailures}
                 >
@@ -305,8 +240,8 @@ export default function ResultsPanel({ runState }) {
               )}
             </div>
 
-            {confluenceState.message && (
-              <div className={`confluence-feedback ${confluenceState.status}`}>{confluenceState.message}</div>
+            {actionState.message && (
+              <div className={`action-feedback ${actionState.status}`}>{actionState.message}</div>
             )}
 
             <p className="test-results-heading">

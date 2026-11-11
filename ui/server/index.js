@@ -5,7 +5,6 @@ const dotenv = require('dotenv');
 const express = require('express');
 const { listTicketsByStatus, postComment, attachFile } = require('./commands/jira');
 const { runPabloStream } = require('./commands/pablo');
-const { getConfluenceTicketList, upsertTicketRow } = require('./commands/confluence');
 const { suppressTest } = require('./commands/suppressTest');
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
@@ -44,10 +43,6 @@ function buildEnv() {
     JIRA_BASE_URL: process.env.JIRA_BASE_URL,
     JIRA_USER_EMAIL: process.env.JIRA_USER_EMAIL,
     JIRA_API_TOKEN: process.env.JIRA_API_TOKEN,
-    CONFLUENCE_BASE_URL: process.env.CONFLUENCE_BASE_URL,
-    CONFLUENCE_SPACE_KEY: process.env.CONFLUENCE_SPACE_KEY,
-    CONFLUENCE_PAGE_ID: process.env.CONFLUENCE_PAGE_ID,
-    CONFLUENCE_API_TOKEN: process.env.CONFLUENCE_API_TOKEN,
   };
 }
 
@@ -186,24 +181,6 @@ app.post('/api/jira-comment', async (req, res) => {
   }
 });
 
-app.post('/api/confluence-write', async (req, res) => {
-  try {
-    const { ticketKey, ticketSummary, tests, markAsPassed } = req.body || {};
-    const result = await upsertTicketRow({
-      env: buildEnv(),
-      ticketKey,
-      ticketSummary,
-      tests,
-      markAsPassed: Boolean(markAsPassed),
-      today: new Date().toISOString().slice(0, 10),
-    });
-
-    res.json({ ok: true, version: result.pageVersion });
-  } catch (error) {
-    res.json({ ok: false, error: error.message });
-  }
-});
-
 app.post('/api/command', async (req, res) => {
   startStream(res);
 
@@ -237,20 +214,6 @@ app.post('/api/command', async (req, res) => {
       return;
     }
 
-    if (lowerText.includes('confluence') && !ticketKeys.length && !lowerText.includes('test')) {
-      sendEvent(res, { type: 'line', text: 'Reading Confluence page ticket list...' });
-      const result = await getConfluenceTicketList(buildEnv());
-      sendEvent(res, { type: 'line', text: `Page: ${result.title}` });
-      if (result.tickets.length) {
-        result.tickets.forEach((ticket) => sendEvent(res, { type: 'line', text: ticket }));
-      } else {
-        sendEvent(res, { type: 'line', text: 'No ticket keys found on the Confluence page.' });
-      }
-      sendEvent(res, { type: 'done', text: `Returned ${result.tickets.length} Confluence ticket(s).` });
-      res.end();
-      return;
-    }
-
     if ((lowerText.includes('run tests') || lowerText.includes('test')) && ticketKeys.length) {
       runPabloForTickets({ res, ticketKeys, closedRef });
       return;
@@ -258,7 +221,7 @@ app.post('/api/command', async (req, res) => {
 
     sendEvent(res, {
       type: 'line',
-      text: 'I can handle: listing Jira tickets (in review / done), running tests for ticket keys, writing results to Confluence.',
+      text: 'I can handle: listing Jira tickets (in review / done), running tests for ticket keys.',
     });
     sendEvent(res, { type: 'done', text: 'Ready for the next command.' });
     res.end();

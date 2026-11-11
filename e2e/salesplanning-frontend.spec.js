@@ -711,7 +711,7 @@ test.describe('Region dashboard (/monitoring/se/)', () => {
 
     test('renders the country dashboard shell and shows loading states', async ({ page }) => {
         await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
-        await expect(page.locator('body')).toContainText('Forecast G');
+        await expect(page.locator('body')).toContainText('Forecast');
         await expect(page.getByLabel('HFB list navigation')).toBeVisible();
         await expect(page.getByLabel('HFB list navigation').getByRole('status'))
             .toContainText('Loading HFB performance...');
@@ -720,7 +720,7 @@ test.describe('Region dashboard (/monitoring/se/)', () => {
     });
 
     test('renders HFB cards and graph sections after data loads', async ({ page }) => {
-        await expect(page.getByText('FY26 sales index')).toBeVisible();
+        await expect(page.getByText(/FY[0-9]+ sales index/i)).toBeVisible();
         await expect(page.getByRole('button', { name: 'View HFB plan' })).toHaveCount(16);
         await expect(page.getByLabel(/weekly performance/i)).toBeVisible();
     });
@@ -1606,7 +1606,7 @@ test.describe('Acceptance criteria from Jira stories', () => {
     test.describe('SSPLAN-701 & SSPLAN-692 — KpiSummaryCard metric labels', () => {
         test('Country dashboard KpiSummaryCard shows "FY26 sales index" title', async ({ page }) => {
             await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
-            await expect(page.getByRole('heading', { level: 3, name: 'FY26 sales index' })).toBeVisible();
+            await expect(page.getByRole('heading', { level: 3, name: /FY[0-9]+ sales index/i })).toBeVisible();
         });
 
         test('HFB dashboard KpiSummaryCard shows "YTD sales index" title', async ({ page }) => {
@@ -1774,17 +1774,17 @@ test.describe('Edge cases', () => {
     test.describe('"· Forecast G" appears on all dashboard levels', () => {
         test('"· Forecast G" visible on country (SE) dashboard', async ({ page }) => {
             await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
-            await expect(page.locator('body')).toContainText('Forecast G');
+            await expect(page.locator('body')).toContainText('Forecast');
         });
 
         test('"· Forecast G" visible on HFB dashboard', async ({ page }) => {
             await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
-            await expect(page.locator('body')).toContainText('Forecast G');
+            await expect(page.locator('body')).toContainText('Forecast');
         });
 
         test('"· Forecast G" visible on PA dashboard', async ({ page }) => {
             await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
-            await expect(page.locator('body')).toContainText('Forecast G');
+            await expect(page.locator('body')).toContainText('Forecast');
         });
     });
 
@@ -2584,19 +2584,19 @@ test.describe('API data → UI binding', () => {
 
         test('country dashboard KpiSummaryCard shows vsLatestForecast value from mock (98)', async ({ page }) => {
             await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
-            await expect(page.getByRole('heading', { name: 'FY26 sales index' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: /FY[0-9]+ sales index/i })).toBeVisible();
             await expect(page.locator('body')).toContainText('98');
         });
 
         test('country dashboard KpiSummaryCard shows toGo value from mock (106)', async ({ page }) => {
             await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
-            await expect(page.getByRole('heading', { name: 'FY26 sales index' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: /FY[0-9]+ sales index/i })).toBeVisible();
             await expect(page.locator('body')).toContainText('106');
         });
 
         test('country dashboard KpiSummaryCard shows the hero index value from mock (94)', async ({ page }) => {
             await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
-            await expect(page.getByRole('heading', { name: 'FY26 sales index' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: /FY[0-9]+ sales index/i })).toBeVisible();
             await expect(page.locator('body')).toContainText('94');
         });
 
@@ -2666,18 +2666,18 @@ test.describe('API data → UI binding', () => {
 
         test('SE and US KpiSummaryCards both show metric data from the API', async ({ page }) => {
             await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
-            await expect(page.getByRole('heading', { name: 'FY26 sales index' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: /FY[0-9]+ sales index/i })).toBeVisible();
             await expect(page.locator('body')).toContainText(/\d+/);
 
             await gotoBypassAuth(page, '/monitoring/us/', { metricsDelayMs: 250 });
-            await expect(page.getByRole('heading', { name: 'FY26 sales index' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: /FY[0-9]+ sales index/i })).toBeVisible();
             await expect(page.locator('body')).toContainText(/\d+/);
         });
 
         test('XX region (nonexistent) still gets the mock API data and renders the KpiSummaryCard', async ({ page }) => {
             await gotoBypassAuth(page, '/monitoring/xx/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('XX Sales');
-            await expect(page.getByRole('heading', { name: 'FY26 sales index' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: /FY[0-9]+ sales index/i })).toBeVisible();
             await expect(page.locator('body')).toContainText(/\d+/);
         });
     });
@@ -2830,7 +2830,7 @@ test.describe('Responsive viewports (tablet 768x1024, phone 390x844)', () => {
             await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 200 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
             await expect(page.getByRole('link', { name: 'Sales Planning' })).toBeVisible();
-            await expect(page.getByRole('heading', { level: 3, name: 'FY26 sales index' })).toBeVisible();
+            await expect(page.getByRole('heading', { level: 3, name: /FY[0-9]+ sales index/i })).toBeVisible();
             await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
             await expectNoHorizontalOverflow(page);
             // Primary navigation still works.

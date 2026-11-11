@@ -680,7 +680,7 @@ test.describe('Unauthenticated home page', () => {
     });
 
     test('redirects protected routes through / then on to Microsoft login', async ({ page }) => {
-        await page.goto('/region-dashboard/se/');
+        await page.goto('/monitoring/se/');
         await page.waitForURL(/login\.microsoftonline\.com/, { timeout: 15000 });
         expect(page.url()).toContain('login.microsoftonline.com');
     });
@@ -692,18 +692,18 @@ test.describe('Authenticated home / Welcome page', () => {
     });
 
     test('renders the Welcome component for an authenticated user', async ({ page }) => {
-        await expect(page.getByText('Hej, Test User')).toBeVisible();
+        await expect(page.getByText('Welcome Test')).toBeVisible();
     });
 
     test('shows the header link and authenticated welcome text', async ({ page }) => {
         await expect(page.getByRole('link', { name: 'Sales Planning' })).toBeVisible();
-        await expect(page.locator('body')).toContainText('Hej, Test User');
+        await expect(page.locator('body')).toContainText('Welcome Test');
     });
 });
 
-test.describe('Region dashboard (/region-dashboard/se/)', () => {
+test.describe('Region dashboard (/monitoring/se/)', () => {
     test.beforeEach(async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', {
+        await gotoBypassAuth(page, '/monitoring/se/', {
             hfbDelayMs: 500,
             metricsDelayMs: 500,
         });
@@ -743,12 +743,12 @@ test.describe('Region dashboard (/region-dashboard/se/)', () => {
     test('clicking "View HFB plan" navigates to the HFB dashboard', async ({ page }) => {
         await page.getByRole('button', { name: 'View HFB plan' }).first().click();
         // HFBs are sorted worst-gap-first, so the specific number is data-driven
-        await expect(page).toHaveURL(/\/region-dashboard\/se\/hfb\/\d+$/);
+        await expect(page).toHaveURL(/\/monitoring\/se\/hfb\/\d+$/);
         await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB');
     });
 
     test('invalid region (>2 chars) shows the InvalidRegion component', async ({ page }) => {
-        await page.goto('/region-dashboard/see/');
+        await page.goto('/monitoring/see/');
         await expect(
             page.getByText('Invalid region. Please supply a valid two-character region in the route.'),
         ).toBeVisible();
@@ -759,9 +759,9 @@ test.describe('Region dashboard (/region-dashboard/se/)', () => {
     });
 });
 
-test.describe('HFB dashboard (/region-dashboard/se/hfb/01)', () => {
+test.describe('HFB dashboard (/monitoring/se/hfb/01)', () => {
     test.beforeEach(async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', {
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', {
             hierarchyDelayMs: 500,
             metricsDelayMs: 500,
         });
@@ -778,7 +778,7 @@ test.describe('HFB dashboard (/region-dashboard/se/hfb/01)', () => {
 
     test('back button navigates to the region dashboard', async ({ page }) => {
         await page.getByRole('button', { name: 'Go back' }).click();
-        await expect(page).toHaveURL(/\/region-dashboard\/se\/?$/);
+        await expect(page).toHaveURL(/\/monitoring\/se\/?$/);
         await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
     });
 
@@ -791,7 +791,7 @@ test.describe('HFB dashboard (/region-dashboard/se/hfb/01)', () => {
 
     test('clicking a PA row navigates to the PA dashboard', async ({ page }) => {
         await page.getByRole('button', { name: /Sofas.*001/ }).click();
-        await expect(page).toHaveURL(/\/region-dashboard\/se\/hfb\/01\/pa\/001$/);
+        await expect(page).toHaveURL(/\/monitoring\/se\/hfb\/01\/pa\/001$/);
         await expect(page.getByRole('heading', { level: 1 })).toContainText('PA 001');
     });
 
@@ -812,7 +812,7 @@ test.describe('HFB dashboard (/region-dashboard/se/hfb/01)', () => {
     test('NewsInHfbList shows loading state while item range data is fetching', async ({ page }) => {
         // Re-navigate with an item-range delay — do this AFTER beforeEach has settled
         // so the delay only applies to this specific test, not all HFB tests.
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', {
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', {
             metricsDelayMs: 250,
             itemRangeDelayMs: 800,
         });
@@ -820,9 +820,9 @@ test.describe('HFB dashboard (/region-dashboard/se/hfb/01)', () => {
     });
 });
 
-test.describe('PA dashboard (/region-dashboard/se/hfb/01/pa/001)', () => {
+test.describe('PA dashboard (/monitoring/se/hfb/01/pa/001)', () => {
     test.beforeEach(async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', {
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', {
             metricsDelayMs: 500,
         });
     });
@@ -839,7 +839,7 @@ test.describe('PA dashboard (/region-dashboard/se/hfb/01/pa/001)', () => {
 
     test('back button navigates to the HFB dashboard', async ({ page }) => {
         await page.getByRole('button', { name: 'Go back' }).click();
-        await expect(page).toHaveURL(/\/region-dashboard\/se\/hfb\/01$/);
+        await expect(page).toHaveURL(/\/monitoring\/se\/hfb\/01$/);
         await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 01');
     });
 
@@ -867,23 +867,23 @@ test.describe('Signedout page (/signedout)', () => {
 
 test.describe('Header and breadcrumb navigation', () => {
     test('"Sales Planning" header link navigates home from the region dashboard', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { graphDelayMs: 750, metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/', { graphDelayMs: 750, metricsDelayMs: 250 });
         await page.getByRole('link', { name: 'Sales Planning' }).click();
         await expect(page).toHaveURL(/\/$/);
-        await expect(page.getByText('Hej, Test User')).toBeVisible();
+        await expect(page.getByText('Welcome Test')).toBeVisible();
     });
 
     test('HFB breadcrumb "SE" link navigates back to the region dashboard', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { hierarchyDelayMs: 250, metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', { hierarchyDelayMs: 250, metricsDelayMs: 250 });
         await page.getByLabel('Breadcrumb').getByRole('link', { name: 'SE' }).click();
-        await expect(page).toHaveURL(/\/region-dashboard\/se\/?$/);
+        await expect(page).toHaveURL(/\/monitoring\/se\/?$/);
         await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
     });
 
     test('PA breadcrumb "HFB 01" link navigates back to the HFB dashboard', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
         await page.getByLabel('Breadcrumb').getByRole('link', { name: 'HFB 01' }).click();
-        await expect(page).toHaveURL(/\/region-dashboard\/se\/hfb\/01$/);
+        await expect(page).toHaveURL(/\/monitoring\/se\/hfb\/01$/);
         await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 01');
     });
 });
@@ -901,32 +901,32 @@ test.describe('Navigation path specificity', () => {
 
     test.describe('HFB card → HFB page (click-based)', () => {
         test.beforeEach(async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             // Wait for HFB cards to load
             await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
         });
 
         test('clicking the HFB 01 card navigates to the HFB 01 page', async ({ page }) => {
             await clickHfbCard(page, '01');
-            await expect(page).toHaveURL(/\/region-dashboard\/se\/hfb\/01$/);
+            await expect(page).toHaveURL(/\/monitoring\/se\/hfb\/01$/);
             await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 01');
         });
 
         test('clicking the HFB 02 card navigates to the HFB 02 page', async ({ page }) => {
             await clickHfbCard(page, '02');
-            await expect(page).toHaveURL(/\/region-dashboard\/se\/hfb\/02$/);
+            await expect(page).toHaveURL(/\/monitoring\/se\/hfb\/02$/);
             await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 02');
         });
 
         test('clicking the HFB 05 card navigates to the HFB 05 page', async ({ page }) => {
             await clickHfbCard(page, '05');
-            await expect(page).toHaveURL(/\/region-dashboard\/se\/hfb\/05$/);
+            await expect(page).toHaveURL(/\/monitoring\/se\/hfb\/05$/);
             await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 05');
         });
 
         test('clicking the HFB 10 card navigates to the HFB 10 page', async ({ page }) => {
             await clickHfbCard(page, '10');
-            await expect(page).toHaveURL(/\/region-dashboard\/se\/hfb\/10$/);
+            await expect(page).toHaveURL(/\/monitoring\/se\/hfb\/10$/);
             await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 10');
         });
 
@@ -945,7 +945,7 @@ test.describe('Navigation path specificity', () => {
 
     test.describe('HFB page → PA page (click-based)', () => {
         test.beforeEach(async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', {
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', {
                 hierarchyDelayMs: 250,
                 metricsDelayMs: 250,
             });
@@ -954,13 +954,13 @@ test.describe('Navigation path specificity', () => {
 
         test('clicking PA 001 (Sofas) navigates to the PA 001 page', async ({ page }) => {
             await page.getByRole('button', { name: /Sofas.*001/ }).click();
-            await expect(page).toHaveURL(/\/region-dashboard\/se\/hfb\/01\/pa\/001$/);
+            await expect(page).toHaveURL(/\/monitoring\/se\/hfb\/01\/pa\/001$/);
             await expect(page.getByRole('heading', { level: 1 })).toContainText('PA 001');
         });
 
         test('clicking PA 002 (Armchairs) navigates to the PA 002 page', async ({ page }) => {
             await page.getByRole('button', { name: /Armchairs.*002/ }).click();
-            await expect(page).toHaveURL(/\/region-dashboard\/se\/hfb\/01\/pa\/002$/);
+            await expect(page).toHaveURL(/\/monitoring\/se\/hfb\/01\/pa\/002$/);
             await expect(page.getByRole('heading', { level: 1 })).toContainText('PA 002');
         });
 
@@ -990,38 +990,38 @@ test.describe('Navigation path specificity', () => {
 
     test.describe('Direct URL navigation (specific IDs)', () => {
         test('direct URL /hfb/01 renders HFB 01 with correct title and breadcrumb', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 01');
             await expect(page.getByLabel('Breadcrumb').getByText('HFB 01')).toHaveAttribute('aria-current', 'page');
         });
 
         test('direct URL /hfb/02 renders HFB 02 with correct title and breadcrumb', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/02', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/02', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 02');
             await expect(page.getByLabel('Breadcrumb').getByText('HFB 02')).toHaveAttribute('aria-current', 'page');
         });
 
         test('direct URL /hfb/05 renders HFB 05 — not HFB 01 or HFB 02', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/05', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/05', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 05');
             await expect(page.getByRole('heading', { level: 1 })).not.toContainText('HFB 01');
             await expect(page.getByRole('heading', { level: 1 })).not.toContainText('HFB 02');
         });
 
         test('direct URL /hfb/01/pa/001 renders PA 001 under HFB 01', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('PA 001');
             await expect(page.getByLabel('Breadcrumb').getByRole('link', { name: 'HFB 01' })).toBeVisible();
         });
 
         test('direct URL /hfb/01/pa/002 renders PA 002 — not PA 001', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/002', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/002', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('PA 002');
             await expect(page.getByRole('heading', { level: 1 })).not.toContainText('PA 001');
         });
 
         test('direct URL /hfb/02/pa/001 renders PA 001 under HFB 02 (different parent breadcrumb)', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/02/pa/001', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/02/pa/001', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('PA 001');
             await expect(page.getByLabel('Breadcrumb').getByRole('link', { name: 'HFB 02' })).toBeVisible();
         });
@@ -1029,7 +1029,7 @@ test.describe('Navigation path specificity', () => {
 
     test.describe('Multi-hop journeys', () => {
         test('Region → HFB 01 (click) → back → HFB 02 (click) → back → Region', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
 
             await clickHfbCard(page, '01');
@@ -1047,7 +1047,7 @@ test.describe('Navigation path specificity', () => {
         });
 
         test('Region → HFB 01 (click) → PA 001 (click) → back to HFB 01 → PA 002 (click)', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250, hierarchyDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250, hierarchyDelayMs: 250 });
             await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
 
             await clickHfbCard(page, '01');
@@ -1066,33 +1066,33 @@ test.describe('Navigation path specificity', () => {
         });
 
         test('Full breadcrumb round-trip: Region → HFB 01 → PA 001 → breadcrumb HFB 01 → breadcrumb SE → Region', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
 
             // PA 001 → HFB 01 via breadcrumb
             await page.getByLabel('Breadcrumb').getByRole('link', { name: 'HFB 01' }).click();
-            await expect(page).toHaveURL(/\/region-dashboard\/se\/hfb\/01$/);
+            await expect(page).toHaveURL(/\/monitoring\/se\/hfb\/01$/);
             await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 01');
 
             // HFB 01 → Region via breadcrumb
             await page.getByLabel('Breadcrumb').getByRole('link', { name: 'SE' }).click();
-            await expect(page).toHaveURL(/\/region-dashboard\/se\/?$/);
+            await expect(page).toHaveURL(/\/monitoring\/se\/?$/);
             await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
         });
 
         test('Each HFB page shows only its own data in the SalesIndexTrend title', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             await expect(page.getByText(/Trends - Sales index vs LY - HFB 01/)).toBeVisible();
 
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/02', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/02', { metricsDelayMs: 250 });
             await expect(page.getByText(/Trends - Sales index vs LY - HFB 02/)).toBeVisible();
             await expect(page.locator('body')).not.toContainText('Trends - Sales index vs LY - HFB 01');
         });
 
         test('Each PA page shows only its own data in the SalesIndexTrend title', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
             await expect(page.getByText(/Trends - Sales index vs LY - PA 001/)).toBeVisible();
 
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/002', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/002', { metricsDelayMs: 250 });
             await expect(page.getByText(/Trends - Sales index vs LY - PA 002/)).toBeVisible();
             await expect(page.locator('body')).not.toContainText('Trends - Sales index vs LY - PA 001');
         });
@@ -1101,7 +1101,7 @@ test.describe('Navigation path specificity', () => {
 
 test.describe('Error states', () => {
     test('HfbList shows error message when HFB performance data fails', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { hfbError: true, metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/', { hfbError: true, metricsDelayMs: 250 });
         // TanStack Query retries 3× with exponential back-off — allow up to 20s
         await expect(
             page.getByText('HFB performance data is currently unavailable. Please try again later.'),
@@ -1111,14 +1111,14 @@ test.describe('Error states', () => {
     test('PA list shows error message when PA performance data fails', async ({ page }) => {
         // PA rows come from the KPI_SUMMARY children at hfb level, so paError
         // fails that request and TanStack Query surfaces the error state.
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { paError: true, metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', { paError: true, metricsDelayMs: 250 });
         await expect(
             page.getByText('PA performance data is currently unavailable. Please try again later.'),
         ).toBeVisible({ timeout: 20000 });
     });
 
     test('SalesByWeek shows error message when metrics API returns 500', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { hfbDelayMs: 250, metricsStatus: 500 });
+        await gotoBypassAuth(page, '/monitoring/se/', { hfbDelayMs: 250, metricsStatus: 500 });
         // TanStack Query retries 3× with exponential back-off — allow up to 20s
         await expect(page.getByLabel(/weekly performance/i)).toContainText(SALES_BY_WEEK_ERROR_TEXT, { timeout: 20000 });
     });
@@ -1145,7 +1145,7 @@ test.describe('/accept_login route (MSAL redirect callback)', () => {
 
 test.describe('User component (header avatar & flyout modal)', () => {
     test.beforeEach(async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
     });
 
     test('renders the user avatar button in the header', async ({ page }) => {
@@ -1183,50 +1183,50 @@ test.describe('User component (header avatar & flyout modal)', () => {
 
 test.describe('IkeaCurrentWeek component', () => {
     test('renders the current IKEA week number in the NavigationBar', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
         // IkeaCurrentWeek renders "Week NNN" — the exact number is date-dependent
         await expect(page.locator('body')).toContainText(/Week \d+/);
     });
 
     test('IKEA week is also visible on the HFB dashboard NavigationBar', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
         await expect(page.locator('body')).toContainText(/Week \d+/);
     });
 
     test('IKEA week is also visible on the PA dashboard NavigationBar', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
         await expect(page.locator('body')).toContainText(/Week \d+/);
     });
 });
 
 test.describe('SalesIndexTrend chart', () => {
     test('renders on the region dashboard with the country-level title', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
         await expect(page.getByLabel('Trends - Sales index vs LY')).toBeVisible();
         await expect(page.getByText('Trends - Sales index vs LY')).toBeVisible();
     });
 
     test('renders on the HFB dashboard with the HFB-scoped title', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
         await expect(page.getByLabel('Trends - Sales index vs LY')).toBeVisible();
         await expect(page.getByText(/Trends - Sales index vs LY - HFB 01/)).toBeVisible();
     });
 
     test('renders on the PA dashboard with the PA-scoped title', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
         await expect(page.getByLabel('Trends - Sales index vs LY')).toBeVisible();
         await expect(page.getByText(/Trends - Sales index vs LY - PA 001/)).toBeVisible();
     });
 
     test('shows loading state while trend data is fetching', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 1000 });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 1000 });
         await expect(
             page.getByLabel('Trends - Sales index vs LY').getByRole('status'),
         ).toContainText('Loading trend data...');
     });
 
     test('shows error message when the metrics API returns 500', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsStatus: 500 });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsStatus: 500 });
         await expect(page.getByLabel('Trends - Sales index vs LY')).toContainText(
             'Sales trend data is currently unavailable. Please try again later.',
             { timeout: 20000 },
@@ -1236,7 +1236,7 @@ test.describe('SalesIndexTrend chart', () => {
 
 test.describe('SalesByWeek SegmentControl (metric type switching)', () => {
     test.beforeEach(async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
     });
 
     test('defaults to Sales and shows all four metric options', async ({ page }) => {
@@ -1269,7 +1269,7 @@ test.describe('SalesByWeek SegmentControl (metric type switching)', () => {
 
 test.describe('ProductAreaSummaryList SegmentControl (metric type switching)', () => {
     test.beforeEach(async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', {
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', {
             hierarchyDelayMs: 250,
             metricsDelayMs: 250,
         });
@@ -1306,7 +1306,7 @@ test.describe('ProductAreaSummaryList SegmentControl (metric type switching)', (
 
 test.describe('NewsInHfbList component (HFB dashboard)', () => {
     test.beforeEach(async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
     });
 
     test('renders the section heading and item rows after data loads', async ({ page }) => {
@@ -1336,7 +1336,7 @@ test.describe('NewsInHfbList component (HFB dashboard)', () => {
     test('shows error message when item range data fails', async ({ page, context }) => {
         // Re-navigate with itemRangeError flag
         await context.clearCookies();
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', {
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', {
             metricsDelayMs: 250,
             itemRangeError: true,
         });
@@ -1351,7 +1351,7 @@ test.describe('Empty states', () => {
     test('HfbList shows empty state when no HFBs are returned', async ({ page }) => {
         // The HFB list maps from the KPI_SUMMARY children at country level, so
         // returning no children triggers the real empty state.
-        await gotoBypassAuth(page, '/region-dashboard/se/', { emptyChildren: true });
+        await gotoBypassAuth(page, '/monitoring/se/', { emptyChildren: true });
         await expect(page.getByText('No HFB entries were returned for this region.')).toBeVisible({
             timeout: 20000,
         });
@@ -1359,7 +1359,7 @@ test.describe('Empty states', () => {
 
     test('ProductAreaSummaryList shows empty state when no PAs are returned', async ({ page }) => {
         // Likewise the PA list maps from the KPI_SUMMARY children at hfb level.
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { emptyChildren: true });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', { emptyChildren: true });
         await expect(page.getByText('No PA entries were returned for this HFB.')).toBeVisible({
             timeout: 20000,
         });
@@ -1374,7 +1374,7 @@ test.describe('Acceptance criteria from Jira stories', () => {
      */
     test.describe('SSPLAN-637 — HFB list page', () => {
         test.beforeEach(async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
         });
 
@@ -1399,19 +1399,19 @@ test.describe('Acceptance criteria from Jira stories', () => {
      */
     test.describe('SSPLAN-628 — Personalized greeting', () => {
         test('NavigationBar shows "Welcome {givenName}" at country level', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             // WelcomeUser component renders "Welcome {givenName}" in the NavigationBar
             await expect(page.locator('body')).toContainText('Welcome Test');
         });
 
         test('Greeting is replaced by breadcrumbs (not welcome text) on HFB level', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             await expect(page.getByLabel('Breadcrumb')).toBeVisible();
             await expect(page.locator('body')).not.toContainText('Welcome Test');
         });
 
         test('Greeting is replaced by breadcrumbs (not welcome text) on PA level', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
             await expect(page.getByLabel('Breadcrumb')).toBeVisible();
             await expect(page.locator('body')).not.toContainText('Welcome Test');
         });
@@ -1424,7 +1424,7 @@ test.describe('Acceptance criteria from Jira stories', () => {
      */
     test.describe('SSPLAN-691 — Segmented Control on all levels', () => {
         test('SegmentControl with all 4 options appears in SalesByWeek on the country dashboard', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             const chart = page.getByLabel(/weekly performance/i);
             for (const label of ['Qty index', 'Qty', 'Sales index', 'Sales']) {
                 await expect(chart.getByRole('button', { name: label, exact: true })).toBeVisible();
@@ -1432,7 +1432,7 @@ test.describe('Acceptance criteria from Jira stories', () => {
         });
 
         test('SegmentControl with all 4 options appears in SalesByWeek on the HFB dashboard', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             const chart = page.getByLabel(/weekly performance/i);
             for (const label of ['Qty index', 'Qty', 'Sales index', 'Sales']) {
                 await expect(chart.getByRole('button', { name: label, exact: true })).toBeVisible();
@@ -1440,7 +1440,7 @@ test.describe('Acceptance criteria from Jira stories', () => {
         });
 
         test('SegmentControl with all 4 options appears in SalesByWeek on the PA dashboard', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
             const chart = page.getByLabel(/weekly performance/i);
             for (const label of ['Qty index', 'Qty', 'Sales index', 'Sales']) {
                 await expect(chart.getByRole('button', { name: label, exact: true })).toBeVisible();
@@ -1448,7 +1448,7 @@ test.describe('Acceptance criteria from Jira stories', () => {
         });
 
         test('Selecting each metric option highlights only that button (aria-pressed=true)', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             const chart = page.getByLabel(/weekly performance/i);
 
             for (const label of ['Qty index', 'Qty', 'Sales index', 'Sales']) {
@@ -1473,7 +1473,7 @@ test.describe('Acceptance criteria from Jira stories', () => {
      */
     test.describe('SSPLAN-623 — SalesByWeek legend conditional rendering', () => {
         test.beforeEach(async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await page.getByLabel(/weekly performance/i).waitFor();
         });
 
@@ -1529,35 +1529,35 @@ test.describe('Acceptance criteria from Jira stories', () => {
      */
     test.describe('SSPLAN-646 — SalesByWeek legend behaviour at HFB and PA level', () => {
         test('"actual sales" hidden in Sales index mode on HFB page', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             const chart = page.getByLabel(/weekly performance/i);
             await chart.getByRole('button', { name: 'Sales index' }).click();
             await expect(chart).not.toContainText('actual sales');
         });
 
         test('"actual sales" hidden in Qty index mode on HFB page', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             const chart = page.getByLabel(/weekly performance/i);
             await chart.getByRole('button', { name: 'Qty index' }).click();
             await expect(chart).not.toContainText('actual sales');
         });
 
         test('"actual sales" visible in Sales (Pieces) mode on HFB page', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             const chart = page.getByLabel(/weekly performance/i);
             await chart.getByRole('button', { name: 'Sales', exact: true }).click();
             await expect(chart).toContainText('actual sales');
         });
 
         test('"actual sales" hidden in Sales index mode on PA page', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
             const chart = page.getByLabel(/weekly performance/i);
             await chart.getByRole('button', { name: 'Sales index' }).click();
             await expect(chart).not.toContainText('actual sales');
         });
 
         test('"actual sales" visible in Qty (Pieces) mode on PA page', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
             const chart = page.getByLabel(/weekly performance/i);
             await chart.getByRole('button', { name: 'Qty', exact: true }).click();
             await expect(chart).toContainText('actual sales');
@@ -1570,7 +1570,7 @@ test.describe('Acceptance criteria from Jira stories', () => {
      */
     test.describe('SSPLAN-736 — Chart tooltips', () => {
         test('SalesByWeek chart renders and tooltip appears on hover over a data bar', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             const chart = page.getByLabel(/weekly performance/i);
             await expect(chart).toBeVisible();
             // Hover over the chart area to trigger the Recharts tooltip
@@ -1592,7 +1592,7 @@ test.describe('Acceptance criteria from Jira stories', () => {
         });
 
         test('SalesIndexTrend chart renders its SVG on the region dashboard', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await expect(page.getByLabel('Trends - Sales index vs LY').locator('svg')).toBeVisible();
         });
     });
@@ -1605,36 +1605,36 @@ test.describe('Acceptance criteria from Jira stories', () => {
      */
     test.describe('SSPLAN-701 & SSPLAN-692 — KpiSummaryCard metric labels', () => {
         test('Country dashboard KpiSummaryCard shows "FY26 sales index" title', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 3, name: 'FY26 sales index' })).toBeVisible();
         });
 
         test('HFB dashboard KpiSummaryCard shows "YTD sales index" title', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 3, name: 'YTD sales index' })).toBeVisible();
         });
 
         test('PA dashboard KpiSummaryCard shows "YTD sales index" title', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 3, name: 'YTD sales index' })).toBeVisible();
         });
 
         test('KpiSummaryCard shows all four metric row cell labels on the country dashboard', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             for (const label of ['vs demand plan', 'vs last year', 'vs latest forecast', 'to-go vs goal']) {
                 await expect(page.locator('body')).toContainText(label);
             }
         });
 
         test('KpiSummaryCard shows all four metric row cell labels on the HFB dashboard', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             for (const label of ['vs demand plan', 'vs last year', 'vs latest forecast', 'to-go vs goal']) {
                 await expect(page.locator('body')).toContainText(label);
             }
         });
 
         test('Each HFB card in the HFB list shows its own KpiSummaryCard title', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
             // Each HFB card renders its own h3 title (e.g. "01 - Living Room")
             await expect(page.getByRole('heading', { level: 3, name: /\d{2}\s*-\s*\w+/ }).first()).toBeVisible();
@@ -1645,49 +1645,49 @@ test.describe('Acceptance criteria from Jira stories', () => {
 });
 
 test.describe('Multi-region coverage', () => {
-    test.describe('SE region (/region-dashboard/se/)', () => {
+    test.describe('SE region (/monitoring/se/)', () => {
         test('renders SE country dashboard with h1 = SE Sales', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
         });
 
         test('SE HFB dashboard shows SE in breadcrumb', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             await expect(page.getByLabel('Breadcrumb').getByRole('link', { name: 'SE' })).toBeVisible();
         });
     });
 
-    test.describe('US region (/region-dashboard/us/)', () => {
+    test.describe('US region (/monitoring/us/)', () => {
         test('renders US country dashboard with h1 = US Sales', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/us/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/us/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('US Sales');
         });
 
         test('US HFB list renders 16 cards just like SE', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/us/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/us/', { metricsDelayMs: 250 });
             await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
             await expect(page.getByRole('button', { name: 'View HFB plan' })).toHaveCount(16);
         });
 
         test('navigating to US HFB 01 shows HFB 01 with US in breadcrumb', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/us/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/us/hfb/01', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 01');
             await expect(page.getByLabel('Breadcrumb').getByRole('link', { name: 'US' })).toBeVisible();
         });
 
         test('navigating to US HFB 01 PA 001 shows PA 001 with US and HFB 01 in breadcrumb', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/us/hfb/01/pa/001', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/us/hfb/01/pa/001', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('PA 001');
             await expect(page.getByLabel('Breadcrumb').getByRole('link', { name: 'US' })).toBeVisible();
             await expect(page.getByLabel('Breadcrumb').getByRole('link', { name: 'HFB 01' })).toBeVisible();
         });
 
         test('US and SE dashboards are independent — h1 differs between the two', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/us/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/us/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('US Sales');
             await expect(page.getByRole('heading', { level: 1 })).not.toContainText('SE Sales');
 
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
             await expect(page.getByRole('heading', { level: 1 })).not.toContainText('US Sales');
         });
@@ -1695,24 +1695,24 @@ test.describe('Multi-region coverage', () => {
 
     test.describe('XX — nonexistent region (valid 2-char code, no real data)', () => {
         test('renders XX country dashboard with h1 = XX Sales (route accepts any 2-char code)', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/xx/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/xx/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('XX Sales');
         });
 
         test('XX HFB list renders the same mock HFB data (mock is not region-gated)', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/xx/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/xx/', { metricsDelayMs: 250 });
             await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
             await expect(page.getByRole('button', { name: 'View HFB plan' })).toHaveCount(16);
         });
 
         test('XX HFB 01 renders correctly with XX in breadcrumb', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/xx/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/xx/hfb/01', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 01');
             await expect(page.getByLabel('Breadcrumb').getByRole('link', { name: 'XX' })).toBeVisible();
         });
 
         test('navigating from XX dashboard to HFB and back shows XX throughout', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/xx/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/xx/', { metricsDelayMs: 250 });
             await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
             await page.getByRole('heading', { level: 3, name: /01\s*-/ })
                 .locator('xpath=ancestor::div[.//button[contains(., "View HFB plan")]][1]')
@@ -1725,13 +1725,13 @@ test.describe('Multi-region coverage', () => {
     });
 
     test.describe('Region URL case-insensitivity', () => {
-        test('/region-dashboard/SE/ (uppercase) normalises to lowercase and renders SE Sales', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/SE/', { metricsDelayMs: 250 });
+        test('/monitoring/SE/ (uppercase) normalises to lowercase and renders SE Sales', async ({ page }) => {
+            await gotoBypassAuth(page, '/monitoring/SE/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
         });
 
-        test('/region-dashboard/US/ (uppercase) normalises to lowercase and renders US Sales', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/US/', { metricsDelayMs: 250 });
+        test('/monitoring/US/ (uppercase) normalises to lowercase and renders US Sales', async ({ page }) => {
+            await gotoBypassAuth(page, '/monitoring/US/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('US Sales');
         });
     });
@@ -1740,17 +1740,17 @@ test.describe('Multi-region coverage', () => {
 test.describe('Edge cases', () => {
     test.describe('Page <title>', () => {
         test('authenticated region dashboard has title "Sales planning tool"', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await expect(page).toHaveTitle('Sales planning tool');
         });
 
         test('authenticated HFB dashboard has title "Sales planning tool"', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             await expect(page).toHaveTitle('Sales planning tool');
         });
 
         test('authenticated PA dashboard has title "Sales planning tool"', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
             await expect(page).toHaveTitle('Sales planning tool');
         });
     });
@@ -1773,40 +1773,40 @@ test.describe('Edge cases', () => {
 
     test.describe('"· Forecast G" appears on all dashboard levels', () => {
         test('"· Forecast G" visible on country (SE) dashboard', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await expect(page.locator('body')).toContainText('Forecast G');
         });
 
         test('"· Forecast G" visible on HFB dashboard', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             await expect(page.locator('body')).toContainText('Forecast G');
         });
 
         test('"· Forecast G" visible on PA dashboard', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
             await expect(page.locator('body')).toContainText('Forecast G');
         });
     });
 
     test.describe('GapToClose component', () => {
         test('KpiSummaryCard shows "Gap to close:" label with formatted quantity and sales gap', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             // GapToClose in the top-level KpiSummaryCard uses label="Gap to close"
             await expect(page.locator('body')).toContainText('Gap to close:');
         });
 
         test('"Gap to close:" visible on HFB dashboard KpiSummaryCard', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             await expect(page.locator('body')).toContainText('Gap to close:');
         });
 
         test('"Gap to close:" visible on PA dashboard KpiSummaryCard', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
             await expect(page.locator('body')).toContainText('Gap to close:');
         });
 
         test('PaFamilyListRow shows "Gap:" label (GapToClose small variant) for each PA row', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', {
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', {
                 hierarchyDelayMs: 250,
                 metricsDelayMs: 250,
             });
@@ -1819,14 +1819,14 @@ test.describe('Edge cases', () => {
             // GapToClose large variant hides entirely when quantityGap >= 0
             // The mock data uses negative gaps so Gap to close DOES show — this test
             // confirms the component renders the label when there IS a gap
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await expect(page.locator('body')).toContainText('Gap to close:');
         });
     });
 
     test.describe('ProductAreaSummaryList subtitle', () => {
         test('PA list section shows subtitle "By gap to goal (worst first)"', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', {
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', {
                 hierarchyDelayMs: 250,
                 metricsDelayMs: 250,
             });
@@ -1834,7 +1834,7 @@ test.describe('Edge cases', () => {
         });
 
         test('PA list section shows heading "PA performance"', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', {
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', {
                 hierarchyDelayMs: 250,
                 metricsDelayMs: 250,
             });
@@ -1845,7 +1845,7 @@ test.describe('Edge cases', () => {
 
     test.describe('NewsInHfbList "View more" button', () => {
         test('"View more" button behaviour: appears when items > 5, reveals remaining rows when clicked', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             const newsSection = page.getByLabel('News in HFB list');
             await newsSection.getByRole('button').first().waitFor();
 
@@ -1873,36 +1873,36 @@ test.describe('Edge cases', () => {
 
     test.describe('HFB boundary values (15 and 16)', () => {
         test('[Click] HFB 15 card navigates to the HFB 15 page', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
             await page.getByRole('heading', { level: 3, name: /15\s*-/ })
                 .locator('xpath=ancestor::div[.//button[contains(., "View HFB plan")]][1]')
                 .getByRole('button', { name: 'View HFB plan' })
                 .click();
-            await expect(page).toHaveURL(/\/region-dashboard\/se\/hfb\/15$/);
+            await expect(page).toHaveURL(/\/monitoring\/se\/hfb\/15$/);
             await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 15');
         });
 
         test('[Click] HFB 16 card navigates to the HFB 16 page', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
             await page.getByRole('heading', { level: 3, name: /16\s*-/ })
                 .locator('xpath=ancestor::div[.//button[contains(., "View HFB plan")]][1]')
                 .getByRole('button', { name: 'View HFB plan' })
                 .click();
-            await expect(page).toHaveURL(/\/region-dashboard\/se\/hfb\/16$/);
+            await expect(page).toHaveURL(/\/monitoring\/se\/hfb\/16$/);
             await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 16');
         });
 
         test('[Direct URL] /hfb/15 renders HFB 15 with correct breadcrumb', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/15', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/15', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 15');
             await expect(page.getByLabel('Breadcrumb').getByText('HFB 15'))
                 .toHaveAttribute('aria-current', 'page');
         });
 
         test('[Direct URL] /hfb/16 renders HFB 16 — not HFB 15 or any other', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/16', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/16', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 16');
             await expect(page.getByRole('heading', { level: 1 })).not.toContainText('HFB 15');
         });
@@ -1910,13 +1910,13 @@ test.describe('Edge cases', () => {
 
     test.describe('SalesByWeek loading state on HFB and PA pages', () => {
         test('SalesByWeek shows Loading trend data... while metrics are fetching on HFB page', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 1000 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 1000 });
             await expect(page.getByLabel(/weekly performance/i).getByRole('status'))
                 .toContainText('Loading trend data...');
         });
 
         test('SalesByWeek shows Loading trend data... while metrics are fetching on PA page', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 1000 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 1000 });
             await expect(page.getByLabel(/weekly performance/i).getByRole('status'))
                 .toContainText('Loading trend data...');
         });
@@ -1924,7 +1924,7 @@ test.describe('Edge cases', () => {
 
     test.describe('Browser back/forward navigation', () => {
         test('browser back after region→HFB navigation returns to region dashboard', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
             await page.getByRole('heading', { level: 3, name: /01\s*-/ })
                 .locator('xpath=ancestor::div[.//button[contains(., "View HFB plan")]][1]')
@@ -1937,7 +1937,7 @@ test.describe('Edge cases', () => {
         });
 
         test('browser forward after back restores the HFB page', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
             await page.getByRole('heading', { level: 3, name: /01\s*-/ })
                 .locator('xpath=ancestor::div[.//button[contains(., "View HFB plan")]][1]')
@@ -1953,7 +1953,7 @@ test.describe('Edge cases', () => {
         });
 
         test('browser back after HFB→PA navigation returns to HFB page', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', {
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', {
                 hierarchyDelayMs: 250,
                 metricsDelayMs: 250,
             });
@@ -1966,7 +1966,7 @@ test.describe('Edge cases', () => {
 
         test('three-level back: PA → HFB → Region via browser back button', async ({ page }) => {
             // Start at region dashboard so all three levels are in browser history
-            await gotoBypassAuth(page, '/region-dashboard/se/', {
+            await gotoBypassAuth(page, '/monitoring/se/', {
                 hierarchyDelayMs: 250,
                 metricsDelayMs: 250,
             });
@@ -1994,7 +1994,7 @@ test.describe('Edge cases', () => {
 
 test.describe('Accessibility basics', () => {
     test('region dashboard — h1, section landmarks, and live regions', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { hfbDelayMs: 500, metricsDelayMs: 500 });
+        await gotoBypassAuth(page, '/monitoring/se/', { hfbDelayMs: 500, metricsDelayMs: 500 });
         await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
         await expect(page.getByLabel('HFB list navigation')).toBeVisible();
         await expect(page.getByLabel('HFB list navigation').getByRole('status'))
@@ -2002,7 +2002,7 @@ test.describe('Accessibility basics', () => {
     });
 
     test('HFB dashboard — breadcrumb nav and PA list landmark', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { hierarchyDelayMs: 500, metricsDelayMs: 500 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', { hierarchyDelayMs: 500, metricsDelayMs: 500 });
         await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
         await expect(page.getByLabel('Breadcrumb')).toBeVisible();
         await expect(page.getByLabel('PA list navigation')).toBeVisible();
@@ -2010,7 +2010,7 @@ test.describe('Accessibility basics', () => {
     });
 
     test('PA dashboard — h1 and breadcrumb navigation', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 500 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 500 });
         await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
         await expect(page.getByLabel('Breadcrumb')).toBeVisible();
         await expect(page.getByLabel(/weekly performance/i)).toBeVisible();
@@ -2021,7 +2021,7 @@ test.describe('HeroMetric component', () => {
     // Country-level KpiSummaryCard: compareNumber=94, goalValue=100 (hardcoded in SalesGraphsRow)
     // metricToGoal(94, 100) → index=94, difference=-6, performance='below'
     test.beforeEach(async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
     });
 
     test('shows the rounded index value (94) in the country-level KpiSummaryCard', async ({ page }) => {
@@ -2040,7 +2040,7 @@ test.describe('HeroMetric component', () => {
 
 test.describe('MetricRowCell numeric values', () => {
     test('country KpiSummaryCard shows specific numeric metric values (vsLatestForecast=98, toGo=106)', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
         // vsLatestForecast: 98 — unique value easy to verify
         await expect(page.locator('body')).toContainText('98');
         // toGo vs goal: 106
@@ -2048,7 +2048,7 @@ test.describe('MetricRowCell numeric values', () => {
     });
 
     test('PaFamilyListRow shows numeric values alongside metric labels', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', {
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', {
             hierarchyDelayMs: 250,
             metricsDelayMs: 250,
         });
@@ -2061,7 +2061,7 @@ test.describe('MetricRowCell numeric values', () => {
 
 test.describe('NewsArticle sub-components', () => {
     test.beforeEach(async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
         await page.getByLabel('News in HFB list').getByRole('button').first().waitFor();
     });
 
@@ -2087,7 +2087,7 @@ test.describe('NewsArticle sub-components', () => {
 
 test.describe('PlaceholderAvatar / user avatar', () => {
     test.beforeEach(async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
     });
 
     test('header renders either a placeholder avatar (role=img) or a user photo img', async ({ page }) => {
@@ -2114,19 +2114,19 @@ test.describe('PlaceholderAvatar / user avatar', () => {
 
 test.describe('SalesByWeek h3 title on all dashboard levels', () => {
     test('"Weekly Performance" h3 heading renders on the country dashboard', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
         await expect(page.getByLabel(/weekly performance/i)
             .getByRole('heading', { level: 3 })).toContainText(/weekly performance/i);
     });
 
     test('"Weekly Performance" h3 heading renders on the HFB dashboard', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
         await expect(page.getByLabel(/weekly performance/i)
             .getByRole('heading', { level: 3 })).toContainText(/weekly performance/i);
     });
 
     test('"Weekly Performance" h3 heading renders on the PA dashboard', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
         await expect(page.getByLabel(/weekly performance/i)
             .getByRole('heading', { level: 3 })).toContainText(/weekly performance/i);
     });
@@ -2134,13 +2134,13 @@ test.describe('SalesByWeek h3 title on all dashboard levels', () => {
 
 test.describe('SalesIndexTrend loading state at HFB and PA level', () => {
     test('SalesIndexTrend shows Loading trend data... on HFB page', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 1000 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 1000 });
         await expect(page.getByLabel('Trends - Sales index vs LY').getByRole('status'))
             .toContainText('Loading trend data...');
     });
 
     test('SalesIndexTrend shows Loading trend data... on PA page', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 1000 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 1000 });
         await expect(page.getByLabel('Trends - Sales index vs LY').getByRole('status'))
             .toContainText('Loading trend data...');
     });
@@ -2150,29 +2150,29 @@ test.describe('SalesByWeek and SalesIndexTrend error states at HFB and PA level'
     const ERROR_MSG = 'Sales trend data is currently unavailable. Please try again later.';
 
     test('SalesByWeek shows error on HFB page when /metrics returns 500', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsStatus: 500 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsStatus: 500 });
         await expect(page.getByLabel(/weekly performance/i)).toContainText(ERROR_MSG, { timeout: 20000 });
     });
 
     test('SalesByWeek shows error on PA page when /metrics returns 500', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsStatus: 500 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsStatus: 500 });
         await expect(page.getByLabel(/weekly performance/i)).toContainText(ERROR_MSG, { timeout: 20000 });
     });
 
     test('SalesIndexTrend shows error on HFB page when /metrics returns 500', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsStatus: 500 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsStatus: 500 });
         await expect(page.getByLabel('Trends - Sales index vs LY')).toContainText(ERROR_MSG, { timeout: 20000 });
     });
 
     test('SalesIndexTrend shows error on PA page when /metrics returns 500', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsStatus: 500 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsStatus: 500 });
         await expect(page.getByLabel('Trends - Sales index vs LY')).toContainText(ERROR_MSG, { timeout: 20000 });
     });
 });
 
 test.describe('aria-live and aria-busy attributes on loading spinners', () => {
     test.beforeEach(async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { hfbDelayMs: 500, metricsDelayMs: 500 });
+        await gotoBypassAuth(page, '/monitoring/se/', { hfbDelayMs: 500, metricsDelayMs: 500 });
     });
 
     test('HFB list loading div: aria-live=polite, aria-busy=true', async ({ page }) => {
@@ -2212,7 +2212,7 @@ test.describe('Keyboard navigation', () => {
     }
 
     test('Tab key can reach a "View HFB plan" button on the region dashboard', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
         await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
         await page.locator('body').click();
         const reached = await tabUntil(page, (active) => active.text.includes('View HFB plan'));
@@ -2220,25 +2220,25 @@ test.describe('Keyboard navigation', () => {
     });
 
     test('Enter key on a focused "View HFB plan" button navigates to the HFB page', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
         await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
         await page.locator('body').click();
         const reached = await tabUntil(page, (active) => active.text.includes('View HFB plan'));
         if (reached) {
             await page.keyboard.press('Enter');
         }
-        await expect(page).toHaveURL(/\/region-dashboard\/se\/hfb\/\d+$/);
+        await expect(page).toHaveURL(/\/monitoring\/se\/hfb\/\d+$/);
     });
 
     test('"Go back" button on HFB page is reachable via Tab', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
         await page.locator('body').click();
         const reached = await tabUntil(page, (active) => active.label === 'Go back', 60);
         expect(reached).toBe(true);
     });
 
     test('Escape closes the user flyout modal (keyboard accessibility)', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
         await page.getByRole('button', { name: 'Open user menu' }).click();
         const dialog = page.getByRole('dialog', { name: 'User menu' });
         await expect(dialog).toBeVisible();
@@ -2253,7 +2253,7 @@ test.describe('Keyboard navigation', () => {
     });
 
     test('Sales Planning header link is keyboard focusable and Enter navigates home', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
         const homeLink = page.getByRole('link', { name: 'Sales Planning' });
         await homeLink.focus();
         await expect(homeLink).toBeFocused();
@@ -2264,7 +2264,7 @@ test.describe('Keyboard navigation', () => {
 
 test.describe('PaFamilyListRow MetricRowCell content', () => {
     test.beforeEach(async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', {
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', {
             hierarchyDelayMs: 250,
             metricsDelayMs: 250,
         });
@@ -2382,33 +2382,33 @@ async function gotoAndCapture(page, url, captureUrlPattern, mockBody, options = 
 
 test.describe('API data → UI binding', () => {
     test.describe('Graph user profile fields render in the user flyout', () => {
-        // The MSAL FAKE_TOKEN and fakeAccount both hard-code name = 'Test User', so
-        // the welcome page always shows "Hej, Test User" regardless of the Graph mock.
-        // The user flyout, however, fetches live profile data from MS Graph and renders
-        // it — so we assert the flyout fields against the standard graphUser mock.
+        // The NavigationBar's "Welcome <givenName>" message is sourced from the
+        // co-worker profile returned by MS Graph (graphUser.givenName), not the
+        // MSAL token. The user flyout fetches the same live profile data from MS
+        // Graph — so we assert the flyout fields against the standard graphUser mock.
 
-        test('displayName from Graph API (Test User) renders in the welcome message', async ({ page }) => {
+        test('givenName from Graph API (Test) renders in the welcome message', async ({ page }) => {
             await gotoBypassAuth(page, '/', {});
-            // "Hej, <displayName>" is sourced from the MSAL token name which matches graphUser.displayName
-            await expect(page.getByText(`Hej, ${graphUser.displayName}`)).toBeVisible({ timeout: 10000 });
+            // "Welcome <givenName>" is sourced from the co-worker profile which matches graphUser.givenName
+            await expect(page.getByText(`Welcome ${graphUser.givenName}`)).toBeVisible({ timeout: 10000 });
         });
 
         test('displayName from Graph API renders inside the user flyout', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await page.getByRole('button', { name: 'Open user menu' }).click();
             const modal = page.getByRole('dialog', { name: 'User menu' });
             await expect(modal).toContainText(graphUser.displayName);
         });
 
         test('jobTitle from Graph API renders inside the user flyout', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await page.getByRole('button', { name: 'Open user menu' }).click();
             const modal = page.getByRole('dialog', { name: 'User menu' });
             await expect(modal).toContainText(graphUser.jobTitle);
         });
 
         test('email (mail) from Graph API renders inside the user flyout', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await page.getByRole('button', { name: 'Open user menu' }).click();
             const modal = page.getByRole('dialog', { name: 'User menu' });
             // The flyout shows country from the Graph profile, not the raw mail field
@@ -2437,35 +2437,35 @@ test.describe('API data → UI binding', () => {
         ];
 
         test('PA names from hierarchy response appear as PA row buttons on the HFB page', async ({ page }) => {
-            await gotoAndCapture(page, '/region-dashboard/se/hfb/01', '/metrics/hierarchy', customHierarchy, { metricsDelayMs: 250 });
+            await gotoAndCapture(page, '/monitoring/se/hfb/01', '/metrics/hierarchy', customHierarchy, { metricsDelayMs: 250 });
             await expect(page.getByRole('button', { name: /UniquePA001/ })).toBeVisible();
             await expect(page.getByRole('button', { name: /UniquePA002/ })).toBeVisible();
             await expect(page.getByRole('button', { name: /UniquePA003/ })).toBeVisible();
         });
 
         test('PA numbers from hierarchy response appear in PA row buttons', async ({ page }) => {
-            await gotoAndCapture(page, '/region-dashboard/se/hfb/01', '/metrics/hierarchy', customHierarchy, { metricsDelayMs: 250 });
+            await gotoAndCapture(page, '/monitoring/se/hfb/01', '/metrics/hierarchy', customHierarchy, { metricsDelayMs: 250 });
             await expect(page.getByRole('button', { name: /UniquePA001.*001/ })).toBeVisible();
             await expect(page.getByRole('button', { name: /UniquePA002.*002/ })).toBeVisible();
             await expect(page.getByRole('button', { name: /UniquePA003.*003/ })).toBeVisible();
         });
 
         test('only the PAs from the hierarchy response are shown — no extras', async ({ page }) => {
-            await gotoAndCapture(page, '/region-dashboard/se/hfb/01', '/metrics/hierarchy', customHierarchy, { metricsDelayMs: 250 });
+            await gotoAndCapture(page, '/monitoring/se/hfb/01', '/metrics/hierarchy', customHierarchy, { metricsDelayMs: 250 });
             await page.getByRole('button', { name: /UniquePA001/ }).waitFor();
             // The default "Armchairs" from the original mock must NOT appear
             await expect(page.getByRole('button', { name: /Armchairs/ })).not.toBeVisible();
         });
 
         test('clicking a PA row navigates to the URL built from the hierarchy paNo', async ({ page }) => {
-            await gotoAndCapture(page, '/region-dashboard/se/hfb/01', '/metrics/hierarchy', customHierarchy, { metricsDelayMs: 250 });
+            await gotoAndCapture(page, '/monitoring/se/hfb/01', '/metrics/hierarchy', customHierarchy, { metricsDelayMs: 250 });
             await page.getByRole('button', { name: /UniquePA003/ }).click();
-            await expect(page).toHaveURL(/\/region-dashboard\/se\/hfb\/01\/pa\/003$/);
+            await expect(page).toHaveURL(/\/monitoring\/se\/hfb\/01\/pa\/003$/);
             await expect(page.getByRole('heading', { level: 1 })).toContainText('PA 003');
         });
 
         test('PA page heading uses the paNo from the hierarchy response, not a hard-coded value', async ({ page }) => {
-            await gotoAndCapture(page, '/region-dashboard/se/hfb/01/pa/002', '/metrics/hierarchy', customHierarchy, { metricsDelayMs: 250 });
+            await gotoAndCapture(page, '/monitoring/se/hfb/01/pa/002', '/metrics/hierarchy', customHierarchy, { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('PA 002');
             await expect(page.getByRole('heading', { level: 1 })).not.toContainText('PA 001');
             await expect(page.getByRole('heading', { level: 1 })).not.toContainText('PA 003');
@@ -2495,38 +2495,38 @@ test.describe('API data → UI binding', () => {
         };
 
         test('SalesByWeek section is visible and not in an error state when metrics API returns data', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             const section = page.getByLabel(/weekly performance/i);
             await expect(section).toBeVisible();
             await expect(section).not.toContainText('unavailable');
         });
 
         test('SalesByWeek section renders on the HFB page when metrics API returns data', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             await expect(page.getByLabel(/weekly performance/i)).toBeVisible();
             await expect(page.getByLabel(/weekly performance/i)).not.toContainText('unavailable');
         });
 
         test('SalesByWeek section renders on the PA page when metrics API returns data', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
             await expect(page.getByLabel(/weekly performance/i)).toBeVisible();
             await expect(page.getByLabel(/weekly performance/i)).not.toContainText('unavailable');
         });
 
         test('SalesByWeek does NOT show the error message when /metrics returns 200', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await expect(page.getByLabel(/weekly performance/i)).not.toContainText(SALES_BY_WEEK_ERROR_TEXT, { timeout: 5000 });
         });
 
         test('switching to "Sales" segment reflects that the section is still populated (no error)', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             const section = page.getByLabel(/weekly performance/i);
             await section.getByRole('button', { name: 'Sales', exact: true }).click();
             await expect(section).not.toContainText('unavailable');
         });
 
         test('switching to "Qty" segment does not produce an error when metrics data is available', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             const section = page.getByLabel(/weekly performance/i);
             await section.getByRole('button', { name: 'Qty', exact: true }).click();
             await expect(section).not.toContainText('unavailable');
@@ -2550,27 +2550,27 @@ test.describe('API data → UI binding', () => {
         };
 
         test('SalesIndexTrend section is visible on the country dashboard when rolling trend API returns data', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await expect(page.getByLabel('Trends - Sales index vs LY')).toBeVisible();
         });
 
         test('SalesIndexTrend section is visible on the HFB dashboard when rolling trend API returns data', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             await expect(page.getByRole('region', { name: /Trends - Sales index vs LY/ })).toBeVisible();
         });
 
         test('SalesIndexTrend section is visible on the PA dashboard when rolling trend API returns data', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
             await expect(page.getByRole('region', { name: /Trends - Sales index vs LY/ })).toBeVisible();
         });
 
         test('SalesIndexTrend does NOT show error text when /metrics returns 200', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await expect(page.getByRole('region', { name: /Trends - Sales index vs LY/ })).not.toContainText('unavailable', { timeout: 5000 });
         });
 
         test('SalesIndexTrend on HFB page does NOT show error text when /metrics returns 200', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             await expect(page.getByRole('region', { name: /Trends - Sales index vs LY/ })).not.toContainText('unavailable', { timeout: 5000 });
         });
     });
@@ -2583,31 +2583,31 @@ test.describe('API data → UI binding', () => {
         // wait for its heading to confirm the card is loaded, then assert on body.
 
         test('country dashboard KpiSummaryCard shows vsLatestForecast value from mock (98)', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { name: 'FY26 sales index' })).toBeVisible();
             await expect(page.locator('body')).toContainText('98');
         });
 
         test('country dashboard KpiSummaryCard shows toGo value from mock (106)', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { name: 'FY26 sales index' })).toBeVisible();
             await expect(page.locator('body')).toContainText('106');
         });
 
         test('country dashboard KpiSummaryCard shows the hero index value from mock (94)', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { name: 'FY26 sales index' })).toBeVisible();
             await expect(page.locator('body')).toContainText('94');
         });
 
         test('KpiSummaryCard on HFB page shows metric values (not empty / zero)', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { name: 'YTD sales index' })).toBeVisible();
             await expect(page.locator('body')).toContainText(/\d+/);
         });
 
         test('KpiSummaryCard on PA page shows metric values (not empty / zero)', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { name: 'YTD sales index' })).toBeVisible();
             await expect(page.locator('body')).toContainText(/\d+/);
         });
@@ -2615,37 +2615,37 @@ test.describe('API data → UI binding', () => {
 
     test.describe('API error responses produce UI error messages (not blank/stale data)', () => {
         test('when /metrics returns 500 on the country page, error text replaces the SalesByWeek chart', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsStatus: 500 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsStatus: 500 });
             await expect(page.getByLabel(/weekly performance/i)).toContainText(SALES_BY_WEEK_ERROR_TEXT, { timeout: 20000 });
         });
 
         test('when /metrics returns 500 on the HFB page, error text replaces the SalesByWeek chart', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsStatus: 500 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsStatus: 500 });
             await expect(page.getByLabel(/weekly performance/i)).toContainText(SALES_BY_WEEK_ERROR_TEXT, { timeout: 20000 });
         });
 
         test('when /metrics returns 500 on the PA page, error text replaces the SalesByWeek chart', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsStatus: 500 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsStatus: 500 });
             await expect(page.getByLabel(/weekly performance/i)).toContainText(SALES_BY_WEEK_ERROR_TEXT, { timeout: 20000 });
         });
 
         test('when /metrics returns 500, SalesIndexTrend also shows the error message', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsStatus: 500 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsStatus: 500 });
             await expect(page.getByRole('region', { name: /Trends - Sales index vs LY/ })).toContainText(SALES_BY_WEEK_ERROR_TEXT, { timeout: 20000 });
         });
 
         test('when /metrics/hierarchy returns 404, no PA buttons are shown', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { hierarchyStatus: 404, metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { hierarchyStatus: 404, metricsDelayMs: 250 });
             await expect(page.getByRole('button', { name: /Sofas|Armchairs/ })).not.toBeVisible({ timeout: 10000 });
         });
 
         test('API error on country page does not affect the page heading (h1 still renders)', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsStatus: 500 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsStatus: 500 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
         });
 
         test('API error on HFB page does not affect breadcrumbs', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsStatus: 500 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsStatus: 500 });
             await expect(page.getByLabel('Breadcrumb').getByText('HFB 01')).toBeVisible();
         });
     });
@@ -2655,27 +2655,27 @@ test.describe('API data → UI binding', () => {
         // proving the response is bound per-request and not shared/cached between regions.
 
         test('SE and US pages both render without error when metrics API responds', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
             await expect(page.getByLabel(/weekly performance/i)).not.toContainText('unavailable', { timeout: 5000 });
 
-            await gotoBypassAuth(page, '/region-dashboard/us/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/us/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('US Sales');
             await expect(page.getByLabel(/weekly performance/i)).not.toContainText('unavailable', { timeout: 5000 });
         });
 
         test('SE and US KpiSummaryCards both show metric data from the API', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { name: 'FY26 sales index' })).toBeVisible();
             await expect(page.locator('body')).toContainText(/\d+/);
 
-            await gotoBypassAuth(page, '/region-dashboard/us/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/us/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { name: 'FY26 sales index' })).toBeVisible();
             await expect(page.locator('body')).toContainText(/\d+/);
         });
 
         test('XX region (nonexistent) still gets the mock API data and renders the KpiSummaryCard', async ({ page }) => {
-            await gotoBypassAuth(page, '/region-dashboard/xx/', { metricsDelayMs: 250 });
+            await gotoBypassAuth(page, '/monitoring/xx/', { metricsDelayMs: 250 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('XX Sales');
             await expect(page.getByRole('heading', { name: 'FY26 sales index' })).toBeVisible();
             await expect(page.locator('body')).toContainText(/\d+/);
@@ -2725,7 +2725,7 @@ test.describe('Null metric rendering (production returns JSON null, e.g. HFB 70)
         // FINDING: a null index-to-goal is coerced to 0 and the HeroMetric prints
         // Math.round(0) = "0" with a "100pt" critical badge — a misleading value,
         // NOT the em-dash placeholder used elsewhere.
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', {
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', {
             metricsDelayMs: 200,
             nullMetrics: ['netSalesIndexToGoal'],
         });
@@ -2741,7 +2741,7 @@ test.describe('Null metric rendering (production returns JSON null, e.g. HFB 70)
     });
 
     test('PA "vs latest forecast" MetricRowCell renders an em dash when its index is null', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', {
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', {
             metricsDelayMs: 200,
             nullMetrics: ['netSalesIndexVsLatestForecast', 'netQuantityIndexVsLatestForecast'],
         });
@@ -2752,7 +2752,7 @@ test.describe('Null metric rendering (production returns JSON null, e.g. HFB 70)
     });
 
     test('HFB "vs latest forecast" MetricRowCell renders an em dash when its index is null', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', {
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', {
             metricsDelayMs: 200,
             hierarchyDelayMs: 200,
             nullMetrics: ['netSalesIndexVsLatestForecast', 'netQuantityIndexVsLatestForecast'],
@@ -2764,7 +2764,7 @@ test.describe('Null metric rendering (production returns JSON null, e.g. HFB 70)
     });
 
     test('HFB list rows render em dashes (never NaN/undefined) when a child index is null', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', {
+        await gotoBypassAuth(page, '/monitoring/se/', {
             metricsDelayMs: 200,
             childMetricOverrides: {},
             nullMetrics: ['netSalesIndexVsDemandPlan', 'netQuantityIndexVsDemandPlan'],
@@ -2778,7 +2778,7 @@ test.describe('Null metric rendering (production returns JSON null, e.g. HFB 70)
     });
 
     test('PA list rows render em dashes (never NaN/undefined) when a child index is null', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', {
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', {
             metricsDelayMs: 200,
             hierarchyDelayMs: 200,
             nullMetrics: ['netSalesIndexVsDemandPlan', 'netQuantityIndexVsDemandPlan'],
@@ -2792,7 +2792,7 @@ test.describe('Null metric rendering (production returns JSON null, e.g. HFB 70)
     });
 
     test('realistic HFB-70 payload (all forecast/index fields null) never renders NaN/undefined/null', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/70/pa/001', {
+        await gotoBypassAuth(page, '/monitoring/se/hfb/70/pa/001', {
             metricsDelayMs: 200,
             nullMetrics: PROD_NULL_FIELDS,
         });
@@ -2827,7 +2827,7 @@ test.describe('Responsive viewports (tablet 768x1024, phone 390x844)', () => {
     for (const [name, size] of [['tablet', TABLET], ['phone', PHONE]]) {
         test(`country dashboard survives and navigates at ${name} width`, async ({ page }) => {
             await page.setViewportSize(size);
-            await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 200 });
+            await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 200 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
             await expect(page.getByRole('link', { name: 'Sales Planning' })).toBeVisible();
             await expect(page.getByRole('heading', { level: 3, name: 'FY26 sales index' })).toBeVisible();
@@ -2835,12 +2835,12 @@ test.describe('Responsive viewports (tablet 768x1024, phone 390x844)', () => {
             await expectNoHorizontalOverflow(page);
             // Primary navigation still works.
             await page.getByRole('button', { name: 'View HFB plan' }).first().click();
-            await expect(page).toHaveURL(/\/region-dashboard\/se\/hfb\/\d+$/);
+            await expect(page).toHaveURL(/\/monitoring\/se\/hfb\/\d+$/);
         });
 
         test(`HFB dashboard survives at ${name} width`, async ({ page }) => {
             await page.setViewportSize(size);
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', {
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01', {
                 metricsDelayMs: 200,
                 hierarchyDelayMs: 200,
             });
@@ -2853,7 +2853,7 @@ test.describe('Responsive viewports (tablet 768x1024, phone 390x844)', () => {
 
         test(`PA dashboard survives at ${name} width`, async ({ page }) => {
             await page.setViewportSize(size);
-            await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', { metricsDelayMs: 200 });
+            await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', { metricsDelayMs: 200 });
             await expect(page.getByRole('heading', { level: 1 })).toContainText('PA 001');
             await expect(page.getByRole('link', { name: 'Sales Planning' })).toBeVisible();
             await expect(page.getByRole('heading', { level: 3, name: 'YTD sales index' })).toBeVisible();
@@ -2865,7 +2865,7 @@ test.describe('Responsive viewports (tablet 768x1024, phone 390x844)', () => {
 
 test.describe('Slow and never-resolving responses', () => {
     test('a very slow (5s) metrics response shows a loading state then resolves to real content', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 5000 });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 5000 });
         // Loading state is visible while the request is in flight.
         await expect(page.getByLabel(/weekly performance/i).getByRole('status'))
             .toContainText('Loading trend data...', { timeout: 4000 });
@@ -2875,7 +2875,7 @@ test.describe('Slow and never-resolving responses', () => {
     });
 
     test('a never-resolving metrics response keeps the country page in its loading state (no error, no blank shell)', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsHang: true });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsHang: true });
         // The shell still renders (not blank)...
         await expect(page.getByRole('heading', { level: 1 })).toContainText('SE Sales');
         // ...and the data regions stay in their loading state, bounded so the test
@@ -2889,7 +2889,7 @@ test.describe('Slow and never-resolving responses', () => {
     });
 
     test('a never-resolving metrics response keeps the HFB PA list spinning without erroring', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01', { metricsHang: true });
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01', { metricsHang: true });
         await expect(page.getByRole('heading', { level: 1 })).toContainText('HFB 01');
         await expect(page.getByText('Loading PA performance...')).toBeVisible({ timeout: 8000 });
         await expect(page.getByLabel(/weekly performance/i)).not.toContainText('unavailable');
@@ -2916,7 +2916,7 @@ test.describe('Mid-session token expiry (metrics start returning 401 after a goo
     }
 
     test('navigating to a new page after the token expires surfaces an honest error, not stale/blank data', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 150 });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 150 });
         await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
 
         await expireMetricsToken(page);
@@ -2933,7 +2933,7 @@ test.describe('Mid-session token expiry (metrics start returning 401 after a goo
     });
 
     test('after token expiry the SalesIndexTrend also errors rather than showing fabricated data', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 150 });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 150 });
         await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
 
         await expireMetricsToken(page);
@@ -2950,7 +2950,7 @@ test.describe('Mid-session token expiry (metrics start returning 401 after a goo
     });
 
     test('token expiry leaves the app shell intact (h1 + breadcrumb still render)', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', { metricsDelayMs: 150 });
+        await gotoBypassAuth(page, '/monitoring/se/', { metricsDelayMs: 150 });
         await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
 
         await expireMetricsToken(page);
@@ -2982,7 +2982,7 @@ test.describe('Navigation race conditions (deterministic via per-HFB delays)', (
         // HFB 01 KPI (which builds the PA list) is slow; HFB 02 is fast. HFB 01 has
         // PAs (Sofas/Armchairs) in the hierarchy; HFB 02 has none — a clean,
         // data-driven differentiator between the two views.
-        await gotoBypassAuth(page, '/region-dashboard/se/', {
+        await gotoBypassAuth(page, '/monitoring/se/', {
             hfbMetricsDelays: { '01': 3000, '02': 100 },
         });
         await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
@@ -3003,7 +3003,7 @@ test.describe('Navigation race conditions (deterministic via per-HFB delays)', (
     });
 
     test('country → HFB (slow) → back to country: the late HFB response does not clobber the country view', async ({ page }) => {
-        await gotoBypassAuth(page, '/region-dashboard/se/', {
+        await gotoBypassAuth(page, '/monitoring/se/', {
             hfbMetricsDelays: { '01': 3000 },
         });
         await page.getByRole('button', { name: 'View HFB plan' }).first().waitFor();
@@ -3030,7 +3030,7 @@ test.describe('Number formatting boundaries (Gap to close, currency-compact form
     // Gap to close block stays visible. Expected strings were captured from the
     // deployed app's own Intl output, which differs from Node's ICU in places.
     async function gapText(page, netSalesGap) {
-        await gotoBypassAuth(page, '/region-dashboard/se/hfb/01/pa/001', {
+        await gotoBypassAuth(page, '/monitoring/se/hfb/01/pa/001', {
             metricsDelayMs: 200,
             metricOverrides: { netQuantityGap: '-1000', netSalesGap: String(netSalesGap) },
         });
